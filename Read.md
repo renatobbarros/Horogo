@@ -1,6 +1,7 @@
 # Horogo - Seu Assistente de Estudos Gamificado 🤖✨
 ## Um gerenciador de estudos simples, feito em linha de comando, que transforma sua rotina de aprendizado em um jogo de RPG para combater a procrastinação.
 
+![Ilustração do Mascote Horobot](./Source/Horobot.png)
 
 ## 📜 Sobre o Projeto
 Horogo nasceu como um projeto para a disciplina de Projetos Interdisciplinares de Sistemas de Informação. A ideia era criar uma ferramenta que não apenas ajudasse na organização dos estudos, mas que também tornasse o processo mais divertido e motivador.
