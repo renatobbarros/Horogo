@@ -37,11 +37,6 @@ Suas tarefas e seu progresso são salvos localmente em um arquivo JSON, para que
 ### Interface Simples:
 Tudo funciona diretamente no seu terminal, sem a necessidade de instalações complexas. 
 
-###🛠️ Tecnologias Utilizadas
-
-(O projeto ainda vai caminhar, calma la!) 
-
-
 Pré-requisitos:
 
 (O projeto ainda vai caminhar, calma la!) 
