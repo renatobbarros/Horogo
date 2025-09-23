@@ -12,35 +12,35 @@ Inspirado em aplicativos como Duolingo e Habitica, o Horogo utiliza conceitos de
 
  ### Isaque, revisa as funcionalidade e olha se esqueci alguma.
 ### Gerenciamento de Tarefas:
-Adicione, liste e conclua tarefas relacionadas às suas disciplinas.
+Adicione, liste e conclua tarefas relacionadas às suas disciplinas e materias de sua carreira academica e gerencie do jeito que você quiser.
 
 ### Acompanhamento de status academico: 
-notas, conclusão do curso, sistema de atenção, cadeiras do periodo.
+Acompanhando suas notas, periodo de conclusão do curso, sistema de atenção e cadeiras do periodo você ira poder ter uma gestão muito mais eficiente na sua vida academica.
 
 ### Gerenciamento de datas:
-acompanhe todas as datas e eventos importantes.
+Acompanhe todas as datas e eventos importantes utilizando a Agenda do Horobot, que ira te avisar quando eventos irão acontecer e quem ira participar.
 
 ### Mural de eventos:
-acompanhe todas as datas e informações importantes dos pproxímos eventos
+No mural de eventos sera possivel você ver outros usuarios e o que eles postam e informações sobre o proprio evento.
 
 ### Sistema de Gamificação:
 
-Ganhe Pontos de Experiência (XP) ao completar tarefas.
+Ganhe Pontos de Experiência (XP) ao completar tarefas, provas e participando de eventos.
 
-Avance de Nível e acompanhe seu progresso.
+Avance de Nível e acompanhe seu progresso para ser o numero #1 no mundo academico!
 
 ### Mascote Interativo:
-O Horobot guia o usuário com mensagens motivacionais e feedback constante.
+O Horobot guia o usuário com mensagens motivacionais e feedback constante, ajudando o usuario a lidar com as tarefas academicas e metodos de estudo e muito mais!
 
 ### Persistência de Dados:
-Suas tarefas e seu progresso são salvos localmente em um arquivo JSON, para que você nunca perca suas informações.
+Suas tarefas e seu progresso são salvos localmente em um arquivo JSON, para que você nunca perca suas informações, sendo tambem possivel fazer um backup dos dados.
 
 ### Interface Simples:
-Tudo funciona diretamente no seu terminal, sem a necessidade de instalações complexas.
+Tudo funciona diretamente no seu terminal, sem a necessidade de instalações complexas. 
 
 🛠️ Tecnologias Utilizadas
 
-### Adcionar futuramente
+### Em breve.
 
 
 Pré-requisitos:
