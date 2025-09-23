@@ -10,7 +10,6 @@ Inspirado em aplicativos como Duolingo e Habitica, o Horogo utiliza conceitos de
 
 ## ✨ Funcionalidades
 
- ### Isaque, revisa as funcionalidade e olha se esqueci alguma.
 ### Gerenciamento de Tarefas:
 Adicione, liste e conclua tarefas relacionadas às suas disciplinas e materias de sua carreira academica e gerencie do jeito que você quiser.
 
