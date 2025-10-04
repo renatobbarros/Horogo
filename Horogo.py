@@ -1,46 +1,68 @@
-#importações
 import os
-#Variaveis
-sairloop = 0
-# Funções primordiais
+import json
+
+loop = 0
+
 def limparterminal():
+    '''limpa o terminal de todo o texto que estiver dentro.'''
     if os.name == "nt":
         os.system("cls")
     else:
         os.system("clear")
   
-def acharid(lista):
+def achar_id(lista):
+    '''encontra o ID dentro da lista de informações.'''
     if not lista:
         return 0 
     else:
-        ultimoiten = lista[-1]
-        ultimoid = ultimoiten["id"]
-        return ultimoid + 1
+        ultimo_item = lista[-1]
+        ultimo_id = ultimo_item["id"]
+        return ultimo_id + 1
+    
+def sistema_login():
+    # O input e comparado com os dados ja salvos, e caso esteja correto, o codigo autoriza a passar.
+    print("HOROBOT: Perfeito! me passe as seguintes informações para que eu te deixe onde parou da ultima vez")
+    usuario = "joaozinho gameplay"
+    senha = "123"
+
+    entrada_usuario = input(str("HOROBOT: Digite seu nome de usuario: "))
+    entrada_senha = input(str("HOROBOT: Digite sua senha: "))
+
+    if usuario == entrada_usuario and senha == entrada_senha: 
+        loop = loop + 1
+        print("HOROBOT: Você agora esta logado!")
+    else:
+        print("HOROBOT: Seu nome de usuario ou senha estão incorretos.")
+
+def sistema_cadastro():
+#    print("HOROBOT: Certo, vamos criar sua conta no HOROGO.")
+
+#    criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar."))
+#    criar_senha = input(str("HOROBOT: Muito bem, agora, crie a senha para sua conta."))
+
+   
+
+
 
 #Espaço para o login/cadastro de usuario
-print("\n\n\n\n\n\n\n\n\n\nHOROBOT: Olá! é um prazer te receber aqui!")
+print("HOROBOT: Olá! é um prazer te receber aqui!")
 print("HOROBOT: Meu nome é Horobot, serei seu amigo e guia durante sua jornada academica!")
-print("HOROBOT: Antes de mais nada, você já é possui cadastro no HOROGO?")
+print("HOROBOT: Antes de mais nada, você já possui cadastro no HOROGO?")
 
 possuicadastro = int(input("1 - Sim \n2 - Não \nUSUARIO: "))
 
 limparterminal()
 
-while sairloop < 0:
+while loop == 0:
     if possuicadastro == 1:
-        print("HOROBOT: Perfeito! me passe as seguintes informações para que eu te deixe onde parou da ultima vez")
-        emailusuario = input("HOROBOT: Digite seu Email: ")
-        senhausuario = input("HOROBOT: Digite sua senha: ") #deixar a senha invisivel
-        sairloop + 1 #bolar esquema pra sair do loop
-        #bolar esquema para validar emaie e senha
+        sistema_login()
     elif possuicadastro == 2:
-        print("HOROBOT: Vou precisar pegar alguns dados seus para continuar")
-        input("") #criar cadastro
-        sairloop + 1
+        sistema_cadastro()
     else: 
         print(f"O valor que você digitou: {possuicadastro}, não esta dentro das opçoes que te dei, por favor, digite apenas 1 ou 2 ")
 
 #Desculpa, Isaque, me empolguei :(
+# Relaxa, ta de boa. Empolgação e sucesso
 
 def cadastrar_cadeira(cadeira_cadastrada, nome, dia, horario, periodo, professor, disciplina):
     id_cadeira = 0
@@ -77,7 +99,7 @@ lista_de_cadeiras = cadastrar_cadeira(
 #Cadastro de notas
 def cadastronotas(notacadastrada, nota, lista_de_cadeiras ,datadanota, tipodenota):
 
-    idnota = acharid(notacadastrada)
+    idnota = achar_id(notacadastrada)
 
     novanota = {
         "id" : idnota,
