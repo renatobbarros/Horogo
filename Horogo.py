@@ -3,6 +3,11 @@ import json
 
 loop = 0
 
+usuario = ""
+senha = ""
+
+Menu = 1
+
 def limparterminal():
     '''limpa o terminal de todo o texto que estiver dentro.'''
     if os.name == "nt":
@@ -22,29 +27,32 @@ def achar_id(lista):
 def sistema_login():
     # O input e comparado com os dados ja salvos, e caso esteja correto, o codigo autoriza a passar.
     print("HOROBOT: Perfeito! me passe as seguintes informações para que eu te deixe onde parou da ultima vez")
-    usuario = "joaozinho gameplay"
-    senha = "123"
+    usuario
+    senha 
 
     entrada_usuario = input(str("HOROBOT: Digite seu nome de usuario: "))
     entrada_senha = input(str("HOROBOT: Digite sua senha: "))
 
     if usuario == entrada_usuario and senha == entrada_senha: 
-        loop = loop + 1
         print("HOROBOT: Você agora esta logado!")
     else:
         print("HOROBOT: Seu nome de usuario ou senha estão incorretos.")
 
+
 def sistema_cadastro():
-#    print("HOROBOT: Certo, vamos criar sua conta no HOROGO.")
+    '''O sistema cria as variaveis, e pede o input do usuario. Caso a senha seja maior que 12 caracteres, ele pede pra criar uma senha mais curta. Quando a conta e criada, as variaveis são jogadas na variavel de usuario e senha.'''
+    print("HOROBOT: Certo, vamos criar sua conta no HOROGO.")
 
-#    criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar."))
-#    criar_senha = input(str("HOROBOT: Muito bem, agora, crie a senha para sua conta."))
+    criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar."))
+    criar_senha = input(str("HOROBOT: Muito bem, agora, crie a senha para sua conta."))
 
-   
+    if len(criar_senha) > 12:
+        criar_senha = input(str("HOROBOT: Sua senha contem muitos caracteres. Por favor, utilize uma senha mais curta."))
+    else:
+        usuario = criar_usuario
+        senha = criar_senha
+        print("HOROBOT: Muito bem! Sua conta agora foi criada e cadastrada.")
 
-
-
-#Espaço para o login/cadastro de usuario
 print("HOROBOT: Olá! é um prazer te receber aqui!")
 print("HOROBOT: Meu nome é Horobot, serei seu amigo e guia durante sua jornada academica!")
 print("HOROBOT: Antes de mais nada, você já possui cadastro no HOROGO?")
@@ -56,10 +64,19 @@ limparterminal()
 while loop == 0:
     if possuicadastro == 1:
         sistema_login()
+        loop = 1
     elif possuicadastro == 2:
         sistema_cadastro()
+        loop = 1 
     else: 
         print(f"O valor que você digitou: {possuicadastro}, não esta dentro das opçoes que te dei, por favor, digite apenas 1 ou 2 ")
+
+while Menu != 0:
+    # sistema de menu, que eu vou trabalhar mais ainda. Quando você chega aqui, ele fica loopando infinitamente.
+    print("HOROBOT: Bem vindo ao menu do HOROGO!")
+    print("HOROBOT: Aqui você podera escolher fazer o que quiser, a qualquer momento.")
+
+
 
 #Desculpa, Isaque, me empolguei :(
 # Relaxa, ta de boa. Empolgação e sucesso
