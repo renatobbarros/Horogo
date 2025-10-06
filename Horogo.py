@@ -10,7 +10,8 @@ usuario = ""
 senha = ""
 
 logado = "NÃO"
-#isaque, se sobrar tempo, vamos criar um desse pra cada fala importante do horobot!!!!!!1
+#isaque, se sobrar tempo, vamos criar um desse pra cada fala importante do horobot!!!!!!!
+# Beleza, nois faz tranquilo.
 horobotola = """
           +-------------------------------------------------+
           |  Olá! Sou o Horobot, seu assistente de estudos. |
@@ -18,10 +19,10 @@ horobotola = """
                    \
                     \
               .------.
-         o -- |  ^ ^  | -- o
+         o -- |  ^ ^ | -- o
               '------'
-             /[ ** ]\
-            /_________\
+              /[ ** ]\   
+             /________\
               | | | |
               '-----'
     """
@@ -49,12 +50,10 @@ def sistema_login():
     usuario
     senha 
 
-    entrada_usuario = input(str("HOROBOT: Digite seu nome de usuario: "))
-
+    entrada_usuario = input(str("HOROBOT: Digite seu nome de usuario:\n"))
     time.sleep(1)
-    limparterminal()
 
-    entrada_senha = getpass.getpass("HOROBOT: Digite sua senha: ")
+    entrada_senha = getpass.getpass(str("HOROBOT: Digite sua senha:\n"))
     time.sleep(1)
     limparterminal()
     #esse foi o unico jeito que lembrei para fazer voltar sem entrar em loop
@@ -82,23 +81,33 @@ def sistema_cadastro():
 
     time.sleep(2)
 
-    criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar: "))
-    time.sleep(1)
-    limparterminal()
+    criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar:\n"))
 
-    criar_senha = getpass.getpass("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta: ")
+    loop_usuario = 0
 
-    if len(criar_senha) > 12:
-        #Bug, quando clicado enter o programa2 entra em loop, ajeitar a validação
-        criar_senha = getpass.getpass("HOROBOT: Sua senha contem muitos caracteres. Por favor, digite uma senha mais curta: ")
-    elif len(criar_senha) == 0:
-        #encaixar uma estrutura de repetição
-        criar_senha = getpass.getpass("HOROBOT: Você não preencheu sua senha, para sua segurança, digite uma senha: ")
-    else:
-        usuario = criar_usuario
-        senha = criar_senha
-        print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
-        sistema_login()
+    # Depois, vamo tentar fazer tudo em um loop so, se for possivel.
+    while loop_usuario == 0:
+        if len(criar_usuario) == 0 or len(criar_usuario) > 20:
+            criar_usuario = input(str("HOROBOT: Seu nome de usuario contem mais do que 20 caracteres ou você colocou um nome vazio. Por favor, tente novamente.\n"))
+        else: 
+            criar_senha = getpass.getpass(str("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta:\n"))
+            loop_usuario = 1
+            time.sleep(1) 
+    loop_senha = 0
+
+    while loop_senha == 0:
+        if len(criar_senha) > 12:
+            criar_senha = getpass.getpass(str("HOROBOT: Sua senha contem muitos caracteres. Por favor, digite uma senha mais curta:\n"))
+        elif len(criar_senha) == 0:
+            criar_senha = getpass.getpass(str("HOROBOT: Você não preencheu sua senha, para sua segurança, digite uma senha:\n"))
+        else:
+            usuario = criar_usuario
+            senha = criar_senha
+            print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
+            time.sleep(1)
+            loop_senha = 1
+            sistema_login()
+
 
 def boasvindasmenu():
     print("HOROBOT: Bem vindo ao menu do HOROGO!")
@@ -131,7 +140,7 @@ while loop == 0:
         print(f"O valor que você digitou: {possuicadastro}, não esta dentro das opçoes que te dei, por favor, digite apenas 1 ou 2 ")
 
 def main():
-    if LOGADO == "SIM":
+    if logado == "SIM":
         boasvindasmenu()
     else:
         print("Até a proxima")
