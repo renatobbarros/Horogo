@@ -3,7 +3,7 @@
 
 \\TALVEZ QUEBRE POR CONTA DA NOVA PAATAS\\
 
-![Ilustração do Mascote Horobot](./Source/Horobot.png)
+![Ilustração do Mascote Horobot](./HOROGO/Source/Horobot.png)
 
 ## 📜 Sobre o Projeto
 Horogo nasceu como um projeto para a disciplina de Projetos Interdisciplinares de Sistemas de Informação. A ideia era criar uma ferramenta que não apenas ajudasse na organização dos estudos, mas que também tornasse o processo mais divertido e motivador.
