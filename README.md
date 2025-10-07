@@ -1,6 +1,8 @@
 # Horogo - Seu Assistente de Estudos Gamificado 🤖✨
 ## Um gerenciador de estudos simples, feito em linha de comando, que transforma sua rotina de aprendizado em um jogo de RPG para combater a procrastinação.
 
+\\TALVEZ QUEBRE POR CONTA DA NOVA PAATAS\\
+
 ![Ilustração do Mascote Horobot](./Source/Horobot.png)
 
 ## 📜 Sobre o Projeto

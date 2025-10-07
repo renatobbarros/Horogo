@@ -1,0 +1,3 @@
+usuario = ""
+senha = ""
+logado = "NÃO"
