@@ -6,7 +6,9 @@
 ### Formatação de nomes
 #### Variaveis
 - Para declarar uma variavel, devemos usar o snake_case.
-- para variaveis constantes (que não devemos mudar o vaor), devemos escrever o SNAKE_CASE com letra maiuscula.
+# Sim, por isso que eu tava atualizando os nomes das variaveis com o underline. :D
+- para variaveis constantes (que não devemos mudar o valor), devemos escrever o SNAKE_CASE com letra maiuscula.
+# Por que? 
 - devemos evitar abreviações
 - devemos dar nomes significativos
 
@@ -28,7 +30,9 @@
 ## Atenção
 #### Agora sempre teremos que importar as funções da seguinte forma: from ... import ...
 #### Os arquivos __pycache__ surgiram quando eu fui debugar o codigo
+### O pycache e pra armazenar as informações do modulo, se não me engano.
 
 ## Ideia
 - criar mecanismo para encerrar o programa no menu de cadastro
+# Quando esse mecanismo iria ser ativado no menu de cadastro?
 - Criar local para armazenar variavel

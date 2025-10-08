@@ -3,7 +3,7 @@ def cadastrar_cadeira(cadeira_cadastrada, nome, dia, horario, periodo, professor
 
     if cadeira_cadastrada:
 
-        id_cadeira = cadeira_cadastrada[-1]['id']
+        id_cadeira = cadeira_cadastrada[+1]['id']
 
     cadeira_nova = {
         'id': id_cadeira,

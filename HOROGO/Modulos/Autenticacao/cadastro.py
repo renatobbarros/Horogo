@@ -1,5 +1,6 @@
 import getpass
 import time
+import json
 from HOROGO.Modulos.utilitarios import limpar_terminal
 from HOROGO.Modulos.Autenticacao.login import sistema_login
 
@@ -33,6 +34,12 @@ def sistema_cadastro():
             senha = criar_senha
             print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
             time.sleep(1)
+            dados_de_cadastro = {
+                "usuario": usuario,
+                "senha": senha
+                }
+            with open("HOROGO\Modulos\Dados\conta.json", "w") as arquivo_json:
+                json.dump(dados_de_cadastro, arquivo_json)
             loop_senha = 1
             sistema_login()
 

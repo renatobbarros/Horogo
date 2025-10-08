@@ -22,7 +22,6 @@ while loop == 0:
     if possuicadastro == 1:
         print("HOROBOT: Perfeito! me passe as seguintes informações para que eu te deixe onde parou da ultima vez")
         time.sleep(2)
-        limpar_terminal()
         login.sistema_login()
         loop = 1
     elif possuicadastro == 2:
