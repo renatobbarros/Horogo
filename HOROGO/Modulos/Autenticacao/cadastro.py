@@ -1,8 +1,12 @@
 import getpass
 import time
 import json
+import os
+
 from HOROGO.Modulos.utilitarios import limpar_terminal
+from HOROGO.Modulos.utilitarios import carregar_dados
 from HOROGO.Modulos.Autenticacao.login import sistema_login
+
 
 def sistema_cadastro():
     limpar_terminal()
@@ -21,7 +25,7 @@ def sistema_cadastro():
         else: 
             criar_senha = getpass.getpass(str("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta:\n"))
             loop_usuario = 1
-            usuario = criar_usuario
+            usuario = str(criar_usuario)
             time.sleep(1) 
     loop_senha = 0
 
@@ -31,15 +35,18 @@ def sistema_cadastro():
         elif len(criar_senha) == 0:
             criar_senha = getpass.getpass(str("HOROBOT: Você não preencheu sua senha, para sua segurança, digite uma senha:\n"))
         else:
-            senha = criar_senha
+            senha = str(criar_senha)
+            print(senha)
+            print("HOROBOT: Otimo! Agora, vamos inserir seus dados academicos, como sua instituição de ensino e qual periodo você esta.")
+            instituição = input(str("HOROBOT: Insira sua instituição de ensino.\n"))
+            periodo_atual = input(str("HOROBOT; Agora, insira o periodo atual do seu curso.\n"))
             print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
             time.sleep(1)
-            dados_de_cadastro = {
-                "usuario": usuario,
-                "senha": senha
-                }
-            with open("HOROGO\Modulos\Dados\conta.json", "w") as arquivo_json:
-                json.dump(dados_de_cadastro, arquivo_json)
+            conta = carregar_dados()
+            conta[usuario] = {'Usuario': usuario, "Senha": senha, "Instituição": instituição, "Periodo Atual": periodo_atual}
+            with open('conta.json', "w", encoding='utf-8') as arq:
+                json.dump(conta, arq, indent=4, ensure_ascii=False)
             loop_senha = 1
+
             sistema_login()
 
