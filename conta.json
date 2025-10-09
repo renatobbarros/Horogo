@@ -1,0 +1,20 @@
+{
+    "Joao": {
+        "Usuario": "Joao",
+        "Senha": "123456",
+        "Instituição": "UFRPE",
+        "Periodo Atual": "1"
+    },
+    "Python": {
+        "Usuario": "Python",
+        "Senha": "python",
+        "Instituição": "python",
+        "Periodo Atual": "python"
+    },
+    "Goku": {
+        "Usuario": "Goku",
+        "Senha": "goku",
+        "Instituição": "goku",
+        "Periodo Atual": "goku"
+    }
+}

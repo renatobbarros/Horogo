@@ -25,8 +25,9 @@ def sistema_cadastro():
         else: 
             criar_senha = getpass.getpass(str("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta:\n"))
             loop_usuario = 1
-            usuario = str(criar_usuario)
+            usuario = criar_usuario
             time.sleep(1) 
+        return usuario
     loop_senha = 0
 
     while loop_senha == 0:
@@ -35,7 +36,7 @@ def sistema_cadastro():
         elif len(criar_senha) == 0:
             criar_senha = getpass.getpass(str("HOROBOT: Você não preencheu sua senha, para sua segurança, digite uma senha:\n"))
         else:
-            senha = str(criar_senha)
+            senha = criar_senha
             print(senha)
             print("HOROBOT: Otimo! Agora, vamos inserir seus dados academicos, como sua instituição de ensino e qual periodo você esta.")
             instituição = input(str("HOROBOT: Insira sua instituição de ensino.\n"))
@@ -47,6 +48,7 @@ def sistema_cadastro():
             with open('conta.json', "w", encoding='utf-8') as arq:
                 json.dump(conta, arq, indent=4, ensure_ascii=False)
             loop_senha = 1
-
             sistema_login()
+        return usuario
+
 

@@ -1,6 +1,8 @@
 import time
 import getpass
+import json
 
+from HOROGO.Modulos.utilitarios import carregar_dados
 from HOROGO.Modulos.utilitarios import limpar_terminal
 from HOROGO.Modulos import variaveis_globais
 
@@ -17,7 +19,11 @@ def sistema_login():
     limpar_terminal()
 
     def validacaologin():
-        if variaveis_globais.usuario == entrada_usuario and variaveis_globais.senha == entrada_senha:
+
+        conta = carregar_dados()
+        usuario = cadastro.usuario
+
+        if conta[usuario]["Senha"] == entrada_senha:
             print("HOROBOT: Você agora esta logado!")
             variaveis_globais.logado = "SIM"
         else:
