@@ -36,3 +36,7 @@
 - criar mecanismo para encerrar o programa no menu de cadastro
 # Quando esse mecanismo iria ser ativado no menu de cadastro?
 - Criar local para armazenar variavel
+
+
+# Renato 08/10/2025 - 
+## To com um bloqueio gigante

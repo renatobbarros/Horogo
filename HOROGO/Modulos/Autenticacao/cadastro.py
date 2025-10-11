@@ -36,9 +36,9 @@ def sistema_cadastro():
             criar_senha = getpass.getpass(str("HOROBOT: Você não preencheu sua senha, para sua segurança, digite uma senha:\n"))
         else:
             senha = str(criar_senha)
-            print(senha)
+            print(senha) #Oxe? pq a senha ta aparecendo?
             print("HOROBOT: Otimo! Agora, vamos inserir seus dados academicos, como sua instituição de ensino e qual periodo você esta.")
-            instituição = input(str("HOROBOT: Insira sua instituição de ensino.\n"))
+            instituição = input(str("HOROBOT: Insira sua instituição de ensino.\n")) #Definir instituição e nome em lower Case, colocar isso na planilha tambem
             periodo_atual = input(str("HOROBOT; Agora, insira o periodo atual do seu curso.\n"))
             print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
             time.sleep(1)
