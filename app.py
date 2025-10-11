@@ -1,9 +1,9 @@
 import time
 from HOROGO.Modulos.horobot import horobot_apresentacao
-from HOROGO.Modulos.Autenticacao import login, cadastro
+from HOROGO.Modulos.Autenticacao.login import sistema_login
+from HOROGO.Modulos.Autenticacao.cadastro import sistema_cadastro 
 from HOROGO.Modulos import variaveis_globais
 from HOROGO.Modulos.utilitarios import boas_vindas_menu, limpar_terminal
-# from HOROGO.Modulos.Menu import menu_inicial
 
 limpar_terminal()
 print(horobot_apresentacao)
@@ -23,10 +23,10 @@ while loop == 0:
     if possuicadastro == 1:
         print("HOROBOT: Perfeito! me passe as seguintes informações para que eu te deixe onde parou da ultima vez")
         time.sleep(2)
-        login.sistema_login()
+        sistema_login()
         loop = 1
     elif possuicadastro == 2:
-        cadastro.sistema_cadastro()
+        sistema_cadastro()
         loop = 1
     else:
         print(f"O valor que você digitou: {possuicadastro}, não esta dentro das opçoes que te dei, por favor, digite apenas 1 ou 2 ")
@@ -37,7 +37,6 @@ while loop == 0:
 def main():
     if variaveis_globais.logado == "SIM":
         boas_vindas_menu()
-        menu_inicial()
 
     else:
         print("Até a proxima")

@@ -4,7 +4,6 @@ import json
 import os
 
 from HOROGO.Modulos.utilitarios import limpar_terminal
-from HOROGO.Modulos.utilitarios import carregar_dados
 from HOROGO.Modulos.Autenticacao.login import sistema_login
 
 
@@ -42,10 +41,6 @@ def sistema_cadastro():
             periodo_atual = input(str("HOROBOT; Agora, insira o periodo atual do seu curso.\n"))
             print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
             time.sleep(1)
-            conta = carregar_dados()
-            conta[usuario] = {'Usuario': usuario, "Senha": senha, "Instituição": instituição, "Periodo Atual": periodo_atual}
-            with open('conta.json', "w", encoding='utf-8') as arq:
-                json.dump(conta, arq, indent=4, ensure_ascii=False)
             loop_senha = 1
 
             sistema_login()
