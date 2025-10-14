@@ -19,7 +19,7 @@ def sistema_cadastro():
 
     criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar:\nUsuario:"))
 
-    # Arquivo: cadastro.py
+
 
 import getpass
 import time
