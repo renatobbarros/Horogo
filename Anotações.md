@@ -40,3 +40,8 @@
 
 # Renato 08/10/2025 - 
 ## To com um bloqueio gigante
+
+# Isaque, 14/10/25 - 
+Finalmente tenho algum motivo pra adicionar algo aqui.
+O sistema de cadastro esta feito, e agora entendo (MAIS OU MENOS) o basico de JSON, incluindo como escrever, criar um arquivo, e depois puxar esse mesmo arquivo e ler o mesmo. Tambem dei uma perfurmada no menu, incluindo a estrutura de como vai ser o mesmo, para deixar tudo de facil acesso. 
+Caso tu precise que eu adicione mais comentarios no codigo, me manda uma mensagem no zapzap que eu ja faço um commit com tudo comentado ou com docstrings. :]
