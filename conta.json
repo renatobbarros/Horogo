@@ -1,0 +1,20 @@
+{
+    "Hah": {
+        "usuario": "Hah",
+        "senha": "123",
+        "instituicao": "ufrpe",
+        "periodo_atual": "1"
+    },
+    "Renato": {
+        "usuario": "Renato",
+        "senha": "123",
+        "instituicao": "ufrpe",
+        "periodo_atual": "1"
+    },
+    "renato": {
+        "usuario": "renato",
+        "senha": "123",
+        "instituicao": "ufrpe",
+        "periodo_atual": "1"
+    }
+}

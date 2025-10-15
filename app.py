@@ -4,6 +4,7 @@ from HOROGO.Modulos.Autenticacao.login import sistema_login
 from HOROGO.Modulos.Autenticacao.cadastro import sistema_cadastro 
 from HOROGO.Modulos import variaveis_globais
 from HOROGO.Modulos.utilitarios import boas_vindas_menu, limpar_terminal
+from HOROGO.Modulos.Menu import menu_inicial, boas_vindas_novo_usuario
 
 limpar_terminal()
 print(horobot_apresentacao)
@@ -36,7 +37,8 @@ while loop == 0:
 # --- LÓGICA PRINCIPAL APÓS LOGIN (DO CÓDIGO ORIGINAL) ---
 def main():
     if variaveis_globais.logado == "SIM":
-        boas_vindas_menu()
+        boas_vindas_novo_usuario()
+        menu_inicial()
 
     else:
         print("Até a proxima")

@@ -1,34 +1,54 @@
-from HOROGO.Modulos.Autenticacao.login import nome_logado
 import time
-xp = 0
-usuario = nome_logado 
-def boas_vindas():
-    print("HOROBOT: Seja bem-vindo(a) a agenda Horogo!")
+from HOROGO.Modulos.utilitarios import limpar_terminal, pagina_em_construcao
+
+def boas_vindas_novo_usuario():
+    limpar_terminal()
+    print("HOROBOT: Seja bem-vindo(a) à agenda Horogo!")
     time.sleep(1)
-    print("HOROBOT: Meu nome é horobot e serei seu guia durante o seu tempo no HOROGO")
-    time.sleep(1)
-    if xp == 0:
-        print("HOROBOT: Como você é novo por aqui, vou te explicar algumas coisas")
-        time.sleep(1)
-        print("HOROBOT: A agenda Horogo é o melhor amigo do estudante durante seu tempo na universidade")
-        time.sleep(1)
-        print("HOROBOT: Eu te acompanharei durante toda a sua jornada e te ajudarei a nunca perder um compromisso, oportunidade ou avaliação")
-        time.sleep(1)
-        print("HOROBOT: Você iniciará no nivel 0 e com a classe de aprendiz de estudante, conforme você for adicionando notas, avaliações e compromissos, seu nivel e classe vão subindo")
-        time.sleep(1)
-        print("HOROBOT: Agora, preciso que você me informe quais cadeiras estaa cursando atualmente")
-        time.sleep(1)
-        cadastrar_cadeira()
-    else:
-        menu_inicial()
-
-
-def menu_inicial():
-    print(f"*-*" *25)
-    print(f"Bem vindo {usuario}")
-    print(nivel, universidade, periodo)
-    print(xp)
-    print ("proximas entregas")
-    print(f"*-*" *25)
-
+    print("HOROBOT: Meu nome é Horobot e serei seu guia durante o seu tempo no HOROGO.")
+    time.sleep(2)
+    print("\nHOROBOT: Como você é novo por aqui, vou te explicar algumas coisas.")
+    time.sleep(2)
+    print("\nHOROBOT: A agenda Horogo é o melhor amigo do estudante durante seu tempo na universidade.")
+    time.sleep(2)
+    print("\nHOROBOT: Eu te acompanharei durante toda a sua jornada e te ajudarei a nunca perder um compromisso.")
+    time.sleep(2)
+    print("\nHOROBOT: Você iniciará no nível 1 e, conforme for usando o app, seu nível vai subindo.")
+    time.sleep(2)
+    print("\nHOROBOT: Agora, vamos para o seu menu principal!")
+    time.sleep(3)
     
+def menu_inicial():
+    while True:
+        limpar_terminal()
+        
+        print(f"Usuário: {['Usuario']} --------------------------\n")
+        print(f"Nível: ['Nivel'] | Universidade: ['Instituição']| Período: ['Periodo Atual']\n", "---------------------------------------------------")
+        print('XP: [■■■■■■■■■■■■□□□□□□□□□]\n', "--------------------------------------------------------")
+        print("Próximas Entregas:\n", "Pre-Release do Projeto: AGORA!!!!!!!!!!!!!!!!!!!!!!!!!!!! [O_o]\n", "--------------------------------------------------------")
+
+        print("1. Notas", "      2. Cadeiras\n")
+        print("3. Perfil", "      4. Mural\n")
+        print("5. Calendário", "  6. Atualizar Conta\n")
+        print("0. Sair do programa.")
+
+        try:
+            escolha_do_usuario = int(input("\nHOROBOT: O que você deseja fazer agora?\nUsuario: "))
+
+            if escolha_do_usuario == 0:
+                limpar_terminal()
+                print("HOROBOT: Até a próxima!")
+                time.sleep(2)
+                limpar_terminal()
+                break
+                #achar um jeito de sair do menu
+            elif 1 <= escolha_do_usuario <= 6:
+                pagina_em_construcao()
+                time.sleep(2)
+            else:
+                print("HOROBOT: Digite um valor válido (de 0 a 6).")
+                time.sleep(2)
+        
+        except ValueError:
+            print("HOROBOT: Ops! Parece que você não digitou um número. Tente novamente.")
+            time.sleep(2)

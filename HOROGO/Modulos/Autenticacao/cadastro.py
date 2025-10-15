@@ -3,45 +3,58 @@ import time
 import json
 import os
 
-from HOROGO.Modulos.utilitarios import limpar_terminal
+from HOROGO.Modulos.utilitarios import limpar_terminal, salvar_conta, carregar_conta
 from HOROGO.Modulos.Autenticacao.login import sistema_login
 
-
 def sistema_cadastro():
-    limpar_terminal()
     print("HOROBOT: Certo, vamos criar sua conta no HOROGO.")
-
     time.sleep(1)
 
-    criar_usuario = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar:\nUsuario:"))
-
-    loop_usuario = 0
-
-    # Depois, vamo tentar fazer tudo em um loop so, se for possivel.
-    while loop_usuario == 0:
-        if len(criar_usuario) == 0 or len(criar_usuario) > 20:
-            criar_usuario = input(str("HOROBOT: Seu nome de usuario contem mais do que 20 caracteres ou você colocou um nome vazio. Por favor, tente novamente.\n"))
-        else: 
-            criar_senha = getpass.getpass(str("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta:\n"))
-            loop_usuario = 1
-            usuario = str(criar_usuario)
-            time.sleep(1) 
-    loop_senha = 0
-
-    while loop_senha == 0:
-        if len(criar_senha) > 12:
-            criar_senha = getpass.getpass(str("HOROBOT: Sua senha contem muitos caracteres. Por favor, digite uma senha mais curta:\n"))
-        elif len(criar_senha) == 0:
-            criar_senha = getpass.getpass(str("HOROBOT: Você não preencheu sua senha, para sua segurança, digite uma senha:\n"))
+    while True:
+        usuario_pre_lowercase = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar:\nUsuario: "))
+        #o .lower vai resolver a situação em que esquecemos de colocar uma letra maiuscula ou minuscula no cadastro, isso só vai importar para a senha
+        criar_usuario = usuario_pre_lowercase.lower()
+        if 0 < len(criar_usuario) <= 20:
+            break
         else:
-            senha = str(criar_senha)
-            print(senha) #Oxe? pq a senha ta aparecendo?
-            print("HOROBOT: Otimo! Agora, vamos inserir seus dados academicos, como sua instituição de ensino e qual periodo você esta.")
-            instituição = input(str("HOROBOT: Insira sua instituição de ensino.\n")) #Definir instituição e nome em lower Case, colocar isso na planilha tambem
-            periodo_atual = input(str("HOROBOT; Agora, insira o periodo atual do seu curso.\n"))
-            print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se esta tudo ok.")
+            input("HOROBOT: Seu nome de usuario deve ter entre 1 e 20 caracteres. Por favor, tente novamente.")
             time.sleep(1)
-            loop_senha = 1
+            limpar_terminal()
 
-            sistema_login()
+    
+    while True:
+        limpar_terminal()
+        criar_senha = getpass.getpass(str("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta:\n"))
+        if 0 < len(criar_senha) <= 12:
+            break
+        else:
+            input("HOROBOT: Sua senha deve ter entre 1 e 12 caracteres. Por favor, digite uma senha válida.")
+            time.sleep(1)
+            limpar_terminal()
 
+    print("HOROBOT: Ótimo! Agora, vamos inserir seus dados acadêmicos, como sua instituição de ensino e qual período você está.")
+    instituicao_pre_lowercase= input(str("HOROBOT: Insira sua instituição de ensino.\nUsuario: "))
+    instituicao = instituicao_pre_lowercase.lower()
+    #mudar o periodo atual por int e limitar a 15
+    periodo_atual = input(str("HOROBOT: Agora, insira o período atual do seu curso.\nUsuario: "))
+    print("HOROBOT: Muito bem! Sua conta agora foi criada, vou te pedir pra colocar elas novamente só pra gente conferir se está tudo ok.")
+    time.sleep(1)
+    limpar_terminal()
+
+    conta_criada = carregar_conta()
+
+    #isaque, me explica isso aqui depois por favor
+    conta_criada[criar_usuario] = {
+        'usuario': criar_usuario,
+        'senha': criar_senha.strip(),
+        'instituicao': instituicao,
+        'periodo_atual': periodo_atual
+    }
+    
+    salvar_conta(conta_criada)
+    sistema_login()
+        
+    
+
+
+        

@@ -10,8 +10,15 @@ Inspirado em aplicativos como Duolingo e Habitica, o Horogo utiliza conceitos de
 
 ## ✨ Funcionalidades
 
+### Interface Simples:
+Tudo funciona diretamente no seu terminal, sem a necessidade de instalações complexas, como bibliotecas de terceiros ou coisas do tipo.
+
+![Introdução do Programa](./HOROGO/Source/introducao.png)
+
 ### Gerenciamento de Tarefas:
 Adicione, liste e conclua tarefas relacionadas às suas disciplinas e materias de sua carreira academica e gerencie do jeito que você quiser.
+
+![Menu](./HOROGO/Source/menu.png)
 
 ### Acompanhamento de status academico: 
 Acompanhando suas notas, periodo de conclusão do curso, sistema de atenção e cadeiras do periodo você ira poder ter uma gestão muito mais eficiente na sua vida academica.
@@ -23,21 +30,20 @@ Acompanhe todas as datas e eventos importantes utilizando a Agenda do Horobot, q
 No mural de eventos sera possivel você ver outros usuarios e o que eles postam e informações sobre o proprio evento.
 
 ### Sistema de Gamificação:
-
 Ganhe Pontos de Experiência (XP) ao completar tarefas, provas e participando de eventos.
-
 Avance de Nível e acompanhe seu progresso para ser o numero #1 no mundo academico!
 
 ### Mascote Interativo:
 O Horobot guia o usuário com mensagens motivacionais e feedback constante, ajudando o usuario a lidar com as tarefas academicas e metodos de estudo e muito mais!
 
+![Menu](./HOROGO/Source/horobot%20exemplo.png)
+
 ### Persistência de Dados:
 Suas tarefas e seu progresso são salvos localmente em um arquivo JSON, para que você nunca perca suas informações, sendo tambem possivel fazer um backup dos dados.
 
-### Interface Simples:
-Tudo funciona diretamente no seu terminal, sem a necessidade de instalações complexas. 
 
-Pré-requisitos:
+### Pré-requisitos:
+- Ter a versão do python mais recente instalada (no momento dessa escrita, a versão mais recente e Python 3.13.7)
+[Você pode fazer este download aqui.](https://www.python.org/downloads/)
 
-(O projeto ainda vai caminhar, calma la!) 
 
