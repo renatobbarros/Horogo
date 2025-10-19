@@ -16,5 +16,11 @@
         "senha": "123",
         "instituicao": "ufrpe",
         "periodo_atual": "1"
+    },
+    "joao python da silva": {
+        "usuario": "joao python da silva",
+        "senha": "123",
+        "instituicao": "ufrpe",
+        "periodo_atual": "A"
     }
 }

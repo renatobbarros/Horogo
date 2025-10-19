@@ -24,8 +24,9 @@ def sistema_login():
             senha_salva = conta[entrada_usuario]['senha'].strip()
             if entrada_senha.strip() == senha_salva:
                 print("HOROBOT: Você agora esta logado!")
+                variaveis_globais.usuario = entrada_usuario
+                variaveis_globais.senha = entrada_senha
                 variaveis_globais.logado = "SIM"
-                time.sleep(2)
                 break
             else:
                 print("HOROBOT: Seu nome de usuario ou senha estão incorretos.")

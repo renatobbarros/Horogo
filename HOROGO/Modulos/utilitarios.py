@@ -9,7 +9,7 @@ def boas_vindas_menu():
     time.sleep(1)
     print("HOROBOT: Aqui você poderá escolher fazer o que quiser, a qualquer momento.")
     time.sleep(1)
-    print('HOROBOT: Então, seja bem vindo, [usuario]!')
+    print('HOROBOT: Então, seja bem vindo, {usuario}!')
 
 def salvar_conta(dados, nome_arquivo="conta.json"):
         """Salva os dados de cadeiras em um arquivo JSON... ou pelo menos, e pra funcionar assim. T_T"""
@@ -41,7 +41,8 @@ def achar_proximo_id(lista):
 def pagina_em_construcao():
     from HOROGO.Modulos.Menu import menu_inicial
     limpar_terminal()
-    print("DEVS: Parabens! vocÊ acabu de acessar uma parte em desenvolvimento, por favor, por enquanto não escolha mais essa opção!")
-    print("DEVS: Vamos te redirecionar para o menu novamente, até daqui a pouco")
+    print("DEVS: Parabens! Você encontrou uma pagina... mas a sua pagina desejada esta em outro castelo.")
+    time.sleep(1)
+    print("DEVS: Vamos te redirecionar para o menu novamente, até daqui a pouco! [o7]")
     time.sleep(3)
     menu_inicial()

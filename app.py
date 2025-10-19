@@ -39,7 +39,6 @@ def main():
     if variaveis_globais.logado == "SIM":
         boas_vindas_novo_usuario()
         menu_inicial()
-
     else:
         print("Até a proxima")
 
