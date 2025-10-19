@@ -9,7 +9,7 @@ def boas_vindas_menu():
     time.sleep(1)
     print("HOROBOT: Aqui você poderá escolher fazer o que quiser, a qualquer momento.")
     time.sleep(1)
-    print('HOROBOT: Então, seja bem vindo, [usuario]!')
+    print('HOROBOT: Então, seja bem vindo, {usuario}!')
 
 def salvar_conta(dados, nome_arquivo="conta.json"):
         """Salva os dados de cadeiras em um arquivo JSON... ou pelo menos, e pra funcionar assim. T_T"""

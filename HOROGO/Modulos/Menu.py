@@ -99,10 +99,12 @@ def menu_inicial(usuario_logado):
             escolha_do_usuario = int(input("\nHOROBOT: O que você deseja fazer agora?\nUsuario: "))
 
             if escolha_do_usuario == 0:
+                # A função de quit termina o codigo, fazendo que o programa feche.
                 limpar_terminal()
                 print("HOROBOT: Até a próxima!")
                 time.sleep(2)
                 limpar_terminal()
+                quit()
                 break
             elif escolha_do_usuario == 2:
                 menu_cadeiras(usuario_logado)
