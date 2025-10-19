@@ -1,20 +1,25 @@
 {
-    "Hah": {
-        "usuario": "Hah",
-        "senha": "123",
-        "instituicao": "ufrpe",
-        "periodo_atual": "1"
-    },
-    "Renato": {
-        "usuario": "Renato",
-        "senha": "123",
-        "instituicao": "ufrpe",
-        "periodo_atual": "1"
-    },
     "renato": {
         "usuario": "renato",
         "senha": "123",
         "instituicao": "ufrpe",
-        "periodo_atual": "1"
+        "periodo_atual": "2",
+        "cadeiras": [
+            {
+                "nome_cadeira": "principios de programação",
+                "nome_professor": "Cleyton",
+                "tempo_cadeira": 60
+            },
+            {
+                "nome_cadeira": "fundamentos matematicos",
+                "nome_professor": "Sylvana",
+                "tempo_cadeira": 60
+            },
+            {
+                "nome_cadeira": "dudu",
+                "nome_professor": "lala",
+                "tempo_cadeira": 12
+            }
+        ]
     }
 }

@@ -48,7 +48,7 @@ def sistema_cadastro():
         'usuario': criar_usuario,
         'senha': criar_senha.strip(),
         'instituicao': instituicao,
-        'periodo_atual': periodo_atual
+        'periodo_atual': periodo_atual,
     }
     
     salvar_conta(conta_criada)

@@ -13,8 +13,10 @@ def boas_vindas_menu():
 
 def salvar_conta(dados, nome_arquivo="conta.json"):
         """Salva os dados de cadeiras em um arquivo JSON... ou pelo menos, e pra funcionar assim. T_T"""
+        #o primeiro serve para selecionar o tipo de dados, o segundo para direcionar os dados para um arquivo em especifico
         with open(nome_arquivo, 'w', encoding='utf-8') as arq:
             json.dump(dados, arq, ensure_ascii=False, indent=4)
+            #dump serve para exportar para o arquivo como dicionario, o dumps serviria para exportar como arquivo
 
 def carregar_conta(arquivo="conta.json"):
     """ Carrega dados de um arquivo JSON. Se o arquivo não existir ou estiver vazio, retorna um dicionário vazio para evitar erros."""
@@ -39,9 +41,8 @@ def achar_proximo_id(lista):
     return lista[-1]['id'] + 1
 
 def pagina_em_construcao():
-    from HOROGO.Modulos.Menu import menu_inicial
     limpar_terminal()
-    print("DEVS: Parabens! vocÊ acabu de acessar uma parte em desenvolvimento, por favor, por enquanto não escolha mais essa opção!")
-    print("DEVS: Vamos te redirecionar para o menu novamente, até daqui a pouco")
+    print("DEVS: Parabéns! Você acabou de acessar uma parte em desenvolvimento.")
+    print("DEVS: Esta funcionalidade será implementada em breve!")
+    print("DEVS: Voltando ao menu em 3 segundos...")
     time.sleep(3)
-    menu_inicial()

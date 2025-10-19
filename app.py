@@ -5,6 +5,7 @@ from HOROGO.Modulos.Autenticacao.cadastro import sistema_cadastro
 from HOROGO.Modulos import variaveis_globais
 from HOROGO.Modulos.utilitarios import boas_vindas_menu, limpar_terminal
 from HOROGO.Modulos.Menu import menu_inicial, boas_vindas_novo_usuario
+from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
 
 limpar_terminal()
 print(horobot_apresentacao)
@@ -34,14 +35,12 @@ while loop == 0:
         possuicadastro = int(input("1 - Sim \n2 - Não \nUSUARIO: "))
 
 
-# --- LÓGICA PRINCIPAL APÓS LOGIN (DO CÓDIGO ORIGINAL) ---
+# app.py
 def main():
-    if variaveis_globais.logado == "SIM":
-        boas_vindas_novo_usuario()
-        menu_inicial()
+    if variaveis_globais.logado: 
 
+        menu_inicial(variaveis_globais.logado) 
     else:
         print("Até a proxima")
 
-# Chamando a função main para manter a estrutura original
 main()
