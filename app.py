@@ -38,7 +38,6 @@ while loop == 0:
 # app.py
 def main():
     if variaveis_globais.logado: 
-
         menu_inicial(variaveis_globais.logado) 
     else:
         print("Até a proxima")

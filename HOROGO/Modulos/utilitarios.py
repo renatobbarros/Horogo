@@ -32,6 +32,24 @@ def carregar_conta(arquivo="conta.json"):
                 return {}
     else:
         return {}
+    
+def exibir_cadeiras(usuario_logado, todas_as_contas):
+    """Exibe as cadeiras do usuário logado e retorna a lista de cadeiras."""
+    limpar_terminal()
+    print("HOROBOT: Suas cadeiras cadastradas:\n")
+    
+    cadeiras = todas_as_contas.get(usuario_logado, {}).get("cadeiras", [])
+    
+    if not cadeiras:
+        print("HOROBOT: Você não tem nenhuma cadeira cadastrada.")
+        time.sleep(2)
+        return []
+
+    for i, cadeira in enumerate(cadeiras):
+        print(f"[{i + 1}] {cadeira['nome_cadeira']} - Professor(a): {cadeira['nome_professor']}")
+    
+    print("-" * 30)
+    return cadeiras
 
 
 def achar_proximo_id(lista):
