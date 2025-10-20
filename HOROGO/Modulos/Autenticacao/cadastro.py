@@ -78,7 +78,7 @@ def sistema_cadastro():
 
     
     salvar_conta(conta_criada)
-    sistema_login()
+    return criar_usuario
         
     
 

@@ -3,6 +3,13 @@
         "usuario": "renato",
         "senha": "123",
         "instituicao": "ufrpe",
-        "periodo_atual": 1
+        "periodo_atual": 1,
+        "cadeiras": [
+            {
+                "nome_cadeira": "Principios de programação",
+                "nome_professor": "Cleyton",
+                "tempo_cadeira": 60
+            }
+        ]
     }
 }
