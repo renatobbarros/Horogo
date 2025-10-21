@@ -8,7 +8,12 @@
             {
                 "nome_cadeira": "Principios de programação",
                 "nome_professor": "Cleyton",
-                "tempo_cadeira": 60
+                "tempo_cadeira": 60,
+                "notas": {
+                    "VA1": 10.0,
+                    "VA2": 9.5,
+                    "VA3": null
+                }
             }
         ]
     }

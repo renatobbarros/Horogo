@@ -6,10 +6,6 @@ from HOROGO.Modulos.utilitarios import limpar_terminal
 from HOROGO.Modulos.Menu import menu_inicial
 
 def main():
-<<<<<<< HEAD
-    if variaveis_globais.logado: 
-        menu_inicial(variaveis_globais.logado) 
-=======
     """Função principal que organiza e controla todo o fluxo do programa."""
     limpar_terminal()
     print(horobot_apresentacao)
@@ -53,7 +49,6 @@ def main():
     # 3. AGORA, O FLUXO DEPENDE DA VARIÁVEL LOCAL, E NÃO DA GLOBAL
     if usuario_que_logou:  # Se a variável não for 'None', o login/cadastro deu certo
         menu_inicial(usuario_que_logou) # Passamos a variável para o menu
->>>>>>> 827d0c1f44544898bf6629850057730b14ae6189
     else:
         print("Até a proxima")
 

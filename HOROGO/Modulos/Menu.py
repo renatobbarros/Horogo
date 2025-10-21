@@ -1,6 +1,10 @@
 import time
 from HOROGO.Modulos.utilitarios import limpar_terminal, pagina_em_construcao, carregar_conta
 from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
+# --- NOVOS IMPORTS ADICIONADOS ---
+# Importa as funções que criamos nas etapas anteriores
+from HOROGO.Modulos.Academico.cadastro_notas import cadastrar_notas
+from HOROGO.Modulos.Academico.situacao_cadeiras import situacao_cadeiras
 
 def boas_vindas_novo_usuario():
     limpar_terminal()
@@ -19,7 +23,63 @@ def boas_vindas_novo_usuario():
     print("HOROBOT: Agora, vamos para o seu menu principal!")
     time.sleep(3)
 
+def menu_notas(usuario_logado):
+    """
+    Menu para gerenciar notas. Permite ao usuário ver a situação
+    ou adicionar/atualizar notas.
+    """
+    todas_as_contas = carregar_conta()
+    dados_usuario = todas_as_contas.get(usuario_logado, {})
+    lista_de_cadeiras = dados_usuario.get("cadeiras", [])
+
+    if not lista_de_cadeiras:
+        limpar_terminal()
+        print("HOROBOT: Você não tem nenhuma cadeira cadastrada.")
+        print("HOROBOT: É necessário cadastrar uma cadeira ANTES de gerenciar as notas.")
+        print("\n1. Cadastrar cadeira agora")
+        print("0. Voltar ao menu principal")
+        try:
+            escolha_sem_cadeira = int(input("\nUsuário: "))
+            if escolha_sem_cadeira == 1:
+                cadastrar_cadeira(usuario_logado) # Chama a função de cadastrar cadeira
+            return # Volta ao menu principal 
+        except ValueError:
+            print("HOROBOT: Opção inválida.")
+            time.sleep(2)
+            return
+
+    # Se o usuário TEM cadeiras, mostrar o menu de notas
+    while True:
+        limpar_terminal()
+        print("MENU DE NOTAS")
+        print("=" * 25)
+        print("1. Ver situação e médias")
+        print("2. Adicionar ou atualizar notas")
+        print("\n0. Voltar ao menu principal")
+
+        try:
+            escolha = int(input("\nHOROBOT: O que deseja fazer?\nUsuário: "))
+
+            if escolha == 0:
+                break 
+            elif escolha == 1:
+                situacao_cadeiras(usuario_logado) 
+            elif escolha == 2:
+                cadastrar_notas(usuario_logado)
+            else:
+                print("HOROBOT: Opção inválida. Tente novamente.")
+                time.sleep(2)
+        
+        except ValueError:
+            print("HOROBOT: Por favor, digite um número.")
+            time.sleep(2)
+
+
 def menu_cadeiras(usuario_logado):
+    """
+    Menu para gerenciar cadeiras. Permite ao usuário ver a situação
+    ou adicionar/atualizar cadeiras, tambem.
+    """
     while True:
         limpar_terminal()
         print("MENU DAS CADEIRAS")
@@ -71,6 +131,15 @@ def menu_cadeiras(usuario_logado):
                     print(f"--- Detalhes de: {cadeira_selecionada['nome_cadeira']} ---")
                     print(f"Professor: {cadeira_selecionada['nome_professor']}")
                     print(f"Carga Horária: {cadeira_selecionada['tempo_cadeira']} horas")
+                    
+                    # --- Bônus: Mostrar notas se existirem ---
+                    if "notas" in cadeira_selecionada:
+                        notas = cadeira_selecionada["notas"]
+                        print("\n--- Notas ---")
+                        print(f"  VA1: {notas.get('VA1', 'N/A')}")
+                        print(f"  VA2: {notas.get('VA2', 'N/A')}")
+                        print(f"  VA3: {notas.get('VA3', 'N/A')}")
+
                     input("\nPressione Enter para voltar...")
                 else:
                     print("HOROBOT: Número de cadeira inválido.")
@@ -80,17 +149,24 @@ def menu_cadeiras(usuario_logado):
                 time.sleep(2)
 
 def menu_inicial(usuario_logado):
+    """E o menu principal de todo o HOROGO."""
     while True:
         todas_as_contas = carregar_conta()
         dados_usuario = todas_as_contas.get(usuario_logado, {})
         limpar_terminal()
         
         print(f"Usuário: {dados_usuario.get('usuario', 'N/A')} --------------------------\n")
-        print(f"Nível: {dados_usuario.get('nivel', 'N/A')} | Universidade: {dados_usuario.get('instituicao', 'N/A')}| Período: {dados_usuario.get('periodo_atual', 'N/A')}\n", "---------------------------------------------------")
-        print('XP: [■■■■■■■■■■■■□□□□□□□□□]\n', "--------------------------------------------------------")
-        print("Próximas Entregas:\n", "Pre-Release do Projeto: AGORA!!!!!!!!!!!!!!!!!!!!!!!!!!!! [O_o]\n", "--------------------------------------------------------")
+        
+        print(f"Nível: {dados_usuario.get('nivel', 'N/A')} | Universidade: {dados_usuario.get('instituicao', 'N/A')}| Período: {dados_usuario.get('periodo_atual', 'N/A')}")
+        print("---------------------------------------------------")
+        print('XP: [■■■■■■■■■■■■□□□□□□□□□]')
+        print("--------------------------------------------------------")
+        print("Próximas Entregas:")
+        print("Release do Projeto: AGORA!!!!!!!!!!!!!!!!!!!!!!!!!!!! [O_o]")
+        print("--------------------------------------------------------\n")
+        
 
-        print("1. Notas", "      2. Cadeiras\n")
+        print("1. Notas", "       2. Cadeiras\n")
         print("3. Perfil", "      4. Mural\n")
         print("5. Calendário", "  6. Atualizar Conta\n")
         print("0. Sair do programa.")
@@ -105,15 +181,16 @@ def menu_inicial(usuario_logado):
                 time.sleep(2)
                 limpar_terminal()
                 quit()
-                break
+                break 
+            elif escolha_do_usuario == 1: 
+                menu_notas(usuario_logado)
             elif escolha_do_usuario == 2:
                 menu_cadeiras(usuario_logado)
-            elif 1 <= escolha_do_usuario <= 6 and escolha_do_usuario != 2:
+            elif escolha_do_usuario in [3, 4, 5, 6]:
                 pagina_em_construcao()
             else:
                 print("HOROBOT: Digite um valor válido (de 0 a 6).")
                 time.sleep(2)
-        
         except ValueError:
             print("HOROBOT: Ops! Parece que você não digitou um número. Tente novamente.")
             time.sleep(2)
