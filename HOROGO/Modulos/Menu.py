@@ -1,8 +1,6 @@
 import time
 from HOROGO.Modulos.utilitarios import limpar_terminal, pagina_em_construcao, carregar_conta
 from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
-# --- NOVOS IMPORTS ADICIONADOS ---
-# Importa as funções que criamos nas etapas anteriores
 from HOROGO.Modulos.Academico.cadastro_notas import cadastrar_notas
 from HOROGO.Modulos.Academico.situacao_cadeiras import situacao_cadeiras
 
@@ -42,7 +40,7 @@ def menu_notas(usuario_logado):
             escolha_sem_cadeira = int(input("\nUsuário: "))
             if escolha_sem_cadeira == 1:
                 cadastrar_cadeira(usuario_logado) # Chama a função de cadastrar cadeira
-            return # Volta ao menu principal 
+            return 
         except ValueError:
             print("HOROBOT: Opção inválida.")
             time.sleep(2)
@@ -131,8 +129,7 @@ def menu_cadeiras(usuario_logado):
                     print(f"--- Detalhes de: {cadeira_selecionada['nome_cadeira']} ---")
                     print(f"Professor: {cadeira_selecionada['nome_professor']}")
                     print(f"Carga Horária: {cadeira_selecionada['tempo_cadeira']} horas")
-                    
-                    # --- Bônus: Mostrar notas se existirem ---
+                
                     if "notas" in cadeira_selecionada:
                         notas = cadeira_selecionada["notas"]
                         print("\n--- Notas ---")
