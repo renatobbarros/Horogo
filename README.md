@@ -8,6 +8,17 @@ Horogo nasceu como um projeto para a disciplina de Projetos Interdisciplinares d
 
 Inspirado em aplicativos como Duolingo e Habitica, o Horogo utiliza conceitos de gamificação para incentivar a consistência e recompensar o esforço. Cada tarefa concluída gera Pontos de Experiência (XP), permitindo que o usuário avance de nível e sinta um progresso tangível em sua jornada acadêmica. O projeto é guiado pelo Horobot, um mascote e assistente pessoal que torna a interação mais amigável e encorajadora.
 
+## Como instalar e executar o projeto:
+
+**1. Clone o repositório utilizando este comando do git:**
+```bash
+git clone https://github.com/renatobbarros/Horogo.git
+cd Horogo
+```
+**Apos isso, execute o arquivo horogo.bat**.
+
+**Caso não funcione, verifique que você tem o python corretamente instalado, e que o mesmo esteja na versão mais recente.**
+
 ## ✨ Funcionalidades
 
 ### Interface Simples:
@@ -41,9 +52,16 @@ O Horobot guia o usuário com mensagens motivacionais e feedback constante, ajud
 ### Persistência de Dados:
 Suas tarefas e seu progresso são salvos localmente em um arquivo JSON, para que você nunca perca suas informações, sendo tambem possivel fazer um backup dos dados.
 
+## 👥 Autores
+
+Este projeto foi desenvolvido por:
+
+* **[Renato Barros]** - [@renatobbarros](https://github.com/renatobbarros)
+* **[Isaque Lucas]** - [@BlairFruit](https://github.com/BlairFruit)
+
 
 ### Pré-requisitos:
-- Ter a versão do python mais recente instalada (no momento dessa escrita, a versão mais recente e Python 3.13.7)
-[Você pode fazer este download aqui.](https://www.python.org/downloads/)
+- Python 3.10 ou superior.
+[Você pode fazer o download aqui.](https://www.python.org/downloads/)
 
 
