@@ -12,7 +12,7 @@ Inspirado em aplicativos como Duolingo e Habitica, o Horogo utiliza conceitos de
 
 **1. Clone o repositório utilizando este comando do git:**
 ```bash
-git clone [https://github.com/renatobbarros/Horogo.git](https://github.com/renatobbarros/Horogo.git)
+git clone https://github.com/renatobbarros/Horogo.git
 cd Horogo
 ```
 **Apos isso, execute o arquivo horogo.bat**.
