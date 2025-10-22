@@ -2,6 +2,7 @@ import json
 import time
 from HOROGO.Modulos.utilitarios import limpar_terminal, carregar_conta, salvar_conta
 
+# condição pra importar cadastrar_cadeira
 try:
     from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
 except ImportError:

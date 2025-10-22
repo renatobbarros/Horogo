@@ -39,7 +39,7 @@ def menu_notas(usuario_logado):
         try:
             escolha_sem_cadeira = int(input("\nUsuário: "))
             if escolha_sem_cadeira == 1:
-                cadastrar_cadeira(usuario_logado) # Chama a função de cadastrar cadeira
+                cadastrar_cadeira(usuario_logado)
             return 
         except ValueError:
             print("HOROBOT: Opção inválida.")
@@ -57,7 +57,6 @@ def menu_notas(usuario_logado):
 
         try:
             escolha = int(input("\nHOROBOT: O que deseja fazer?\nUsuário: "))
-
             if escolha == 0:
                 break 
             elif escolha == 1:
@@ -67,7 +66,6 @@ def menu_notas(usuario_logado):
             else:
                 print("HOROBOT: Opção inválida. Tente novamente.")
                 time.sleep(2)
-        
         except ValueError:
             print("HOROBOT: Por favor, digite um número.")
             time.sleep(2)
@@ -105,6 +103,7 @@ def menu_cadeiras(usuario_logado):
                 time.sleep(2)
         else:
             print("Selecione uma cadeira para ver mais detalhes:\n")
+            # Cria a enumeração em pares de 2 em 2. 2, 4, 8, 10, 12.. etc.
             for i in range(0, len(lista_de_cadeiras), 2):
                 cadeira1 = lista_de_cadeiras[i]
                 texto1 = f"{i + 1}. {cadeira1['nome_cadeira']}"
@@ -113,7 +112,6 @@ def menu_cadeiras(usuario_logado):
                     cadeira2 = lista_de_cadeiras[i + 1]
                     texto2 = f"{i + 2}. {cadeira2['nome_cadeira']}"
                 print(f"{texto1:<35}{texto2}")
-            
             print("\n" + "=" * 25)
             print("100. Cadastrar nova cadeira")
             print("0. Voltar ao menu principal")
@@ -136,8 +134,7 @@ def menu_cadeiras(usuario_logado):
                         print(f"  VA1: {notas.get('VA1', 'N/A')}")
                         print(f"  VA2: {notas.get('VA2', 'N/A')}")
                         print(f"  VA3: {notas.get('VA3', 'N/A')}")
-
-                    input("\nPressione Enter para voltar...")
+                        input("\nPressione Enter para voltar...")
                 else:
                     print("HOROBOT: Número de cadeira inválido.")
                     time.sleep(2)
@@ -152,11 +149,11 @@ def menu_inicial(usuario_logado):
         dados_usuario = todas_as_contas.get(usuario_logado, {})
         limpar_terminal()
         
-        print(f"Usuário: {dados_usuario.get('usuario', 'N/A')} --------------------------\n")
-        
-        print(f"Nível: {dados_usuario.get('nivel', 'N/A')} | Universidade: {dados_usuario.get('instituicao', 'N/A')}| Período: {dados_usuario.get('periodo_atual', 'N/A')}")
+        print(f"Usuário: {dados_usuario.get('usuario', 'N/A')} \n--------------------------")
+
+        print(f"Nível: {dados_usuario.get('nivel', 'N/A')} | Universidade: {dados_usuario.get('instituicao', 'N/A')} | Período: {dados_usuario.get('periodo_atual', 'N/A')}")
         print("---------------------------------------------------")
-        print('XP: [■■■■■■■■■■■■□□□□□□□□□]')
+        print('XP: [■■■■■■■■■■■■■■■■■■■■■■■■□]')
         print("--------------------------------------------------------")
         print("Próximas Entregas:")
         print("Release do Projeto: AGORA!!!!!!!!!!!!!!!!!!!!!!!!!!!! [O_o]")

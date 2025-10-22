@@ -7,7 +7,7 @@ from HOROGO.Modulos.utilitarios import limpar_terminal, carregar_conta, salvar_c
 def cadastrar_notas(usuario_logado):
     todas_as_contas = carregar_conta() 
 
-    if "cadeiras" not in todas_as_contas[usuario_logado] or not todas_as_contas[usuario_logado]["cadeiras"]:
+    if "cadeiras" not in todas_as_contas[usuario_logado]:
         limpar_terminal()
         print("HOROBOT: Você ainda não cadastrou nenhuma cadeira.")
         print("HOROBOT: Por favor, cadastre uma cadeira antes de adicionar notas.")
@@ -16,7 +16,7 @@ def cadastrar_notas(usuario_logado):
 
     
     lista_cadeiras = todas_as_contas[usuario_logado]["cadeiras"]
-    cadeira_escolhida_ref = None # Esta será a referência para o dicionário da cadeira
+    cadeira_escolhida_ref = None #a referência para o dicionário da cadeira
     
     while cadeira_escolhida_ref is None:
         limpar_terminal()

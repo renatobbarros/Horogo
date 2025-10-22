@@ -52,15 +52,10 @@ def exibir_cadeiras(usuario_logado, todas_as_contas):
     return cadeiras
 
 
-def achar_proximo_id(lista):
-
-    if not lista:
-        return 1
-    return lista[-1]['id'] + 1
-
 def pagina_em_construcao():
     limpar_terminal()
     print("DEVS: Parabéns! Você acabou de acessar uma parte em desenvolvimento.")
-    print("DEVS: Esta funcionalidade será implementada em breve!")
+    print("DEVS: Mas a sua pagina desejada esta em outro castelo...")
+    print("DEVS: Esta funcionalidade será implementada em breve! O7")
     print("DEVS: Voltando ao menu em 3 segundos...")
     time.sleep(3)
