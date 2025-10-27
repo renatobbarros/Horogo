@@ -1,7 +1,6 @@
 import time
 from HOROGO.Modulos.utilitarios import limpar_terminal, pagina_em_construcao, carregar_conta
-from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
-from HOROGO.Modulos.Academico.cadastro_notas import cadastrar_notas
+from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira, cadastrar_notas
 from HOROGO.Modulos.Academico.situacao_cadeiras import situacao_cadeiras
 
 def boas_vindas_novo_usuario():

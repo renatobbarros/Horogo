@@ -1,3 +1,0 @@
-usuario = ""
-senha = ""
-logado = "NÃO"

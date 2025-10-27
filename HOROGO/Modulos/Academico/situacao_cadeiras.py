@@ -6,7 +6,7 @@ from HOROGO.Modulos.utilitarios import limpar_terminal, carregar_conta, salvar_c
 try:
     from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
 except ImportError:
-    from HOROGO.Modulos.Academico.cadastro_notas import cadastrar_cadeira
+    from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
 
 def situacao_cadeiras(usuario_logado):
     conta = carregar_conta()

@@ -1,7 +1,6 @@
 import time
 from HOROGO.Modulos.horobot import horobot_apresentacao
-from HOROGO.Modulos.Autenticacao.login import sistema_login
-from HOROGO.Modulos.Autenticacao.cadastro import sistema_cadastro 
+from HOROGO.Modulos.Autenticacao.cadastro import sistema_cadastro, sistema_login
 from HOROGO.Modulos.utilitarios import limpar_terminal
 from HOROGO.Modulos.Menu import menu_inicial
 
