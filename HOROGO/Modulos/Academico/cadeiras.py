@@ -1,12 +1,12 @@
 import time
-from HOROGO.Modulos.utilitarios import limpar_terminal, carregar_conta, salvar_conta
+from HOROGO.Modulos.utilitarios import Dados, Utilitarios
 
 def cadastrar_cadeira(usuario_logado):
-    todas_as_contas = carregar_conta() 
+    todas_as_contas = Dados.carregar_conta() 
 
     sair_loop = False
     while not sair_loop:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print("HOROBOT: Vou te perguntar algumas coisas para adicionar essa disciplina.")
         time.sleep(1)
         print("HOROBOT: Nenhum nome deve ter mais de 50 caracteres.\n")
@@ -24,7 +24,7 @@ def cadastrar_cadeira(usuario_logado):
             continue 
 
         if len(nome_cadeira) > 50 or len(nome_professor) > 50:
-            limpar_terminal()
+            Utilitarios.limpar_terminal()
             print(f"HOROBOT: Nome da cadeira ({len(nome_cadeira)}) ou do professor ({len(nome_professor)}) é muito longo.")
             print("HOROBOT: Por favor, insira os dados novamente com menos de 50 caracteres.")
             time.sleep(4)
@@ -46,16 +46,16 @@ def cadastrar_cadeira(usuario_logado):
 
     todas_as_contas[usuario_logado]["cadeiras"].append(nova_cadeira)
 
-    salvar_conta(todas_as_contas)
+    Dados.salvar_conta(todas_as_contas)
     
     print("HOROBOT: Cadeira adicionada ao seu perfil e salva com sucesso!")
     time.sleep(2)
 
 def cadastrar_notas(usuario_logado):
-    todas_as_contas = carregar_conta() 
+    todas_as_contas = Dados.carregar_conta() 
 
     if "cadeiras" not in todas_as_contas[usuario_logado]:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print("HOROBOT: Você ainda não cadastrou nenhuma cadeira.")
         print("HOROBOT: Por favor, cadastre uma cadeira antes de adicionar notas.")
         time.sleep(3)
@@ -66,7 +66,7 @@ def cadastrar_notas(usuario_logado):
     cadeira_escolhida_ref = None #a referência para o dicionário da cadeira
     
     while cadeira_escolhida_ref is None:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print("HOROBOT: Para qual cadeira você deseja cadastrar ou atualizar as notas?")
         
         # Enumera e exibe todas as cadeiras cadastradas
@@ -98,7 +98,7 @@ def cadastrar_notas(usuario_logado):
     nota_3 = None 
 
     while not sair_loop:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print(f"HOROBOT: Cadastrando notas para: {cadeira_escolhida_ref['nome_cadeira']}")
         print("HOROBOT: As notas devem ser números entre 0 e 10. Use '.' para decimais (ex: 8.5).\n")
         
@@ -159,7 +159,7 @@ def cadastrar_notas(usuario_logado):
 
     cadeira_escolhida_ref["notas"] = novas_notas
 
-    salvar_conta(todas_as_contas)
+    Dados.salvar_conta(todas_as_contas)
     
     print("HOROBOT: Notas adicionadas ao seu perfil e salvas com sucesso!")
     time.sleep(2)

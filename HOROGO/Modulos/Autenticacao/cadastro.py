@@ -1,14 +1,14 @@
 import getpass
 import time
 
-from HOROGO.Modulos.utilitarios import limpar_terminal, salvar_conta, carregar_conta
+from HOROGO.Modulos.utilitarios import Dados, Utilitarios
 
 def sistema_cadastro():
     print("HOROBOT: Certo, vamos criar sua conta no HOROGO.")
     time.sleep(1)
 
     # variavel criada so pra verificar se criar_usuario ja existe dentro do arquivo de conta, talvez exista uma maneira melhor de fazer isso, mas eu não sou Isaac Newton
-    conta = carregar_conta()
+    conta = Dados.carregar_conta()
 
     while True:
         usuario_pre_lowercase = input(str("HOROBOT: Digite o nome de usuario que você deseja utilizar:\nUsuario: "))
@@ -19,12 +19,12 @@ def sistema_cadastro():
                 escolha = input(f"HOROBOT: O nome de usuario '{criar_usuario}' já está em uso. Por favor, escolha outro ou entre nesta conta.")
                 if escolha == 1:
                     print('HOROBOT:Certo, vamos tentar criar sua conta novamente.')
-                    limpar_terminal()
+                    Utilitarios.limpar_terminal()
                     sistema_cadastro()
                     break
                 elif escolha == 2:
                     print('HOROBOT: Otimo! Irei enviar você para o nosso sistema de login.')
-                    limpar_terminal()
+                    Utilitarios.limpar_terminal()
                     sistema_login()
                     break
             else:
@@ -32,18 +32,18 @@ def sistema_cadastro():
         else:
             input("HOROBOT: Seu nome de usuario deve ter entre 1 e 20 caracteres. Por favor, tente novamente.")
             time.sleep(1)
-            limpar_terminal()
+            Utilitarios.limpar_terminal()
       
 
     while True: 
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         criar_senha = getpass.getpass(str("HOROBOT: Muito bem, agora, crie a senha de ate 12 caracteres para sua conta:\n"))
         if 0 < len(criar_senha) <= 12:
             break
         else:
             input("HOROBOT: Sua senha deve ter entre 1 e 12 caracteres. Por favor, digite uma senha válida.")
             time.sleep(1)
-            limpar_terminal()
+            Utilitarios.limpar_terminal()
 
     print("HOROBOT: Ótimo! Agora, vamos inserir seus dados acadêmicos, como sua instituição de ensino e qual período você está.")
     instituicao_pre_lowercase= input(str("HOROBOT: Insira sua instituição de ensino.\nUsuario: "))
@@ -59,12 +59,12 @@ def sistema_cadastro():
         else:
             print("HOROBOT: Sua entrada de periodo não contem um número valido. Por favor, insira um número de periodo valido e tente novamente.")
             time.sleep(1)
-            limpar_terminal()
+            Utilitarios.limpar_terminal()
 
     time.sleep(1)
-    limpar_terminal()
+    Utilitarios.limpar_terminal()
 
-    conta_criada = carregar_conta()
+    conta_criada = Dados.carregar_conta()
 
     conta_criada[criar_usuario] = {
         'usuario': criar_usuario,
@@ -74,22 +74,22 @@ def sistema_cadastro():
     }
 
     
-    salvar_conta(conta_criada)
+    Dados.salvar_conta(conta_criada)
     return criar_usuario
         
 def sistema_login():
 
     while True:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         #no meu terminal esta bugado, depois de criar uma conta, ainda aparece na parte de cima "HOROGO: Certo, vsmos crias sua conta"
         entrada_usuario = input("HOROBOT: Digite seu nome de usuario:\nUSUARIO: ")
         time.sleep(1)
         entrada_senha = getpass.getpass("HOROBOT: Digite sua senha:\nSENHA: ")
 
-        conta = carregar_conta()
+        conta = Dados.carregar_conta()
 
         time.sleep(1)
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
 
         if entrada_usuario in conta:
             

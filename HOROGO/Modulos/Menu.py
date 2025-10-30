@@ -1,10 +1,10 @@
 import time
-from HOROGO.Modulos.utilitarios import limpar_terminal, pagina_em_construcao, carregar_conta
+from HOROGO.Modulos.utilitarios import Dados, Utilitarios
 from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira, cadastrar_notas
 from HOROGO.Modulos.Academico.situacao_cadeiras import situacao_cadeiras
 
 def boas_vindas_novo_usuario():
-    limpar_terminal()
+    Utilitarios.limpar_terminal()
     print("HOROBOT: Seja bem-vindo(a) à agenda Horogo!")
     time.sleep(1)
     print("HOROBOT: Meu nome é Horobot e serei seu guia durante o seu tempo no HOROGO.")
@@ -25,12 +25,12 @@ def menu_notas(usuario_logado):
     Menu para gerenciar notas. Permite ao usuário ver a situação
     ou adicionar/atualizar notas.
     """
-    todas_as_contas = carregar_conta()
+    todas_as_contas = Dados.carregar_conta()
     dados_usuario = todas_as_contas.get(usuario_logado, {})
     lista_de_cadeiras = dados_usuario.get("cadeiras", [])
 
     if not lista_de_cadeiras:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print("HOROBOT: Você não tem nenhuma cadeira cadastrada.")
         print("HOROBOT: É necessário cadastrar uma cadeira ANTES de gerenciar as notas.")
         print("\n1. Cadastrar cadeira agora")
@@ -47,7 +47,7 @@ def menu_notas(usuario_logado):
 
     # Se o usuário TEM cadeiras, mostrar o menu de notas
     while True:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print("MENU DE NOTAS")
         print("=" * 25)
         print("1. Ver situação e médias")
@@ -76,11 +76,11 @@ def menu_cadeiras(usuario_logado):
     ou adicionar/atualizar cadeiras, tambem.
     """
     while True:
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         print("MENU DAS CADEIRAS")
         print("=" * 25)
 
-        todas_as_contas = carregar_conta()
+        todas_as_contas = Dados.carregar_conta()
         dados_usuario = todas_as_contas.get(usuario_logado, {})
         lista_de_cadeiras = dados_usuario.get("cadeiras", [])
 
@@ -122,7 +122,7 @@ def menu_cadeiras(usuario_logado):
                     cadastrar_cadeira(usuario_logado)
                 elif 1 <= escolha <= len(lista_de_cadeiras):
                     cadeira_selecionada = lista_de_cadeiras[escolha - 1]
-                    limpar_terminal()
+                    Utilitarios.limpar_terminal()
                     print(f"--- Detalhes de: {cadeira_selecionada['nome_cadeira']} ---")
                     print(f"Professor: {cadeira_selecionada['nome_professor']}")
                     print(f"Carga Horária: {cadeira_selecionada['tempo_cadeira']} horas")
@@ -144,9 +144,9 @@ def menu_cadeiras(usuario_logado):
 def menu_inicial(usuario_logado):
     """E o menu principal de todo o HOROGO."""
     while True:
-        todas_as_contas = carregar_conta()
+        todas_as_contas = Dados.carregar_conta()
         dados_usuario = todas_as_contas.get(usuario_logado, {})
-        limpar_terminal()
+        Utilitarios.limpar_terminal()
         
         print(f"Usuário: {dados_usuario.get('usuario', 'N/A')} \n--------------------------")
 
@@ -169,10 +169,10 @@ def menu_inicial(usuario_logado):
 
             if escolha_do_usuario == 0:
                 # A função de quit termina o codigo, fazendo que o programa feche.
-                limpar_terminal()
+                Utilitarios.limpar_terminal()
                 print("HOROBOT: Até a próxima!")
                 time.sleep(2)
-                limpar_terminal()
+                Utilitarios.limpar_terminal()
                 quit()
                 break 
             elif escolha_do_usuario == 1: 
@@ -180,7 +180,7 @@ def menu_inicial(usuario_logado):
             elif escolha_do_usuario == 2:
                 menu_cadeiras(usuario_logado)
             elif escolha_do_usuario in [3, 4, 5, 6]:
-                pagina_em_construcao()
+                Utilitarios.pagina_em_construcao()
             else:
                 print("HOROBOT: Digite um valor válido (de 0 a 6).")
                 time.sleep(2)

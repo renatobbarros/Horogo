@@ -1,12 +1,12 @@
 import time
 from HOROGO.Modulos.horobot import horobot_apresentacao
 from HOROGO.Modulos.Autenticacao.cadastro import sistema_cadastro, sistema_login
-from HOROGO.Modulos.utilitarios import limpar_terminal
+from HOROGO.Modulos.utilitarios import Utilitarios
 from HOROGO.Modulos.Menu import menu_inicial
 
 def main():
     """Função principal que organiza e controla todo programa. Se não funcionar, a gente chora."""
-    limpar_terminal()
+    Utilitarios.limpar_terminal()
     print(horobot_apresentacao)
     time.sleep(1)
     print("HOROBOT: É um prazer te receber aqui!")
@@ -20,7 +20,7 @@ def main():
         try:
             print("\nHOROBOT: Antes de mais nada, você já possui cadastro no HOROGO?")
             possuicadastro = int(input("1 - Sim \n2 - Não \nUSUARIO: "))
-            limpar_terminal()
+            Utilitarios.limpar_terminal()
             if possuicadastro == 1:
                 print("HOROBOT: Perfeito! me passe as seguintes informações para que eu te deixe onde parou da ultima vez")
                 time.sleep(2)

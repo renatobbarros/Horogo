@@ -1,6 +1,6 @@
 import json
 import time
-from HOROGO.Modulos.utilitarios import limpar_terminal, carregar_conta, salvar_conta
+from HOROGO.Modulos.utilitarios import Dados, Utilitarios
 
 # condição pra importar cadastrar_cadeira
 try:
@@ -9,10 +9,10 @@ except ImportError:
     from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira
 
 def situacao_cadeiras(usuario_logado):
-    conta = carregar_conta()
+    conta = Dados.carregar_conta()
     dados_importantes = conta.get(usuario_logado)
 
-    limpar_terminal()
+    Utilitarios.limpar_terminal()
 
     if "cadeiras" not in dados_importantes or not dados_importantes["cadeiras"]:
         print("HOROBOT: Você não tem nenhuma cadeira cadastrada.")
