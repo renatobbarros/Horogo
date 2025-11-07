@@ -3,6 +3,7 @@ from HOROGO.Modulos.utilitarios import Dados, Utilitarios
 from HOROGO.Modulos.Academico.cadeiras import cadastrar_cadeira, cadastrar_notas
 from HOROGO.Modulos.Academico.situacao_cadeiras import situacao_cadeiras
 
+# ao definir o xp, certificar que essa parte esta funcionando
 def boas_vindas_novo_usuario():
     Utilitarios.limpar_terminal()
     print("HOROBOT: Seja bem-vindo(a) à agenda Horogo!")
@@ -21,10 +22,7 @@ def boas_vindas_novo_usuario():
     time.sleep(3)
 
 def menu_notas(usuario_logado):
-    """
-    Menu para gerenciar notas. Permite ao usuário ver a situação
-    ou adicionar/atualizar notas.
-    """
+
     todas_as_contas = Dados.carregar_conta()
     dados_usuario = todas_as_contas.get(usuario_logado, {})
     lista_de_cadeiras = dados_usuario.get("cadeiras", [])
@@ -45,7 +43,6 @@ def menu_notas(usuario_logado):
             time.sleep(2)
             return
 
-    # Se o usuário TEM cadeiras, mostrar o menu de notas
     while True:
         Utilitarios.limpar_terminal()
         print("MENU DE NOTAS")
@@ -71,10 +68,6 @@ def menu_notas(usuario_logado):
 
 
 def menu_cadeiras(usuario_logado):
-    """
-    Menu para gerenciar cadeiras. Permite ao usuário ver a situação
-    ou adicionar/atualizar cadeiras, tambem.
-    """
     while True:
         Utilitarios.limpar_terminal()
         print("MENU DAS CADEIRAS")
@@ -102,7 +95,6 @@ def menu_cadeiras(usuario_logado):
                 time.sleep(2)
         else:
             print("Selecione uma cadeira para ver mais detalhes:\n")
-            # Cria a enumeração em pares de 2 em 2. 2, 4, 8, 10, 12.. etc.
             for i in range(0, len(lista_de_cadeiras), 2):
                 cadeira1 = lista_de_cadeiras[i]
                 texto1 = f"{i + 1}. {cadeira1['nome_cadeira']}"
@@ -142,7 +134,6 @@ def menu_cadeiras(usuario_logado):
                 time.sleep(2)
 
 def menu_inicial(usuario_logado):
-    """E o menu principal de todo o HOROGO."""
     while True:
         todas_as_contas = Dados.carregar_conta()
         dados_usuario = todas_as_contas.get(usuario_logado, {})
@@ -152,7 +143,7 @@ def menu_inicial(usuario_logado):
 
         print(f"Nível: {dados_usuario.get('nivel', 'N/A')} | Universidade: {dados_usuario.get('instituicao', 'N/A')} | Período: {dados_usuario.get('periodo_atual', 'N/A')}")
         print("---------------------------------------------------")
-        print('XP: [■■■■■■■■■■■■■■■■■■■■■■■■□]')
+        print('XP: [■■■■■■■■■■■■■■■■■■■■■■■■□]')#implementar
         print("--------------------------------------------------------")
         print("Próximas Entregas:")
         print("Release do Projeto: AGORA!!!!!!!!!!!!!!!!!!!!!!!!!!!! [O_o]")
@@ -168,7 +159,6 @@ def menu_inicial(usuario_logado):
             escolha_do_usuario = int(input("\nHOROBOT: O que você deseja fazer agora?\nUsuario: "))
 
             if escolha_do_usuario == 0:
-                # A função de quit termina o codigo, fazendo que o programa feche.
                 Utilitarios.limpar_terminal()
                 print("HOROBOT: Até a próxima!")
                 time.sleep(2)
