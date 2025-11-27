@@ -1,10 +1,10 @@
-from ..repository.repositorio_usuario import RepositorioUsuario
+from ..repository.repositorio_usuario import repositorio_usuario
 from ..models.usuario import Usuario
 
 
-class ServicoAuth:
+class Servico_Auth:
     """serviço de autenticação e gerenciamento de usuários."""
-    def __init__(self, repositorio: RepositorioUsuario):
+    def __init__(self, repositorio: repositorio_usuario):
         self.repositorio = repositorio
 
     def login(self, nome_usuario: str, senha: str):
