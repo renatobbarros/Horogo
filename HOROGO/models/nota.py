@@ -35,9 +35,6 @@ class Nota:
             "media_parcial": self.calcular_media_parcial(),
             "media_final": self.calcular_media_final(),
             "situacao": self.get_situacao()
-<<<<<<< HEAD
         }
-=======
-        }
+        
 
->>>>>>> ee671e1ce1678b6bbbb28ebe2910bbf5ff227a49
