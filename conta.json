@@ -18,5 +18,15 @@
         "xp": 0,
         "nivel": 1,
         "cadeiras": []
+    },
+    {
+        "usuario": "Joao",
+        "nome": "Joao",
+        "senha": "123",
+        "instituicao": "UFRPE",
+        "periodo": 1,
+        "xp": 0,
+        "nivel": 1,
+        "cadeiras": []
     }
 ]

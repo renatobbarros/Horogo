@@ -10,7 +10,7 @@ class servico_auth:
         self.repositorio = repositorio
 
     def login(self, nome_usuario: str, senha: str) -> Optional[Usuario]:
-        """Tenta autenticar; retorna Usuario ou None."""
+        """sistema de login. ele retorna Usuario ou None se falhar."""
         if not nome_usuario or not senha:
             return None
 
@@ -23,7 +23,7 @@ class servico_auth:
             if usuario.verificar_senha(senha):
                 return usuario
         except Exception:
-            # se algo der errado, falha silenciosa 
+            # se der erro, falha o login e retorna
             return None
 
         return None
@@ -37,7 +37,6 @@ class servico_auth:
         if self.repositorio.encontrar_usuario(nome):
             return "Erro: Usuário já existe."
 
-        # converte período para inteiro
         try:
             periodo_int = int(periodo)
         except Exception:
