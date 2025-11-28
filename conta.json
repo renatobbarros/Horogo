@@ -1,0 +1,22 @@
+[
+    {
+        "usuario": "renato",
+        "nome": "renato",
+        "senha": "123456",
+        "instituicao": "ufrpe",
+        "periodo": 1,
+        "xp": 0,
+        "nivel": 1,
+        "cadeiras": []
+    },
+    {
+        "usuario": "rerer",
+        "nome": "rerer",
+        "senha": "456",
+        "instituicao": "ufrpe",
+        "periodo": 2,
+        "xp": 0,
+        "nivel": 1,
+        "cadeiras": []
+    }
+]

@@ -1,5 +1,6 @@
+import os
+
 from HOROGO.interface.interface_console import InterfaceConsole
-from HOROGO.interface.interface_horobot import InterfaceHorobot
 from HOROGO.repository.repositorio_usuario import repositorio_usuario
 from HOROGO.services.servico_auth import servico_auth
 from HOROGO.services.servico_academico import servico_academico
@@ -7,82 +8,97 @@ from HOROGO.interface.interface_auth import InterfaceAutenticacao
 from HOROGO.interface.interface_academica import InterfaceAcademica
 from HOROGO.interface.interface_menu import InterfaceMenu
 
+# tentar importar o horobot, mas não morrer se não existir
+try:
+    from HOROGO.interface.interface_horobot import InterfaceHorobot
+except Exception:
+    InterfaceHorobot = None
+
 
 class AplicacaoHorogo:
-    """Classe principal que orquestra a aplicação HOROGO."""
-    def __init__(self, console: InterfaceConsole, horobot: InterfaceHorobot,
-                 interface_auth: InterfaceAutenticacao, menu_principal: InterfaceMenu):
+    '''coordena a aplicação'''
+    def __init__(self, console, horobot, auth, menu):
         self.console = console
         self.horobot = horobot
-        self.interface_auth = interface_auth
-        self.menu_principal = menu_principal
+        self.auth = auth
+        self.menu = menu
 
     def _iniciar_autenticacao(self):
-        """Pergunta se o usuário já tem cadastro e inicia o fluxo de login/cadastro."""
+        '''verifica se o usuário quer logar ou cadastrar'''
         while True:
+            prompt = "Antes de mais nada, você já possui cadastro no HOROGO?\n1 - Sim\n2 - Não"
+            escolha_txt = self.console.obter_entrada(prompt)
             try:
-                prompt = ("Antes de mais nada, você já possui cadastro no HOROGO?\n"
-                          "1 - Sim\n2 - Não")
-                escolha = int(self.console.obter_entrada(prompt))
-                self.console.limpar_tela()
-                if escolha == 1:
-                    return self.interface_auth.executar_login()
-                if escolha == 2:
-                    return self.interface_auth.executar_cadastro()
-                self.console.exibir_mensagem("Opção inválida. Tente novamente.")
-            except ValueError:
-                self.console.exibir_mensagem("Digite apenas números.")
+                escolha = int(escolha_txt)
+            except Exception:
+                self.console.exibir_mensagem("Por favor digite 1 ou 2.")
+                continue
+
+            if escolha == 1:
+                return self.auth.executar_login()
+            if escolha == 2:
+                return self.auth.executar_cadastro()
+            self.console.exibir_mensagem("Opção inválida. Tente novamente.")
 
     def run(self):
-        """Fluxo principal da aplicação."""
-        try:
-            self.horobot.exibir_apresentacao()
-        except Exception:
-            pass
+        # apresentação
+        if self.horobot:
+            try:
+                self.horobot.exibir_apresentacao()
+            except Exception:
+                pass
 
-        self.console.exibir_mensagem("É um prazer te receber aqui!")
-        self.console.exibir_mensagem("Serei seu amigo e guia durante sua jornada acadêmica!")
+        self.console.exibir_mensagem("Bem vindo ao HOROGO!")
+        self.console.exibir_mensagem("Vou te ajudar a gerenciar suas cadeiras e notas.")
 
         usuario = self._iniciar_autenticacao()
-        if usuario:
-            # Tenta executar método 'executar' do menu; se não existir, usa fallback simples
-            try:
-                self.menu_principal.executar(usuario)
-            except AttributeError:
+        if not usuario:
+            self.console.exibir_mensagem("Nenhum usuário autenticado. Encerrando.")
+            if self.horobot:
                 try:
-                    # fallback: mostrar dashboard simples e aguardar seleção
-                    opcoes = ["Ver cadeiras", "Sair"]
-                    self.menu_principal.mostrar_dashboard(usuario, opcoes)
-                    escolha = self.menu_principal.selecionar_opcao(len(opcoes))
-                    if escolha == 0:
-                        self.console.exibir_mensagem("Funcionalidade 'Ver cadeiras' não implementada.")
-                except Exception as e:
-                    self.console.exibir_mensagem(f"Erro ao executar o menu principal: {e}")
+                    self.horobot.exibir_dormindo()
+                except Exception:
+                    pass
+            return
 
+        # tenta usar o menu principal (se tiver sido implementado)
         try:
-            self.horobot.exibir_dormindo()
-        except Exception:
-            pass
+            if hasattr(self.menu, "executar"):
+                self.menu.executar(usuario)
+            else:
+                # fallback simples: mostrar dashboard e esperar escolha
+                opcoes = ["Ver cadeiras", "Sair"]
+                self.menu.mostrar_dashboard(usuario, opcoes)
+                escolha = self.menu.selecionar_opcao(len(opcoes))
+                if escolha == 0:
+                    self.console.exibir_mensagem("Funcionalidade 'Ver cadeiras' ainda não implementada.")
+        except Exception as e:
+            # mensagem simples de erro
+            self.console.exibir_erro(f"Erro ao executar menu: {e}")
+
+        if self.horobot:
+            try:
+                self.horobot.exibir_dormindo()
+            except Exception:
+                pass
 
 
 def main():
-    # CAMADA 1: I/O (Console) 
+    '''montar as peças'''
     console = InterfaceConsole()
-    horobot = InterfaceHorobot(console)
+    horobot = InterfaceHorobot(console) if InterfaceHorobot else None
 
-    # CAMADA 2: DADOS (Repositório) 
-    repo_usuario = repositorio_usuario("conta.json")
+    # caminho simples para arquivo de dados (mesmo diretório do app.py)
+    repo_file = os.path.join(os.path.dirname(__file__), "conta.json")
+    repo = repositorio_usuario(repo_file)
 
-    # CAMADA 3: LÓGICA (Serviços) 
-    serv_auth = servico_auth(repo_usuario)
-    serv_acad = servico_academico(repo_usuario)
+    serv_auth = servico_auth(repo)
+    serv_acad = servico_academico(repo)
 
-    # CAMADA 4: INTERFACE (Views) 
     interface_auth = InterfaceAutenticacao(serv_auth, console, horobot)
     interface_academica = InterfaceAcademica(console)
     menu_principal = InterfaceMenu(console)
 
-    # CAMADA 5: APLICAÇÃO (Orquestrador)
     app = AplicacaoHorogo(console, horobot, interface_auth, menu_principal)
     app.run()
 

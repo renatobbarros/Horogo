@@ -1,82 +1,87 @@
 import os
 import sys
+import time
 
 class InterfaceConsole:
+
     def __init__(self):
+        # detecta Windows ou Unix simples
         self.sistema = "nt" if sys.platform == "win32" else "posix"
-    
+
     def limpar_tela(self):
-        '''Limpa a tela do console'''
-        comando = "cls" if self.sistema == "nt" else "clear"
-        os.system(comando)
-    
+        """Limpa a tela (usa cls no Windows, clear nos outros)."""
+        if self.sistema == "nt":
+            os.system("cls")
+        else:
+            os.system("clear")
+
     def exibir_titulo(self, titulo):
-        '''Exibe um título formatado'''
-        print("\n" + "="*50)
-        print(f"  {titulo.center(46)}")
-        print("="*50 + "\n")
-    
-    def exibir_mensagem(self, mensagem):
-        '''Exibe uma mensagem simples'''
-        print(f"→ {mensagem}")
-    
+        print("\n" + "=" * 40)
+        print(f"  {str(titulo)}")
+        print("=" * 40 + "\n")
+
+    def exibir_mensagem(self, mensagem, delay_segundos=None):
+        print("->", mensagem)
+        if delay_segundos:
+            try:
+                time.sleep(float(delay_segundos))
+            except Exception:
+                pass
+
     def exibir_erro(self, erro):
-        '''Exibe uma mensagem de erro'''
-        print(f"✗ ERRO: {erro}")
-    
+        """Imprime mensagem de erro simples."""
+        print("ERRO:", erro)
+
     def exibir_sucesso(self, mensagem):
-        '''Exibe uma mensagem de sucesso'''
-        print(f"✓ SUCESSO: {mensagem}")
-    
+        """Imprime mensagem de sucesso simples."""
+        print("SUCESSO:", mensagem)
+
     def exibir_lista(self, items, titulo=""):
-        '''Exibe uma lista formatada'''
+        """Imprime uma lista numerada."""
         if titulo:
-            print(f"\n{titulo}:")
+            print("\n" + titulo + ":")
         for i, item in enumerate(items, 1):
             print(f"  {i}. {item}")
-    
+
     def obter_entrada(self, prompt=""):
-        '''Obtém entrada do usuário'''
-        return input(f"→ {prompt}: ").strip()
-    
+        """Pede entrada ao usuário e retorna a string (sem espaços nas pontas)."""
+        if prompt:
+            return input(f"{prompt}: ").strip()
+        return input().strip()
+
     def obter_numero(self, prompt=""):
-        '''Obtém um número inteiro do usuário com validação'''
+        """Tenta ler um inteiro; repete até o usuário digitar um inteiro válido."""
         while True:
+            val = self.obter_entrada(prompt)
             try:
-                valor = input(f"→ {prompt}: ").strip()
-                return int(valor)
-            except ValueError:
-                self.exibir_erro("Por favor, digite um número válido")
-    
+                return int(val)
+            except Exception:
+                self.exibir_erro("Digite um número inteiro válido.")
+
     def obter_decimal(self, prompt=""):
-        '''Obtém um número decimal do usuário com validação'''
+        """Tenta ler um float; repete até ser válido."""
         while True:
+            val = self.obter_entrada(prompt)
             try:
-                valor = input(f"→ {prompt}: ").strip()
-                return float(valor)
-            except ValueError:
-                self.exibir_erro("Por favor, digite um número válido")
-    
+                return float(val)
+            except Exception:
+                self.exibir_erro("Digite um número decimal válido.")
+
     def obter_confirmacao(self, pergunta="Deseja continuar?"):
-        '''Obtém confirmação do usuário (S/N)'''
+        """Pergunta S/N e retorna True para S, False para N."""
         while True:
-            resposta = input(f"→ {pergunta} (S/N): ").strip().upper()
-            if resposta in ['S', 'N']:
-                return resposta == 'S'
-            self.exibir_erro("Digite apenas 'S' ou 'N'")
-    
+            r = self.obter_entrada(pergunta + " (S/N)").upper()
+            if r == "S":
+                return True
+            if r == "N":
+                return False
+            self.exibir_erro("Digite S ou N.")
+
     def exibir_menu(self, opcoes):
-        '''Exibe um menu e retorna a opção selecionada'''
+        """Mostra um menu e retorna a opção escolhida (1-based)."""
         self.exibir_lista(opcoes)
-        while True:
-            try:
-                escolha = self.obter_numero("Escolha uma opção")
-                if 1 <= escolha <= len(opcoes):
-                    return escolha
-                self.exibir_erro(f"Digite um número entre 1 e {len(opcoes)}")
-            except ValueError:
-                self.exibir_erro("Entrada inválida")
-    
+        return self.obter_numero("Escolha uma opção")
+
     def pausar(self):
-        '''Pausa a execução até o usuário pressionar Enter'''
-        input("\n→ Pressione ENTER para continuar...")   
+        """Pausa até ENTER ser pressionado."""
+        input("Pressione ENTER para continuar...")

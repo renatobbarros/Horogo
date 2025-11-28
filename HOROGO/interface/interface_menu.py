@@ -1,13 +1,15 @@
 import math
 
 class InterfaceMenu:
+
     def __init__(self, console=None, xp_bar_width=30):
-        """
-        console: instância de InterfaceConsole (opcional)
-        xp_bar_width: largura do indicador de XP
-        """
         self.console = console
-        self.xp_bar_width = xp_bar_width
+        try:
+            self.xp_bar_width = int(xp_bar_width)
+            if self.xp_bar_width < 1:
+                self.xp_bar_width = 30
+        except Exception:
+            self.xp_bar_width = 30
 
     def _print(self, texto):
         if self.console and hasattr(self.console, "exibir_mensagem"):
@@ -27,29 +29,37 @@ class InterfaceMenu:
         return input(f"{prompt}: ").strip()
 
     def _xp_bar(self, xp, xp_para_proximo=100):
-        """Retorna string com barra visual de XP"""
+        """Barra simples de XP (porcentagem)."""
+        try:
+            xp = float(xp)
+        except Exception:
+            xp = 0.0
+        try:
+            xp_para_proximo = float(xp_para_proximo)
+            if xp_para_proximo <= 0:
+                xp_para_proximo = 100.0
+        except Exception:
+            xp_para_proximo = 100.0
+
         pct = min(max(xp / xp_para_proximo, 0.0), 1.0)
-        cheios = math.floor(pct * self.xp_bar_width)
+        cheios = int(pct * self.xp_bar_width)
         vazios = self.xp_bar_width - cheios
-        return f"[{'█' * cheios}{' ' * vazios}] {int(pct*100)}% ({xp}/{xp_para_proximo})"
+        bar = "=" * cheios + " " * vazios
+        return f"[{bar}] {int(pct*100)}% ({int(xp)}/{int(xp_para_proximo)})"
 
     def mostrar_dashboard(self, usuario, opcoes, xp_para_proximo=100):
-        """
-        Exibe dashboard com nome, XP e lista de opções.
-        usuario: dict com ao menos 'nome' e 'xp' (ex: {'nome':'Renat','xp':42})
-        opcoes: lista de strings ou tuplas (texto, descricao)
-        """
-        # limpar tela se possível
+        """Mostra dashboard com nome, barra de XP e opções numeradas."""
+        # tenta limpar tela
         if self.console and hasattr(self.console, "limpar_tela"):
             try:
                 self.console.limpar_tela()
             except Exception:
                 pass
 
-        nome = usuario.get("nome", "Usuário")
-        xp = usuario.get("xp", 0)
+        nome = (usuario or {}).get("nome") if isinstance(usuario, dict) else getattr(usuario, "usuario", "Usuário")
+        xp = (usuario or {}).get("xp", 0) if isinstance(usuario, dict) else getattr(usuario, "xp", 0)
 
-        # título
+        # título simples
         if self.console and hasattr(self.console, "exibir_titulo"):
             try:
                 self.console.exibir_titulo("Dashboard")
@@ -58,35 +68,32 @@ class InterfaceMenu:
         else:
             self._print("=== Dashboard ===")
 
-        # cabeçalho com nome e XP
         self._print(f"Nome: {nome}")
         self._print(f"XP : {self._xp_bar(xp, xp_para_proximo)}\n")
 
-        # opções numeradas
-        linhas = []
-        for i, op in enumerate(opcoes, 1):
-            if isinstance(op, (list, tuple)):
-                texto = f"{op[0]} - {op[1]}" if len(op) > 1 else op[0]
-            else:
-                texto = str(op)
-            linhas.append(f"{i}. {texto}")
-        if linhas:
-            for linha in linhas:
-                self._print(linha)
-        else:
+        # lista de opções
+        if not opcoes:
             self._print("Nenhuma opção disponível.")
+            return
+
+        for i, opc in enumerate(opcoes, 1):
+            if isinstance(opc, (list, tuple)):
+                texto = opc[0] if len(opc) == 1 else f"{opc[0]} - {opc[1]}"
+            else:
+                texto = str(opc)
+            self._print(f"{i}. {texto}")
 
     def selecionar_opcao(self, quantidade):
-        """Solicita seleção numérica (1..quantidade) e retorna índice (0-based)"""
+        if not isinstance(quantidade, int) or quantidade <= 0:
+            raise ValueError("quantidade deve ser inteiro > 0")
         while True:
             escolha = self._input("Escolha uma opção (número)")
             try:
                 n = int(escolha)
                 if 1 <= n <= quantidade:
                     return n - 1
-            except ValueError:
+            except Exception:
                 pass
-            # mensagem de erro via console se disponível
             if self.console and hasattr(self.console, "exibir_erro"):
                 try:
                     self.console.exibir_erro("Opção inválida. Digite um número válido.")

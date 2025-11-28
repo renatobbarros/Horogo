@@ -1,29 +1,36 @@
+# ...existing code...
 class InterfaceHorobot:
-    """Interface do Horobot com representações ASCII art."""
 
-    @staticmethod
-    def apresentar():
-        print(horobot_apresentacao)
+    def __init__(self, console=None):
+        self.console = console
 
-    @staticmethod
-    def celebrar():
-        print(horobot_celebracao)
+    def _print_art(self, art):
+        if self.console and hasattr(self.console, "exibir_mensagem"):
+            try:
+                # usar exibir_mensagem para manter consistência com InterfaceConsole
+                for line in art.splitlines():
+                    self.console.exibir_mensagem(line)
+                return
+            except Exception:
+                pass
+        print(art)
 
-    @staticmethod
-    def confuso():
-        print(horobot_confuso)
+    # métodos esperados pelo app
+    def exibir_apresentacao(self):
+        self._print_art(horobot_apresentacao)
 
-    @staticmethod
-    def pensando():
-        print(horobot_pensando)
+    def exibir_celebracao(self):
+        self._print_art(horobot_celebracao)
 
-    @staticmethod
-    def dormindo():
-        print(horobot_dormindo)
+    def exibir_confuso(self):
+        self._print_art(horobot_confuso)
 
-    @staticmethod
-    def nova_tarefa():
-        print(horobot_nova_tarefa)
+    def exibir_pensando(self):
+        self._print_art(horobot_pensando)
+
+    def exibir_dormindo(self):
+        self._print_art(horobot_dormindo)
+
 horobot_apresentacao = r"""
           +-------------------------------------------------+
           |  Olá! Sou o Horobot, seu assistente de estudos. |

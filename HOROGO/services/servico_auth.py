@@ -1,46 +1,70 @@
+from typing import Optional, Any
 from ..repository.repositorio_usuario import repositorio_usuario
 from ..models.usuario import Usuario
 
 
-class Servico_Auth:
-    """serviço de autenticação e gerenciamento de usuários."""
+class servico_auth:
+    """Serviço simples de autenticação"""
+
     def __init__(self, repositorio: repositorio_usuario):
         self.repositorio = repositorio
 
-    def login(self, nome_usuario: str, senha: str):
-        # retorna o objeto usuario em caso de sucesso, ou None em caso de falha.
-        usuario_obj = self.repositorio.encontrar_usuario(nome_usuario)
-        if usuario_obj and usuario_obj.verificar_senha(senha):
-            return usuario_obj
+    def login(self, nome_usuario: str, senha: str) -> Optional[Usuario]:
+        """Tenta autenticar; retorna Usuario ou None."""
+        if not nome_usuario or not senha:
+            return None
+
+        usuario = self.repositorio.encontrar_usuario(nome_usuario)
+        if not usuario:
+            return None
+
+        # usa o método do modelo Usuario para verificar senha
+        try:
+            if usuario.verificar_senha(senha):
+                return usuario
+        except Exception:
+            # se algo der errado, falha silenciosa 
+            return None
+
         return None
 
-    def registrar_usuario(self, nome: str, senha: str, instituicao: str, periodo):
-        """Valida dados, cria e salva um novo usuário. Retorna o objeto Usuario em sucesso ou uma string com a mensagem de erro."""
-        # Validações básicas conforme especificado nas instruções
-        if not (0 < len(nome) <= 20):
-            return "Erro: Nome de usuário inválido."
-        if not (0 < len(senha) <= 12):
+    def registrar_usuario(self, nome: str, senha: str, instituicao: str, periodo: Any) -> Any:
+        if not nome or not isinstance(nome, str) or len(nome) > 20:
+            return "Erro: Nome inválido."
+        if not senha or not isinstance(senha, str) or len(senha) > 12:
             return "Erro: Senha inválida."
+        # não permitir usuário duplicado
         if self.repositorio.encontrar_usuario(nome):
             return "Erro: Usuário já existe."
-        if not (str(periodo).isdigit() and 0 < int(periodo) <= 15):
+
+        # converte período para inteiro
+        try:
+            periodo_int = int(periodo)
+        except Exception:
             return "Erro: Período inválido."
 
-        novo_usuario = Usuario(nome, senha, instituicao, int(periodo))
-        self.repositorio.salvar_usuario(novo_usuario)
-        return novo_usuario
+        # criar usuário e salvar
+        novo = Usuario(nome, senha, instituicao, periodo_int)
+        try:
+            self.repositorio.salvar_usuario(novo)
+        except Exception as e:
+            return f"Erro ao salvar usuário: {e}"
+        return novo
 
-    def redefinir_senha(self, nome_usuario: str, senha_nova: str, senha_confirmacao: str):
-        """Redefine a senha de um usuário existente. Retorna o usuário atualizado em sucesso ou uma string de erro."""
+    def redefinir_senha(self, nome_usuario: str, senha_nova: str, senha_confirmacao: str) -> Any:
+        """Redefine a senha do usuário se as senhas conferirem."""
         if senha_nova != senha_confirmacao:
             return "Erro: Senhas não conferem."
-        if not (0 < len(senha_nova) <= 12):
+        if not senha_nova or len(senha_nova) > 12:
             return "Erro: Senha inválida."
 
-        usuario_obj = self.repositorio.encontrar_usuario(nome_usuario)
-        if not usuario_obj:
+        usuario = self.repositorio.encontrar_usuario(nome_usuario)
+        if not usuario:
             return "Erro: Usuário não encontrado."
 
-        usuario_obj.senha = senha_nova
-        self.repositorio.salvar_usuario(usuario_obj)
-        return usuario_obj
+        usuario.senha = senha_nova
+        try:
+            self.repositorio.salvar_usuario(usuario)
+        except Exception as e:
+            return f"Erro ao salvar nova senha: {e}"
+        return usuario
