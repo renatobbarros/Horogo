@@ -8,7 +8,6 @@ from HOROGO.interface.interface_auth import InterfaceAutenticacao
 from HOROGO.interface.interface_academica import InterfaceAcademica
 from HOROGO.interface.interface_menu import InterfaceMenu
 
-# tentar importar o horobot, mas não morrer se não existir
 try:
     from HOROGO.interface.interface_horobot import InterfaceHorobot
 except Exception:
@@ -17,11 +16,13 @@ except Exception:
 
 class AplicacaoHorogo:
     '''coordena a aplicação'''
-    def __init__(self, console, horobot, auth, menu):
+    def __init__(self, console, horobot, auth, menu, serv_acad=None, interface_academica=None):
         self.console = console
         self.horobot = horobot
         self.auth = auth
         self.menu = menu
+        self.serv_acad = serv_acad
+        self.interface_academica = interface_academica
 
     def _iniciar_autenticacao(self):
         '''verifica se o usuário quer logar ou cadastrar'''
@@ -61,17 +62,76 @@ class AplicacaoHorogo:
                     pass
             return
 
-        # tenta usar o menu principal (se tiver sido implementado)
+        # tenta usar o menu principal
         try:
             if hasattr(self.menu, "executar"):
                 self.menu.executar(usuario)
             else:
-                # fallback simples: mostrar dashboard e esperar escolha
-                opcoes = ["Ver cadeiras", "Sair"]
+                # menu com opções completas
+                opcoes = ["Notas", "Cadeiras", "Perfil", "Mural", "Calendário", "Atualizar Conta", "Sair"]
                 self.menu.mostrar_dashboard(usuario, opcoes)
                 escolha = self.menu.selecionar_opcao(len(opcoes))
+
+                # Notas
                 if escolha == 0:
-                    self.console.exibir_mensagem("Funcionalidade 'Ver cadeiras' ainda não implementada.")
+                    # pega lista de cadeiras do usuário (obj ou dict)
+                    if hasattr(usuario, "obter_cadeiras"):
+                        cadeiras = usuario.obter_cadeiras()
+                    elif isinstance(usuario, dict):
+                        cadeiras = usuario.get("cadeiras", [])
+                    else:
+                        cadeiras = []
+
+                    if not cadeiras:
+                        self.console.exibir_mensagem("Nenhuma cadeira encontrada.")
+                    else:
+                        for c in cadeiras:
+                            # c pode ser objeto Cadeira ou dict
+                            if hasattr(c, "get_notas_formatadas"):
+                                nome = getattr(c, "nome_cadeira", getattr(c, "nome", ""))
+                                self.console.exibir_mensagem(f"Cadeira: {nome}")
+                                self.console.exibir_mensagem(c.get_notas_formatadas())
+                            elif isinstance(c, dict):
+                                nome = c.get("nome_cadeira") or c.get("nome") or "Sem nome"
+                                self.console.exibir_mensagem(f"Cadeira: {nome}")
+                                notas = c.get("notas")
+                                if notas:
+                                    try:
+                                        from HOROGO.models.nota import Nota
+                                        n = Nota.from_dict(notas) if hasattr(Nota, "from_dict") else None
+                                        if n:
+                                            self.console.exibir_mensagem(n.to_dict().__str__())
+                                        else:
+                                            self.console.exibir_mensagem(str(notas))
+                                    except Exception:
+                                        self.console.exibir_mensagem(str(notas))
+                                else:
+                                    self.console.exibir_mensagem("Sem notas.")
+                    self.console.pausar()
+
+                # Cadeiras
+                elif escolha == 1:
+                    if self.interface_academica:
+                        if hasattr(usuario, "obter_cadeiras"):
+                            cadeiras = usuario.obter_cadeiras()
+                        elif isinstance(usuario, dict):
+                            cadeiras = usuario.get("cadeiras", [])
+                        else:
+                            cadeiras = []
+                        self.interface_academica.listar_cadeiras_duas_colunas(cadeiras)
+                    else:
+                        self.console.exibir_mensagem("Interface de cadeiras não configurada.")
+                    self.console.pausar()
+
+                # Perfil / outras opções: placeholders por enquanto
+                elif escolha in (2, 3, 4, 5):
+                    self.console.exibir_mensagem("Funcionalidade não implementada ainda.")
+                    self.console.pausar()
+
+                # Sair
+                elif escolha == 6:
+                    self.console.exibir_mensagem("Saindo...")
+
         except Exception as e:
             # mensagem simples de erro
             self.console.exibir_erro(f"Erro ao executar menu: {e}")
@@ -99,7 +159,8 @@ def main():
     interface_academica = InterfaceAcademica(console)
     menu_principal = InterfaceMenu(console)
 
-    app = AplicacaoHorogo(console, horobot, interface_auth, menu_principal)
+    # passa serv_acad e interface_academica para o orquestrador
+    app = AplicacaoHorogo(console, horobot, interface_auth, menu_principal, serv_acad=serv_acad, interface_academica=interface_academica)
     app.run()
 
 
