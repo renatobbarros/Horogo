@@ -19,6 +19,11 @@ from HOROGO.services.servico_academico import servico_academico
 from HOROGO.services.servico_mural import ServicoMural
 from HOROGO.services.servico_perfil import ServicoPerfil
 from HOROGO.services.servico_xp import ServicoXP
+from HOROGO.services.servico_calendario import servico_calendario
+
+from HOROGO.interface.interface_calendario import InterfaceCalendario
+
+from HOROGO.models.cadeira import Cadeira
 
 
 class repositorio_usuario:
@@ -230,6 +235,7 @@ class AplicacaoHorogo:
         self.sv_mural = ServicoMural(self.repo_eventos, self.repo_usuarios)
         self.sv_perfil = ServicoPerfil(self.repo_usuarios)
         self.sv_xp = ServicoXP(self.repo_usuarios)
+        self.sv_cal = servico_calendario(str(dados_dir / "eventos.json"))
 
         self.console = InterfaceConsole()
         self.horobot = InterfaceHorobot(self.console)
@@ -239,6 +245,7 @@ class AplicacaoHorogo:
         self.ui_acad = InterfaceAcademica(self.console, self.sv_acad, col_width=34)
         self.ui_mural = InterfaceMural(self.console, self.sv_mural)
         self.ui_perfil = InterfacePerfil(self.console, self.sv_perfil)
+        self.ui_calendario = InterfaceCalendario(self.sv_cal, self.console, self.repo_usuarios)
 
         self.usuario = None
 
@@ -295,16 +302,18 @@ class AplicacaoHorogo:
         self._dar_xp("login_diario")
 
         while True:
-            opcoes = ["Área Acadêmica", "Mural de Eventos", "Perfil", "Sair"]
-            self.ui_menu.mostrar_dashboard(self.usuario, opcoes, servico_xp=self.sv_xp)
+            opcoes = ["Área Acadêmica", "Calendário", "Mural de Eventos", "Perfil", "Sair"]
+            self.ui_menu.mostrar_dashboard(self.usuario, opcoes, servico_xp=self.sv_xp, servico_cal=self.sv_cal)
             idx = self.ui_menu.selecionar_opcao(len(opcoes))
             if idx == 0:
                 self._menu_academico()
             elif idx == 1:
-                self.ui_mural.executar_menu_mural(self.usuario)
+                self.ui_calendario.executar(self.usuario)
             elif idx == 2:
-                self.ui_perfil.executar(self.usuario)
+                self.ui_mural.executar_menu_mural(self.usuario)
             elif idx == 3:
+                self.ui_perfil.executar(self.usuario)
+            elif idx == 4:
                 try:
                     self.horobot.exibir_dormindo()
                 except Exception:

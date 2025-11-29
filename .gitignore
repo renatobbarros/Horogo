@@ -75,3 +75,5 @@ secrets.json
 # conta.json stored inside the package folder
 HOROGO/conta.json
 conta.json
+HOROG/eventos.json
+eventos.json

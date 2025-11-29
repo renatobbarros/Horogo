@@ -10,7 +10,7 @@ class Cadeira:
         self.tempo_cadeira = tempo_cadeira
 
         if isinstance(notas, dict):
-            # converter dict para Nota (assume chaves va1, va2, va3, recuperacao)
+            # converter dicionario para Nota (assume chaves va1, va2, va3, recuperacao)
             self.notas = Nota(
                 notas.get("va1"),
                 notas.get("va2"),
@@ -40,9 +40,7 @@ class Cadeira:
         return f"VA1: {v1}\nVA2: {v2}\nVA3: {v3}\nRecuperação: {rec}"
 
     def obter_situacao(self) -> str:
-        """
-        Retorna 'Aprovado' ou 'Reprovado' tentando usar calcular_media_final().
-        """
+        """Retorna 'Aprovado' ou 'Reprovado' tentando usar calcular_media_final()."""
         if not self.notas:
             return "Sem dados"
         if hasattr(self.notas, "calcular_media_final"):

@@ -40,7 +40,7 @@ class InterfaceMenu:
         bar = "█" * cheios + "░" * vazios
         return f"[{bar}] {int(pct*100)}%"
 
-    def mostrar_dashboard(self, usuario, opcoes, xp_para_proximo=None, servico_xp=None):
+    def mostrar_dashboard(self, usuario, opcoes, xp_para_proximo=None, servico_xp=None, servico_cal=None):
         if self.console and hasattr(self.console, "limpar_tela"):
             try:
                 self.console.limpar_tela()
@@ -107,6 +107,45 @@ class InterfaceMenu:
         else:
             print(f"     🏆 Nível Máximo Alcançado!")
         print()
+        # Mostrar próximas tarefas / datas importantes se o serviço de calendário foi fornecido
+        if servico_cal:
+            try:
+                proximas = []
+                from datetime import datetime
+
+                for t in servico_cal.listar_tarefas():
+                    try:
+                        dt = datetime.fromisoformat(t.data_iso)
+                    except Exception:
+                        from datetime import datetime as _dt
+                        try:
+                            dt = _dt.strptime(t.data_iso, "%Y-%m-%d")
+                        except Exception:
+                            dt = None
+                    proximas.append((dt, f"Tarefa: {t.titulo} ({t.tipo}) - {t.data_iso} - falta: {t.tempo_restante()}"))
+
+                for d in servico_cal.listar_datas_importantes():
+                    try:
+                        dt = datetime.fromisoformat(d.data_iso)
+                    except Exception:
+                        from datetime import datetime as _dt
+                        try:
+                            dt = _dt.strptime(d.data_iso, "%Y-%m-%d")
+                        except Exception:
+                            dt = None
+                    proximas.append((dt, f"Data: {d.nome} - {d.data_iso} - falta: {d.tempo_restante()}"))
+
+                # filtra apenas os que têm data válida e ordena
+                proximas_validas = [p for p in proximas if p[0] is not None]
+                proximas_validas.sort(key=lambda x: x[0])
+                if proximas_validas:
+                    print("Próximos eventos:")
+                    for dt, txt in proximas_validas[:3]:
+                        print(f"  - {txt}")
+                    print()
+            except Exception:
+                pass
+
         print("─" * 70)
         print()
 
