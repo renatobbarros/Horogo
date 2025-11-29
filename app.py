@@ -73,6 +73,10 @@ class AplicacaoHorogo:
                         # não deixa a aplicação morrer por causa de um erro no menu
                         try:
                             self.console.exibir_erro(f"Erro no menu: {e}")
+                            try:
+                                self.console.pausar()
+                            except Exception:
+                                pass
                         except Exception:
                             pass
                         # volta a mostrar o dashboard
@@ -86,6 +90,10 @@ class AplicacaoHorogo:
                 except Exception as e:
                     try:
                         self.console.exibir_erro(f"Erro ao mostrar opções do menu: {e}")
+                        try:
+                            self.console.pausar()
+                        except Exception:
+                            pass
                     except Exception:
                         pass
                     continue
@@ -116,18 +124,32 @@ class AplicacaoHorogo:
                                         except Exception as e:
                                             try:
                                                 self.console.exibir_erro(f"Erro ao exibir situação: {e}")
+                                                try:
+                                                    self.console.pausar()
+                                                except Exception:
+                                                    pass
                                             except Exception:
                                                 pass
-                                        self.console.pausar()
+                                        try:
+                                            self.console.pausar()
+                                        except Exception:
+                                            pass
                                     elif opt == 2:
                                         try:
                                             self.interface_academica.executar_menu_cadastrar_notas(usuario)
                                         except Exception as e:
                                             try:
                                                 self.console.exibir_erro(f"Erro ao cadastrar notas: {e}")
+                                                try:
+                                                    self.console.pausar()
+                                                except Exception:
+                                                    pass
                                             except Exception:
                                                 pass
-                                        self.console.pausar()
+                                        try:
+                                            self.console.pausar()
+                                        except Exception:
+                                            pass
                                     elif opt == 0:
                                         break
                                     else:
@@ -137,6 +159,10 @@ class AplicacaoHorogo:
                                     # em caso de erro inesperado, volta ao dashboard
                                     try:
                                         self.console.exibir_erro("Erro no submenu de notas. Voltando ao menu principal.")
+                                        try:
+                                            self.console.pausar()
+                                        except Exception:
+                                            pass
                                     except Exception:
                                         pass
                                     break
@@ -211,6 +237,10 @@ class AplicacaoHorogo:
                                         except Exception as e:
                                             try:
                                                 self.console.exibir_erro(f"Erro ao cadastrar cadeira: {e}")
+                                                try:
+                                                    self.console.pausar()
+                                                except Exception:
+                                                    pass
                                             except Exception:
                                                 pass
                                         self.console.pausar()
@@ -222,6 +252,10 @@ class AplicacaoHorogo:
                                 except Exception:
                                     try:
                                         self.console.exibir_erro("Erro no submenu de cadeiras. Voltando ao menu principal.")
+                                        try:
+                                            self.console.pausar()
+                                        except Exception:
+                                            pass
                                     except Exception:
                                         pass
                                     break
@@ -237,6 +271,10 @@ class AplicacaoHorogo:
                 except Exception as e:
                     try:
                         self.console.exibir_erro(f"Erro ao executar ação do menu: {e}")
+                        try:
+                            self.console.pausar()
+                        except Exception:
+                            pass
                     except Exception:
                         pass
                     continue
@@ -244,6 +282,10 @@ class AplicacaoHorogo:
             except Exception as e:
                 try:
                     self.console.exibir_erro(f"Erro ao executar menu: {e}")
+                    try:
+                        self.console.pausar()
+                    except Exception:
+                        pass
                 except Exception:
                     pass
                 continue
@@ -260,8 +302,8 @@ def main():
     console = InterfaceConsole()
     horobot = InterfaceHorobot(console) if InterfaceHorobot else None
 
-    # caminho simples para arquivo de dados (mesmo diretório do app.py)
-    repo_file = os.path.join(os.path.dirname(__file__), "conta.json")
+    # caminho simples para arquivo de dados, onde ele e criado em uma nova pasta chamada dados/conta.json
+    repo_file = os.path.join(os.path.dirname(__file__), "HOROGO", "models", "Dados", "conta.json")
     repo = repositorio_usuario(repo_file)
 
     serv_auth = servico_auth(repo)

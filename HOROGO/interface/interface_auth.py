@@ -30,6 +30,10 @@ class InterfaceAutenticacao:
                 usuario_obj = self.servico.login(nome, senha)
             except Exception as e:
                 self.console.exibir_erro(str(e) if hasattr(self.console, "exibir_erro") else f"Erro: {e}")
+                try:
+                    self.console.pausar()
+                except Exception:
+                    pass
                 usuario_obj = None
 
             if usuario_obj:
@@ -42,6 +46,10 @@ class InterfaceAutenticacao:
             # se chegou aqui, falhou
             if hasattr(self.console, "exibir_erro"):
                 self.console.exibir_erro("Usuário ou senha incorretos.")
+                try:
+                    self.console.pausar()
+                except Exception:
+                    pass
             else:
                 self.console.exibir_mensagem("Usuário ou senha incorretos.")
 
@@ -78,6 +86,10 @@ class InterfaceAutenticacao:
             senha_conf = self.console.obter_entrada("Confirme a senha")
             if senha != senha_conf:
                 self.console.exibir_erro("As senhas não conferem. Tente novamente.")
+                try:
+                    self.console.pausar()
+                except Exception:
+                    pass
                 continue
 
             instituicao = self.console.obter_entrada("Instituição")
@@ -87,11 +99,19 @@ class InterfaceAutenticacao:
                 resultado = self.servico.registrar_usuario(nome, senha, instituicao, periodo)
             except Exception as e:
                 self.console.exibir_erro(f"Erro ao registrar: {e}")
+                try:
+                    self.console.pausar()
+                except Exception:
+                    pass
                 continue
 
             # servico pode retornar string
             if isinstance(resultado, str):
                 self.console.exibir_erro(resultado)
+                try:
+                    self.console.pausar()
+                except Exception:
+                    pass
                 continue
 
             if resultado:
@@ -103,4 +123,8 @@ class InterfaceAutenticacao:
 
             # caso inesperado, mostra erro genérico e repete
             self.console.exibir_erro("Falha ao criar conta. Tente novamente.")
+            try:
+                self.console.pausar()
+            except Exception:
+                pass
 

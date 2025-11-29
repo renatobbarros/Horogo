@@ -144,6 +144,10 @@ class InterfaceMenu:
             if self.console and hasattr(self.console, "exibir_erro"):
                 try:
                     self.console.exibir_erro("Opção inválida. Digite um número válido.")
+                    try:
+                        self.console.pausar()
+                    except Exception:
+                        pass
                     continue
                 except Exception:
                     pass

@@ -16,6 +16,15 @@ class repositorio_usuario:
     def carregar_usuarios(self) -> None:
         """Lê o arquivo JSON e tenta converter em objetos Usuario."""
         if not os.path.exists(self.caminho_json):
+            # garante que a pasta existe e cria um arquivo JSON vazio
+            pasta = os.path.dirname(self.caminho_json) or "."
+            os.makedirs(pasta, exist_ok=True)
+            try:
+                with open(self.caminho_json, "w", encoding="utf-8") as f:
+                    json.dump([], f, ensure_ascii=False, indent=4)
+            except Exception:
+                # falha ao criar arquivo: continua com lista vazia
+                pass
             self.usuarios = []
             return
 
