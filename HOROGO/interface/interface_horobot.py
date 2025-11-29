@@ -7,7 +7,6 @@ class InterfaceHorobot:
     def _print_art(self, art):
         if self.console and hasattr(self.console, "exibir_mensagem"):
             try:
-                # usar exibir_mensagem para manter consistência com InterfaceConsole
                 for line in art.splitlines():
                     self.console.exibir_mensagem(line)
                 return

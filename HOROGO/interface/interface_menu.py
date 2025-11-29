@@ -12,12 +12,6 @@ class InterfaceMenu:
             self.xp_bar_width = 30
 
     def _print(self, texto):
-        if self.console and hasattr(self.console, "exibir_mensagem"):
-            try:
-                self.console.exibir_mensagem(texto)
-                return
-            except Exception:
-                pass
         print(texto)
 
     def _input(self, prompt):
@@ -26,10 +20,9 @@ class InterfaceMenu:
                 return self.console.obter_entrada(prompt)
             except Exception:
                 pass
-        return input(f"{prompt}: ").strip()
+        return input(f"\n  {prompt}\n  » ").strip()
 
     def _xp_bar(self, xp, xp_para_proximo=100):
-        """Barra simples de XP (porcentagem)."""
         try:
             xp = float(xp)
         except Exception:
@@ -44,19 +37,16 @@ class InterfaceMenu:
         pct = min(max(xp / xp_para_proximo, 0.0), 1.0)
         cheios = int(pct * self.xp_bar_width)
         vazios = self.xp_bar_width - cheios
-        bar = "=" * cheios + " " * vazios
-        return f"[{bar}] {int(pct*100)}% ({int(xp)}/{int(xp_para_proximo)})"
+        bar = "█" * cheios + "░" * vazios
+        return f"[{bar}] {int(pct*100)}%"
 
-    def mostrar_dashboard(self, usuario, opcoes, xp_para_proximo=100):
-        """Mostra dashboard com estética mais agradável (estilo estudante)."""
-        # tenta limpar tela
+    def mostrar_dashboard(self, usuario, opcoes, xp_para_proximo=None, servico_xp=None):
         if self.console and hasattr(self.console, "limpar_tela"):
             try:
                 self.console.limpar_tela()
             except Exception:
                 pass
 
-        # normaliza dados do usuário para um dicionário simples
         if isinstance(usuario, dict):
             dados_usuario = usuario
         else:
@@ -77,78 +67,87 @@ class InterfaceMenu:
                     "xp": 0,
                 }
 
-        # cabeçalho com usuário / info
-        self._print(f"Usuário: {dados_usuario.get('usuario', 'N/A')}  \n--------------------------")
-        self._print(
-            f"Nível: {dados_usuario.get('nivel', 'N/A')} | Universidade: {dados_usuario.get('instituicao', 'N/A')} | Período: {dados_usuario.get('periodo_atual', 'N/A')}"
-        )
-        self._print("---------------------------------------------------")
+        if servico_xp:
+            try:
+                nome = dados_usuario.get("usuario", "N/A")
+                stats = servico_xp.obter_estatisticas(nome)
+                if stats:
+                    dados_usuario["nivel"] = stats.get("nivel", dados_usuario.get("nivel", 1))
+                    dados_usuario["titulo"] = stats.get("titulo", "")
+                    xp_para_proximo = stats.get("xp_faltando", 100)
+            except Exception:
+                pass
 
-        # barra de XP estilo blocos (dinâmica)
+        print("\n")
+        print("━" * 70)
+        print(f"  HOROGO".center(70))
+        print("━" * 70)
+        print()
+        
+        titulo = dados_usuario.get("titulo", "")
+        if titulo:
+            print(f"  👤 {dados_usuario.get('usuario', 'N/A')} - {titulo}")
+        else:
+            print(f"  👤 {dados_usuario.get('usuario', 'N/A')}")
+        
+        print(f"  🎓 {dados_usuario.get('instituicao', 'N/A')} | Período {dados_usuario.get('periodo_atual', 'N/A')}")
+        print()
+        
         try:
             xp = float(dados_usuario.get("xp", 0))
         except Exception:
             xp = 0.0
-        try:
-            xp_para = float(xp_para_proximo) if xp_para_proximo and float(xp_para_proximo) > 0 else 100.0
-        except Exception:
-            xp_para = 100.0
+        
+        if xp_para_proximo is None:
+            xp_para_proximo = 100
+        
+        print(f"  ⭐ Nível {dados_usuario.get('nivel', 1)} | XP: {self._xp_bar(xp, xp + xp_para_proximo)}")
+        if xp_para_proximo > 0:
+            print(f"     Faltam {xp_para_proximo} XP para o próximo nível")
+        else:
+            print(f"     🏆 Nível Máximo Alcançado!")
+        print()
+        print("─" * 70)
+        print()
 
-        pct = min(max(xp / xp_para, 0.0), 1.0)
-        bar_len = 25
-        cheios = int(pct * bar_len)
-        vazios = bar_len - cheios
-        bar_str = "■" * cheios + "□" * vazios
-        self._print(f"XP: [{bar_str}]")
-
-        self._print("--------------------------------------------------------")
-        self._print("Próximas Entregas:")
-        # exemplo de destaque simples (estudante)
-        self._print("Implementar futuramente essa opção! [O_o]")
-        self._print("--------------------------------------------------------\n")
-
-        # mostrar opções agrupadas em duas colunas (estética)
         if not opcoes:
-            self._print("Nenhuma opção disponível.")
+            self._print("  Nenhuma opção disponível.")
             return
 
-        # formata cada opção como string
-        ops = [ (o[0] if isinstance(o, (list,tuple)) else str(o)) for o in opcoes ]
-
-        # imprime duas por linha
         i = 0
-        while i < len(ops):
+        while i < len(opcoes):
             left_idx = i + 1
-            left_txt = f"{left_idx}. {ops[i]}"
+            left_txt = f"[{left_idx}] {opcoes[i]}"
             right_txt = ""
-            if i + 1 < len(ops):
+            
+            if i + 1 < len(opcoes):
                 right_idx = i + 2
-                right_txt = f"{right_idx}. {ops[i+1]}"
-            # ajusta espaçamento (ajuste conforme largura do seu terminal)
-            line = f"{left_txt.ljust(30)}{right_txt}"
-            self._print(line)
+                right_txt = f"[{right_idx}] {opcoes[i+1]}"
+            
+            print(f"  {left_txt.ljust(32)}{right_txt}")
             i += 2
 
+        print()
+        print("─" * 70)
+        print()
 
     def selecionar_opcao(self, quantidade):
         if not isinstance(quantidade, int) or quantidade <= 0:
             raise ValueError("quantidade deve ser inteiro > 0")
+        
         while True:
-            escolha = self._input("Escolha uma opção (número)")
+            escolha = input("  » ").strip()
             try:
                 n = int(escolha)
                 if 1 <= n <= quantidade:
                     return n - 1
             except Exception:
                 pass
+            
             if self.console and hasattr(self.console, "exibir_erro"):
                 try:
-                    self.console.exibir_erro("Opção inválida. Digite um número válido.")
-                    try:
-                        self.console.pausar()
-                    except Exception:
-                        pass
+                    self.console.exibir_erro("Opção inválida. Digite um número válido")
                     continue
                 except Exception:
                     pass
-            self._print("Opção inválida. Digite um número válido.")
+            print("  ✗ Opção inválida. Digite um número válido.")

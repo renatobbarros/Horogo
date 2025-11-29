@@ -19,30 +19,24 @@ class Nota:
         self.recuperacao = to_float(recuperacao)
 
     def calcular_media_parcial(self) -> float:
-        # regras simples para média parcial:
         a, b, c = self.va1, self.va2, self.va3
 
-        # se VA1 e VA2 existem, usar média entre eles
         if a is not None and b is not None:
             return (a + b) / 2.0
 
-        # se VA1 falta, usar VA2 e VA3 quando possível
         if a is None and b is not None:
             if c is not None:
                 return (b + c) / 2.0
             return b
 
-        # se VA2 falta, usar VA1 e VA3 quando possível
         if b is None and a is not None:
             if c is not None:
                 return (a + c) / 2.0
             return a
 
-        # se só tiver VA3 ou só VA3 válida
         if c is not None:
             return c
 
-        # fallback quando não há notas válidas
         return 0.0
 
     def calcular_media_final(self) -> float:

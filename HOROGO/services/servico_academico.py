@@ -7,17 +7,10 @@ from ..models.nota import Nota
 
 class servico_academico:
     def __init__(self, repositorio: repositorio_usuario):
-        # guarda o repositório para usar depois
         self.repositorio = repositorio
 
     def criar_nova_cadeira(self, nome_cadeira: str, codigo_cadeira: str, periodo: Any) -> dict:
-        '''cria um dicionário simples representando a cadeira
-
-        Validações básicas:
-        - nome_cadeira: obrigatório, 1-50 caracteres
-        - periodo: dígito entre 1 e 15
-        - codigo_cadeira: opcional, até 20 caracteres
-        '''
+        """Cria um dicionário representando a cadeira com validações."""
         nome = str(nome_cadeira or "").strip()
         if not nome or len(nome) > 50:
             raise ValueError("Nome da cadeira inválido (1-50 caracteres)")
@@ -73,7 +66,7 @@ class servico_academico:
             return False
 
     def atualizar_notas(self, nome_usuario: str, codigo_cadeira: str, notas: Union[dict, Nota]) -> bool:
-        """atualiza as notas de uma cadeira do usuário."""
+        """Atualiza as notas de uma cadeira do usuário."""
         usuario = self.repositorio.encontrar_usuario(nome_usuario)
         if not usuario:
             return False

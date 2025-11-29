@@ -4,13 +4,13 @@ from ..models.usuario import Usuario
 
 
 class servico_auth:
-    """Serviço simples de autenticação"""
+    """Serviço de autenticação"""
 
     def __init__(self, repositorio: repositorio_usuario):
         self.repositorio = repositorio
 
     def login(self, nome_usuario: str, senha: str) -> Optional[Usuario]:
-        """sistema de login. ele retorna Usuario ou None se falhar."""
+        """Retorna Usuario ou None se falhar."""
         if not nome_usuario or not senha:
             return None
 
@@ -18,12 +18,10 @@ class servico_auth:
         if not usuario:
             return None
 
-        # usa o método do modelo Usuario para verificar senha
         try:
             if usuario.verificar_senha(senha):
                 return usuario
         except Exception:
-            # se der erro, falha o login e retorna
             return None
 
         return None
@@ -33,7 +31,6 @@ class servico_auth:
             return "Erro: Nome inválido."
         if not senha or not isinstance(senha, str) or len(senha) > 12:
             return "Erro: Senha inválida."
-        # não permitir usuário duplicado
         if self.repositorio.encontrar_usuario(nome):
             return "Erro: Usuário já existe."
 
@@ -42,7 +39,6 @@ class servico_auth:
         except Exception:
             return "Erro: Período inválido."
 
-        # criar usuário e salvar
         novo = Usuario(nome, senha, instituicao, periodo_int)
         try:
             self.repositorio.salvar_usuario(novo)

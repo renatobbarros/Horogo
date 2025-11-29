@@ -10,7 +10,6 @@ class InterfaceAutenticacao:
         self.horobot = horobot
 
     def executar_login(self) -> Optional[Any]:
-        """Loop de login: pede credenciais, chama o serviço e trata falhas."""
         while True:
             try:
                 self.console.limpar_tela()
@@ -43,7 +42,6 @@ class InterfaceAutenticacao:
                     self.console.exibir_mensagem("Login efetuado com sucesso!")
                 return usuario_obj
 
-            # se chegou aqui, falhou
             if hasattr(self.console, "exibir_erro"):
                 self.console.exibir_erro("Usuário ou senha incorretos.")
                 try:
@@ -53,22 +51,20 @@ class InterfaceAutenticacao:
             else:
                 self.console.exibir_mensagem("Usuário ou senha incorretos.")
 
-            # menu simples após falha
             while True:
                 escolha = self.console.obter_entrada("1-Tentar novamente  2-Criar conta  0-Sair")
                 if escolha in ("1", "1 "):
-                    break  # volta ao início do loop externo para tentar login
+                    break
                 if escolha == "2":
                     resultado = self.executar_cadastro()
                     if resultado:
                         return resultado
-                    break  # depois do cadastro falho/sem retorno, volta ao menu de login
+                    break
                 if escolha == "0":
                     return None
                 self.console.exibir_mensagem("Opção inválida. Digite 1, 2 ou 0.")
 
     def executar_cadastro(self) -> Optional[Any]:
-        """Loop de cadastro: coleta dados, chama serviço e exibe mensagens de erro/ sucesso."""
         while True:
             try:
                 self.console.limpar_tela()
@@ -105,7 +101,6 @@ class InterfaceAutenticacao:
                     pass
                 continue
 
-            # servico pode retornar string
             if isinstance(resultado, str):
                 self.console.exibir_erro(resultado)
                 try:
@@ -121,7 +116,6 @@ class InterfaceAutenticacao:
                     self.console.exibir_mensagem("Conta criada com sucesso!")
                 return resultado
 
-            # caso inesperado, mostra erro genérico e repete
             self.console.exibir_erro("Falha ao criar conta. Tente novamente.")
             try:
                 self.console.pausar()

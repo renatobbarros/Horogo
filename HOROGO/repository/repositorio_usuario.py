@@ -6,7 +6,7 @@ from ..models.usuario import Usuario
 
 
 class repositorio_usuario:
-    """Repositório simples para estudantes, guarda usuários em JSON."""
+    """Repositório para usuários, armazenados em JSON."""
 
     def __init__(self, caminho_json: str):
         self.caminho_json = caminho_json
@@ -14,16 +14,14 @@ class repositorio_usuario:
         self.carregar_usuarios()
 
     def carregar_usuarios(self) -> None:
-        """Lê o arquivo JSON e tenta converter em objetos Usuario."""
+        """Lê o arquivo JSON e converte em objetos Usuario."""
         if not os.path.exists(self.caminho_json):
-            # garante que a pasta existe e cria um arquivo JSON vazio
             pasta = os.path.dirname(self.caminho_json) or "."
             os.makedirs(pasta, exist_ok=True)
             try:
                 with open(self.caminho_json, "w", encoding="utf-8") as f:
                     json.dump([], f, ensure_ascii=False, indent=4)
             except Exception:
-                # falha ao criar arquivo: continua com lista vazia
                 pass
             self.usuarios = []
             return
@@ -32,7 +30,6 @@ class repositorio_usuario:
             with open(self.caminho_json, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except Exception:
-            # se deu erro ao abrir começa com lista vazia
             self.usuarios = []
             return
 
@@ -46,7 +43,6 @@ class repositorio_usuario:
                 try:
                     u = Usuario.from_dict(item)
                 except Exception:
-                    # fallback bem simples: cria Usuario com campos mínimos
                     nome = item.get("usuario") or item.get("nome") or ""
                     senha = item.get("senha") or ""
                     instituicao = item.get("instituicao")
@@ -80,7 +76,7 @@ class repositorio_usuario:
             pass
 
     def encontrar_usuario(self, username: str) -> Any:
-        """Procura usuário por nome (usuario ou nome)."""
+        """Procura usuário por nome."""
         if username is None:
             return None
         chave = str(username).strip()
@@ -101,16 +97,18 @@ class repositorio_usuario:
         if usuario is None:
             return
 
-        if isinstance(usuario, dict):
-            usuario_obj = Usuario.from_dict(usuario)
-        elif isinstance(usuario, Usuario):
-            usuario_obj = usuario
-        else:
-            raise TypeError("salvar_usuario espera dict ou Usuario")
+        try:
+            if isinstance(usuario, dict):
+                usuario_obj = Usuario.from_dict(usuario)
+            elif isinstance(usuario, Usuario):
+                usuario_obj = usuario
+            else:
+                raise TypeError(f"salvar_usuario espera dict ou Usuario, recebeu {type(usuario).__name__}")
+        except Exception as e:
+            raise TypeError(f"salvar_usuario espera dict ou Usuario, erro: {e}")
 
         existente = self.encontrar_usuario(usuario_obj.usuario)
         if existente:
-            # substitui o existente mantendo a ordem
             for i, u in enumerate(self.usuarios):
                 if (isinstance(u, Usuario) and u.usuario == existente.usuario) or (isinstance(u, dict) and (u.get("usuario") == existente.usuario or u.get("nome") == existente.usuario)):
                     self.usuarios[i] = usuario_obj

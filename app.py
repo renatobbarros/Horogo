@@ -1,320 +1,320 @@
+import json
 import os
+from typing import Any, List, Optional, Dict
+from pathlib import Path
 
 from HOROGO.interface.interface_console import InterfaceConsole
-from HOROGO.repository.repositorio_usuario import repositorio_usuario
-from HOROGO.services.servico_auth import servico_auth
-from HOROGO.services.servico_academico import servico_academico
+from HOROGO.interface.interface_menu import InterfaceMenu
 from HOROGO.interface.interface_auth import InterfaceAutenticacao
 from HOROGO.interface.interface_academica import InterfaceAcademica
-from HOROGO.interface.interface_menu import InterfaceMenu
+from HOROGO.interface.interface_mural import InterfaceMural
+from HOROGO.interface.interface_perfil import InterfacePerfil
+from HOROGO.interface.interface_horobot import InterfaceHorobot
 
-try:
-    from HOROGO.interface.interface_horobot import InterfaceHorobot
-except Exception:
-    InterfaceHorobot = None
+from HOROGO.repository.repositorio_usuario import repositorio_usuario
+from HOROGO.repository.repositorio_evento import RepositorioEvento
+
+from HOROGO.services.servico_auth import servico_auth
+from HOROGO.services.servico_academico import servico_academico
+from HOROGO.services.servico_mural import ServicoMural
+from HOROGO.services.servico_perfil import ServicoPerfil
+from HOROGO.services.servico_xp import ServicoXP
+
+
+class repositorio_usuario:
+    """Repositório para usuários, armazenados em JSON."""
+
+    def __init__(self, caminho_json: str):
+        self.caminho_json = caminho_json
+        self.usuarios = [] 
+        self.carregar_usuarios()
+
+    def carregar_usuarios(self) -> None:
+        """Lê o arquivo JSON e converte em objetos Usuario."""
+        if not os.path.exists(self.caminho_json):
+            pasta = os.path.dirname(self.caminho_json) or "."
+            os.makedirs(pasta, exist_ok=True)
+            try:
+                with open(self.caminho_json, "w", encoding="utf-8") as f:
+                    json.dump([], f, ensure_ascii=False, indent=4)
+            except Exception:
+                pass
+            self.usuarios = []
+            return
+
+        try:
+            with open(self.caminho_json, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            self.usuarios = []
+            return
+
+        if not isinstance(data, list):
+            self.usuarios = []
+            return
+
+        usuarios = []
+        for item in data:
+            if isinstance(item, dict):
+                try:
+                    u = Usuario.from_dict(item)
+                except Exception:
+                    nome = item.get("usuario") or item.get("nome") or ""
+                    senha = item.get("senha") or ""
+                    instituicao = item.get("instituicao")
+                    periodo = item.get("periodo")
+                    u = Usuario(nome, senha, instituicao, periodo, xp=item.get("xp", 0), nivel=item.get("nivel", 1), cadeiras=item.get("cadeiras", []))
+                usuarios.append(u)
+            elif isinstance(item, Usuario):
+                usuarios.append(item)
+        self.usuarios = usuarios
+
+    def _salvar_json(self) -> None:
+        """Serializa a lista de usuários e grava no JSON."""
+        out = []
+        for u in self.usuarios:
+            if hasattr(u, "to_dict"):
+                out.append(u.to_dict())
+            elif isinstance(u, dict):
+                out.append(u)
+            else:
+                try:
+                    out.append(u.__dict__)
+                except Exception:
+                    pass
+
+        pasta = os.path.dirname(self.caminho_json) or "."
+        os.makedirs(pasta, exist_ok=True)
+        try:
+            with open(self.caminho_json, "w", encoding="utf-8") as f:
+                json.dump(out, f, ensure_ascii=False, indent=4)
+        except Exception:
+            pass
+
+    def encontrar_usuario(self, username: str) -> Any:
+        """Procura usuário por nome."""
+        if username is None:
+            return None
+        chave = str(username).strip()
+        for u in self.usuarios:
+            if isinstance(u, Usuario):
+                if u.usuario == chave or getattr(u, "nome", None) == chave:
+                    return u
+            elif isinstance(u, dict):
+                if u.get("usuario") == chave or u.get("nome") == chave:
+                    try:
+                        return Usuario.from_dict(u)
+                    except Exception:
+                        return None
+        return None
+
+    def salvar_usuario(self, usuario: Any) -> None:
+        """Adiciona ou atualiza um usuário e grava no JSON."""
+        if usuario is None:
+            return
+
+        if isinstance(usuario, dict):
+            usuario_obj = Usuario.from_dict(usuario)
+        elif isinstance(usuario, Usuario):
+            usuario_obj = usuario
+        else:
+            raise TypeError("salvar_usuario espera dict ou Usuario")
+
+        existente = self.encontrar_usuario(usuario_obj.usuario)
+        if existente:
+            for i, u in enumerate(self.usuarios):
+                if (isinstance(u, Usuario) and u.usuario == existente.usuario) or (isinstance(u, dict) and (u.get("usuario") == existente.usuario or u.get("nome") == existente.usuario)):
+                    self.usuarios[i] = usuario_obj
+                    break
+        else:
+            self.usuarios.append(usuario_obj)
+
+        self._salvar_json()
+
+
+class Usuario:
+    def __init__(
+        self,
+        usuario: str,
+        senha: str,
+        instituicao: str,
+        periodo: Any,
+        xp: int = 0,
+        nivel: int = 1,
+        cadeiras: Optional[List[Any]] = None,
+    ):
+        self.usuario = usuario
+        self.senha = senha
+        self.instituicao = instituicao
+        self.periodo = periodo
+        self.xp = int(xp) if xp is not None else 0
+        self.nivel = int(nivel) if nivel is not None else 1
+        self.cadeiras = cadeiras if cadeiras is not None else []
+
+    def verificar_senha(self, senha_input: Optional[str]) -> bool:
+        if senha_input is None:
+            return False
+        return self.senha == senha_input.strip()
+
+    def adicionar_cadeira(self, cadeira_obj: Any) -> None:
+        if cadeira_obj is None:
+            return
+        if isinstance(cadeira_obj, dict):
+            try:
+                cadeira_obj = Cadeira.from_dict(cadeira_obj)
+            except Exception:
+                self.cadeiras.append(cadeira_obj)
+                return
+        if isinstance(cadeira_obj, Cadeira):
+            self.cadeiras.append(cadeira_obj)
+        else:
+            self.cadeiras.append(cadeira_obj)
+
+    def obter_cadeiras(self) -> List[Any]:
+        return self.cadeiras
+
+    def to_dict(self) -> Dict[str, Any]:
+        cadeiras_serial = []
+        for c in self.cadeiras:
+            if hasattr(c, "to_dict"):
+                cadeiras_serial.append(c.to_dict())
+            else:
+                cadeiras_serial.append(c)
+        return {
+            "usuario": self.usuario,
+            "nome": self.usuario,
+            "senha": self.senha,
+            "instituicao": self.instituicao,
+            "periodo": self.periodo,
+            "xp": self.xp,
+            "nivel": self.nivel,
+            "cadeiras": cadeiras_serial,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]):
+        if data is None:
+            raise ValueError("data não pode ser None")
+        usuario = data.get("usuario") or data.get("nome") or ""
+        senha = data.get("senha") or ""
+        instituicao = data.get("instituicao")
+        periodo = data.get("periodo")
+        xp = data.get("xp", 0)
+        nivel = data.get("nivel", 1)
+
+        cadeiras_data = data.get("cadeiras") or []
+        cadeiras = []
+        for c in cadeiras_data:
+            if isinstance(c, dict):
+                try:
+                    cadeiras.append(Cadeira.from_dict(c))
+                except Exception:
+                    cadeiras.append(c)
+            else:
+                cadeiras.append(c)
+
+        return cls(usuario, senha, instituicao, periodo, xp=xp, nivel=nivel, cadeiras=cadeiras)
 
 
 class AplicacaoHorogo:
-    '''coordena a aplicação'''
-    def __init__(self, console, horobot, auth, menu, serv_acad=None, interface_academica=None):
-        self.console = console
-        self.horobot = horobot
-        self.auth = auth
-        self.menu = menu
-        self.serv_acad = serv_acad
-        self.interface_academica = interface_academica
+    def __init__(self):
+        base_dir = Path(__file__).resolve().parent
+        dados_dir = base_dir / "HOROGO" / "models" / "Dados"
+        dados_dir.mkdir(parents=True, exist_ok=True)
 
-    def _iniciar_autenticacao(self):
-        '''verifica se o usuário quer logar ou cadastrar'''
-        while True:
-            prompt = "Antes de mais nada, você já possui cadastro no HOROGO?\n1 - Sim\n2 - Não"
-            escolha_txt = self.console.obter_entrada(prompt)
+        self.repo_usuarios = repositorio_usuario(str(dados_dir / "conta.json"))
+        self.repo_eventos = RepositorioEvento(str(dados_dir / "eventos.json"))
+
+        self.sv_auth = servico_auth(self.repo_usuarios)
+        self.sv_acad = servico_academico(self.repo_usuarios)
+        self.sv_mural = ServicoMural(self.repo_eventos, self.repo_usuarios)
+        self.sv_perfil = ServicoPerfil(self.repo_usuarios)
+        self.sv_xp = ServicoXP(self.repo_usuarios)
+
+        self.console = InterfaceConsole()
+        self.horobot = InterfaceHorobot(self.console)
+
+        self.ui_auth = InterfaceAutenticacao(self.sv_auth, self.console, self.horobot)
+        self.ui_menu = InterfaceMenu(self.console, xp_bar_width=30)
+        self.ui_acad = InterfaceAcademica(self.console, self.sv_acad, col_width=34)
+        self.ui_mural = InterfaceMural(self.console, self.sv_mural)
+        self.ui_perfil = InterfacePerfil(self.console, self.sv_perfil)
+
+        self.usuario = None
+
+    def _dar_xp(self, acao: str, quantidade=None):
+        if not self.usuario:
+            return
+        nome = getattr(self.usuario, "usuario", None) or getattr(self.usuario, "nome", None)
+        ok, msg, info = self.sv_xp.adicionar_xp(nome, acao, quantidade)
+        if ok:
             try:
-                escolha = int(escolha_txt)
+                self.console.exibir_sucesso(msg)
             except Exception:
-                self.console.exibir_mensagem("Por favor digite 1 ou 2.")
-                continue
+                print(f"\n  ✓ {msg}")
+            if info.get("subiu_nivel"):
+                try:
+                    self.horobot.exibir_celebracao()
+                except Exception:
+                    pass
 
-            if escolha == 1:
-                return self.auth.executar_login()
-            if escolha == 2:
-                return self.auth.executar_cadastro()
-            self.console.exibir_mensagem("Opção inválida. Tente novamente.")
+    def _menu_academico(self):
+        while True:
+            self.console.limpar_tela()
+            self.console.exibir_titulo("Área Acadêmica")
+            print("  [1] Ver situação das cadeiras")
+            print("  [2] Cadastrar nova cadeira")
+            print("  [3] Cadastrar/Atualizar notas")
+            print("  [0] Voltar\n")
+            op = input("  » ").strip()
+            if op == "0":
+                return
+            if op == "1":
+                self.ui_acad.executar_situacao_cadeiras(self.usuario)
+                self.console.pausar()
+            elif op == "2":
+                if self.ui_acad.executar_menu_cadastrar_cadeira(self.usuario):
+                    self._dar_xp("cadastrar_cadeira")
+                self.console.pausar()
+            elif op == "3":
+                self.ui_acad.executar_menu_cadastrar_notas(self.usuario)
+                self.console.pausar()
+            else:
+                self.console.exibir_erro("Opção inválida")
 
     def run(self):
-        # apresentação
-        if self.horobot:
-            try:
-                self.horobot.exibir_apresentacao()
-            except Exception:
-                pass
+        self.console.limpar_tela()
+        self.horobot.exibir_apresentacao()
+        print("\n  Bem-vindo ao HOROGO!")
+        print("  Seu assistente pessoal para gerenciar sua vida acadêmica.\n")
+        self.console.pausar()
 
-        self.console.exibir_mensagem("Bem vindo ao HOROGO!")
-        self.console.exibir_mensagem("Vou te ajudar a gerenciar suas cadeiras e notas.")
+        self.usuario = self.ui_auth.executar_login()
+        if not self.usuario:
+            return
+        self._dar_xp("login_diario")
 
-        usuario = self._iniciar_autenticacao()
-        if not usuario:
-            self.console.exibir_mensagem("Nenhum usuário autenticado. Encerrando.")
-            if self.horobot:
+        while True:
+            opcoes = ["Área Acadêmica", "Mural de Eventos", "Perfil", "Sair"]
+            self.ui_menu.mostrar_dashboard(self.usuario, opcoes, servico_xp=self.sv_xp)
+            idx = self.ui_menu.selecionar_opcao(len(opcoes))
+            if idx == 0:
+                self._menu_academico()
+            elif idx == 1:
+                self.ui_mural.executar_menu_mural(self.usuario)
+            elif idx == 2:
+                self.ui_perfil.executar(self.usuario)
+            elif idx == 3:
                 try:
                     self.horobot.exibir_dormindo()
                 except Exception:
                     pass
-            return
-
-        # loop resiliente do menu principal: em caso de erro interno, volta ao dashboard
-        while True:
-            try:
-                if hasattr(self.menu, "executar"):
-                    # se a implementação do menu fornece um método executar, chamamos e se ele retornar, consideramos que o usuário saiu do menu
-                    try:
-                        self.menu.executar(usuario)
-                    except Exception as e:
-                        # não deixa a aplicação morrer por causa de um erro no menu
-                        try:
-                            self.console.exibir_erro(f"Erro no menu: {e}")
-                            try:
-                                self.console.pausar()
-                            except Exception:
-                                pass
-                        except Exception:
-                            pass
-                        # volta a mostrar o dashboard
-                        continue
-                    # se executar retornou sem levantar, interrompe o loop
-                    break
-                opcoes = ["Notas", "Cadeiras", "Perfil", "Mural", "Calendário", "Atualizar Conta", "Sair"]
-                try:
-                    self.menu.mostrar_dashboard(usuario, opcoes)
-                    escolha = self.menu.selecionar_opcao(len(opcoes))
-                except Exception as e:
-                    try:
-                        self.console.exibir_erro(f"Erro ao mostrar opções do menu: {e}")
-                        try:
-                            self.console.pausar()
-                        except Exception:
-                            pass
-                    except Exception:
-                        pass
-                    continue
-
-                try:
-                    # Notas
-                    if escolha == 0:
-                        if self.interface_academica:
-                            # submenu de notas
-                            while True:
-                                try:
-                                    self.console.exibir_mensagem("1 - Ver situação\n2 - Adicionar/Atualizar notas\n0 - Voltar", delay_segundos=0)
-                                    if hasattr(self.console, 'obter_entrada'):
-                                        opt_txt = self.console.obter_entrada("Escolha:")
-                                    elif hasattr(self.console, 'obter_input'):
-                                        opt_txt = self.console.obter_input("Escolha:")
-                                    else:
-                                        opt_txt = input("Escolha: ")
-                                    try:
-                                        opt = int(opt_txt)
-                                    except Exception:
-                                        self.console.exibir_mensagem("Opção inválida.")
-                                        continue
-
-                                    if opt == 1:
-                                        try:
-                                            self.interface_academica.executar_situacao_cadeiras(usuario)
-                                        except Exception as e:
-                                            try:
-                                                self.console.exibir_erro(f"Erro ao exibir situação: {e}")
-                                                try:
-                                                    self.console.pausar()
-                                                except Exception:
-                                                    pass
-                                            except Exception:
-                                                pass
-                                        try:
-                                            self.console.pausar()
-                                        except Exception:
-                                            pass
-                                    elif opt == 2:
-                                        try:
-                                            self.interface_academica.executar_menu_cadastrar_notas(usuario)
-                                        except Exception as e:
-                                            try:
-                                                self.console.exibir_erro(f"Erro ao cadastrar notas: {e}")
-                                                try:
-                                                    self.console.pausar()
-                                                except Exception:
-                                                    pass
-                                            except Exception:
-                                                pass
-                                        try:
-                                            self.console.pausar()
-                                        except Exception:
-                                            pass
-                                    elif opt == 0:
-                                        break
-                                    else:
-                                        self.console.exibir_mensagem("Opção inválida.")
-                                        continue
-                                except Exception:
-                                    # em caso de erro inesperado, volta ao dashboard
-                                    try:
-                                        self.console.exibir_erro("Erro no submenu de notas. Voltando ao menu principal.")
-                                        try:
-                                            self.console.pausar()
-                                        except Exception:
-                                            pass
-                                    except Exception:
-                                        pass
-                                    break
-                        else:
-                            # comportamento anterior: listar notas simples
-                            if hasattr(usuario, "obter_cadeiras"):
-                                cadeiras = usuario.obter_cadeiras()
-                            elif isinstance(usuario, dict):
-                                cadeiras = usuario.get("cadeiras", [])
-                            else:
-                                cadeiras = []
-
-                            if not cadeiras:
-                                self.console.exibir_mensagem("Nenhuma cadeira encontrada.")
-                            else:
-                                for c in cadeiras:
-                                    # c pode ser objeto Cadeira ou dicionario
-                                    if hasattr(c, "get_notas_formatadas"):
-                                        nome = getattr(c, "nome_cadeira", getattr(c, "nome", ""))
-                                        self.console.exibir_mensagem(f"Cadeira: {nome}")
-                                        self.console.exibir_mensagem(c.get_notas_formatadas())
-                                    elif isinstance(c, dict):
-                                        nome = c.get("nome_cadeira") or c.get("nome") or "Sem nome"
-                                        self.console.exibir_mensagem(f"Cadeira: {nome}")
-                                        notas = c.get("notas")
-                                        if notas:
-                                            try:
-                                                from HOROGO.models.nota import Nota
-                                                n = Nota.from_dict(notas) if hasattr(Nota, "from_dict") else None
-                                                if n:
-                                                    self.console.exibir_mensagem(n.to_dict().__str__())
-                                                else:
-                                                    self.console.exibir_mensagem(str(notas))
-                                            except Exception:
-                                                self.console.exibir_mensagem(str(notas))
-                                        else:
-                                            self.console.exibir_mensagem("Sem notas.")
-                            self.console.pausar()
-                    # Cadeiras
-                    elif escolha == 1:
-                        if self.interface_academica:
-                            # submenu de cadeiras
-                            while True:
-                                try:
-                                    self.console.exibir_mensagem("1 - Listar cadeiras\n2 - Cadastrar nova cadeira\n0 - Voltar", delay_segundos=0)
-                                    if hasattr(self.console, 'obter_entrada'):
-                                        opt_txt = self.console.obter_entrada("Escolha:")
-                                    elif hasattr(self.console, 'obter_input'):
-                                        opt_txt = self.console.obter_input("Escolha:")
-                                    else:
-                                        opt_txt = input("Escolha: ")
-                                    try:
-                                        opt = int(opt_txt)
-                                    except Exception:
-                                        self.console.exibir_mensagem("Opção inválida.")
-                                        continue
-
-                                    if opt == 1:
-                                        # listar
-                                        if hasattr(usuario, "obter_cadeiras"):
-                                            cadeiras = usuario.obter_cadeiras()
-                                        elif isinstance(usuario, dict):
-                                            cadeiras = usuario.get("cadeiras", [])
-                                        else:
-                                            cadeiras = []
-                                        self.interface_academica.listar_cadeiras_duas_colunas(cadeiras)
-                                        self.console.pausar()
-                                    elif opt == 2:
-                                        # cadastrar
-                                        try:
-                                            self.interface_academica.executar_menu_cadastrar_cadeira(usuario)
-                                        except Exception as e:
-                                            try:
-                                                self.console.exibir_erro(f"Erro ao cadastrar cadeira: {e}")
-                                                try:
-                                                    self.console.pausar()
-                                                except Exception:
-                                                    pass
-                                            except Exception:
-                                                pass
-                                        self.console.pausar()
-                                    elif opt == 0:
-                                        break
-                                    else:
-                                        self.console.exibir_mensagem("Opção inválida.")
-                                        continue
-                                except Exception:
-                                    try:
-                                        self.console.exibir_erro("Erro no submenu de cadeiras. Voltando ao menu principal.")
-                                        try:
-                                            self.console.pausar()
-                                        except Exception:
-                                            pass
-                                    except Exception:
-                                        pass
-                                    break
-                        else:
-                            self.console.exibir_mensagem("Interface de cadeiras não configurada.")
-                        self.console.pausar()
-                    elif escolha in (2, 3, 4, 5):
-                        self.console.exibir_mensagem("Funcionalidade não implementada ainda.")
-                        self.console.pausar()
-                    elif escolha == 6:
-                        self.console.exibir_mensagem("Saindo...")
-                        break
-                except Exception as e:
-                    try:
-                        self.console.exibir_erro(f"Erro ao executar ação do menu: {e}")
-                        try:
-                            self.console.pausar()
-                        except Exception:
-                            pass
-                    except Exception:
-                        pass
-                    continue
-
-            except Exception as e:
-                try:
-                    self.console.exibir_erro(f"Erro ao executar menu: {e}")
-                    try:
-                        self.console.pausar()
-                    except Exception:
-                        pass
-                except Exception:
-                    pass
-                continue
-
-        if self.horobot:
-            try:
-                self.horobot.exibir_dormindo()
-            except Exception:
-                pass
+                print("\n  Até a próxima!")
+                break
 
 
 def main():
-    '''montar as peças'''
-    console = InterfaceConsole()
-    horobot = InterfaceHorobot(console) if InterfaceHorobot else None
-
-    # caminho simples para arquivo de dados, onde ele e criado em uma nova pasta chamada dados/conta.json
-    repo_file = os.path.join(os.path.dirname(__file__), "HOROGO", "models", "Dados", "conta.json")
-    repo = repositorio_usuario(repo_file)
-
-    serv_auth = servico_auth(repo)
-    serv_acad = servico_academico(repo)
-
-    interface_auth = InterfaceAutenticacao(serv_auth, console, horobot)
-    interface_academica = InterfaceAcademica(console, horobot, serv_acad)
-    menu_principal = InterfaceMenu(console)
-
-    # passa serv_acad e interface_academica para o orquestrador
-    app = AplicacaoHorogo(console, horobot, interface_auth, menu_principal, serv_acad=serv_acad, interface_academica=interface_academica)
+    app = AplicacaoHorogo()
     app.run()
 
 

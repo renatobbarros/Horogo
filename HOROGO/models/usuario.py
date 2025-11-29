@@ -22,35 +22,28 @@ class Usuario:
         self.cadeiras = cadeiras if cadeiras is not None else []
 
     def verificar_senha(self, senha_input: Optional[str]) -> bool:
-        """Verifica senha"""
         if senha_input is None:
             return False
         return self.senha == senha_input.strip()
 
     def adicionar_cadeira(self, cadeira_obj: Any) -> None:
-        """Adiciona uma cadeira"""
         if cadeira_obj is None:
             return
         if isinstance(cadeira_obj, dict):
-            # tenta converter o dicionario para objeto.
             try:
                 cadeira_obj = Cadeira.from_dict(cadeira_obj)
             except Exception:
-                # se falhar, apenas guarda o dict
                 self.cadeiras.append(cadeira_obj)
                 return
         if isinstance(cadeira_obj, Cadeira):
             self.cadeiras.append(cadeira_obj)
         else:
-            # se receber outro tipo, guarda como está
             self.cadeiras.append(cadeira_obj)
 
     def obter_cadeiras(self) -> List[Any]:
-        """Retorna a lista de cadeiras"""
         return self.cadeiras
 
     def to_dict(self) -> Dict[str, Any]:
-        """Serialize simples para JSON/dicionário."""
         cadeiras_serial = []
         for c in self.cadeiras:
             if hasattr(c, "to_dict"):
@@ -70,7 +63,6 @@ class Usuario:
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]):
-        """Cria Usuario a partir de dicionário"""
         if data is None:
             raise ValueError("data não pode ser None")
         usuario = data.get("usuario") or data.get("nome") or ""
