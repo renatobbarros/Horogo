@@ -54,7 +54,7 @@ class Cadeira:
         return "Sem dados"
 
     def to_dict(self) -> dict:
-        """Serializa a cadeira para dict (pronto para JSON)."""
+        """Serializa a cadeira para dicionario."""
         result = {
             "nome_cadeira": self.nome_cadeira,
             "nome_professor": self.nome_professor,
@@ -75,7 +75,7 @@ class Cadeira:
 
     @classmethod
     def from_dict(cls, data: dict):
-        """Cria Cadeira a partir de dict."""
+        """Cria Cadeira a partir de um dicionario."""
         if data is None:
             raise ValueError("data não pode ser None")
         notas = data.get("notas")

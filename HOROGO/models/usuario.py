@@ -32,7 +32,7 @@ class Usuario:
         if cadeira_obj is None:
             return
         if isinstance(cadeira_obj, dict):
-            # tenta converter dict para Cadeira
+            # tenta converter o dicionario para objeto.
             try:
                 cadeira_obj = Cadeira.from_dict(cadeira_obj)
             except Exception:

@@ -93,50 +93,138 @@ class AplicacaoHorogo:
                 try:
                     # Notas
                     if escolha == 0:
-                        # pega lista de cadeiras do usuário (obj ou dict)
-                        if hasattr(usuario, "obter_cadeiras"):
-                            cadeiras = usuario.obter_cadeiras()
-                        elif isinstance(usuario, dict):
-                            cadeiras = usuario.get("cadeiras", [])
-                        else:
-                            cadeiras = []
-
-                        if not cadeiras:
-                            self.console.exibir_mensagem("Nenhuma cadeira encontrada.")
-                        else:
-                            for c in cadeiras:
-                                # c pode ser objeto Cadeira ou dict
-                                if hasattr(c, "get_notas_formatadas"):
-                                    nome = getattr(c, "nome_cadeira", getattr(c, "nome", ""))
-                                    self.console.exibir_mensagem(f"Cadeira: {nome}")
-                                    self.console.exibir_mensagem(c.get_notas_formatadas())
-                                elif isinstance(c, dict):
-                                    nome = c.get("nome_cadeira") or c.get("nome") or "Sem nome"
-                                    self.console.exibir_mensagem(f"Cadeira: {nome}")
-                                    notas = c.get("notas")
-                                    if notas:
-                                        try:
-                                            from HOROGO.models.nota import Nota
-                                            n = Nota.from_dict(notas) if hasattr(Nota, "from_dict") else None
-                                            if n:
-                                                self.console.exibir_mensagem(n.to_dict().__str__())
-                                            else:
-                                                self.console.exibir_mensagem(str(notas))
-                                        except Exception:
-                                            self.console.exibir_mensagem(str(notas))
-                                    else:
-                                        self.console.exibir_mensagem("Sem notas.")
-                        self.console.pausar()
-                    # Cadeiras
-                    elif escolha == 1:
                         if self.interface_academica:
+                            # submenu de notas
+                            while True:
+                                try:
+                                    self.console.exibir_mensagem("1 - Ver situação\n2 - Adicionar/Atualizar notas\n0 - Voltar", delay_segundos=0)
+                                    if hasattr(self.console, 'obter_entrada'):
+                                        opt_txt = self.console.obter_entrada("Escolha:")
+                                    elif hasattr(self.console, 'obter_input'):
+                                        opt_txt = self.console.obter_input("Escolha:")
+                                    else:
+                                        opt_txt = input("Escolha: ")
+                                    try:
+                                        opt = int(opt_txt)
+                                    except Exception:
+                                        self.console.exibir_mensagem("Opção inválida.")
+                                        continue
+
+                                    if opt == 1:
+                                        try:
+                                            self.interface_academica.executar_situacao_cadeiras(usuario)
+                                        except Exception as e:
+                                            try:
+                                                self.console.exibir_erro(f"Erro ao exibir situação: {e}")
+                                            except Exception:
+                                                pass
+                                        self.console.pausar()
+                                    elif opt == 2:
+                                        try:
+                                            self.interface_academica.executar_menu_cadastrar_notas(usuario)
+                                        except Exception as e:
+                                            try:
+                                                self.console.exibir_erro(f"Erro ao cadastrar notas: {e}")
+                                            except Exception:
+                                                pass
+                                        self.console.pausar()
+                                    elif opt == 0:
+                                        break
+                                    else:
+                                        self.console.exibir_mensagem("Opção inválida.")
+                                        continue
+                                except Exception:
+                                    # em caso de erro inesperado, volta ao dashboard
+                                    try:
+                                        self.console.exibir_erro("Erro no submenu de notas. Voltando ao menu principal.")
+                                    except Exception:
+                                        pass
+                                    break
+                        else:
+                            # comportamento anterior: listar notas simples
                             if hasattr(usuario, "obter_cadeiras"):
                                 cadeiras = usuario.obter_cadeiras()
                             elif isinstance(usuario, dict):
                                 cadeiras = usuario.get("cadeiras", [])
                             else:
                                 cadeiras = []
-                            self.interface_academica.listar_cadeiras_duas_colunas(cadeiras)
+
+                            if not cadeiras:
+                                self.console.exibir_mensagem("Nenhuma cadeira encontrada.")
+                            else:
+                                for c in cadeiras:
+                                    # c pode ser objeto Cadeira ou dicionario
+                                    if hasattr(c, "get_notas_formatadas"):
+                                        nome = getattr(c, "nome_cadeira", getattr(c, "nome", ""))
+                                        self.console.exibir_mensagem(f"Cadeira: {nome}")
+                                        self.console.exibir_mensagem(c.get_notas_formatadas())
+                                    elif isinstance(c, dict):
+                                        nome = c.get("nome_cadeira") or c.get("nome") or "Sem nome"
+                                        self.console.exibir_mensagem(f"Cadeira: {nome}")
+                                        notas = c.get("notas")
+                                        if notas:
+                                            try:
+                                                from HOROGO.models.nota import Nota
+                                                n = Nota.from_dict(notas) if hasattr(Nota, "from_dict") else None
+                                                if n:
+                                                    self.console.exibir_mensagem(n.to_dict().__str__())
+                                                else:
+                                                    self.console.exibir_mensagem(str(notas))
+                                            except Exception:
+                                                self.console.exibir_mensagem(str(notas))
+                                        else:
+                                            self.console.exibir_mensagem("Sem notas.")
+                            self.console.pausar()
+                    # Cadeiras
+                    elif escolha == 1:
+                        if self.interface_academica:
+                            # submenu de cadeiras
+                            while True:
+                                try:
+                                    self.console.exibir_mensagem("1 - Listar cadeiras\n2 - Cadastrar nova cadeira\n0 - Voltar", delay_segundos=0)
+                                    if hasattr(self.console, 'obter_entrada'):
+                                        opt_txt = self.console.obter_entrada("Escolha:")
+                                    elif hasattr(self.console, 'obter_input'):
+                                        opt_txt = self.console.obter_input("Escolha:")
+                                    else:
+                                        opt_txt = input("Escolha: ")
+                                    try:
+                                        opt = int(opt_txt)
+                                    except Exception:
+                                        self.console.exibir_mensagem("Opção inválida.")
+                                        continue
+
+                                    if opt == 1:
+                                        # listar
+                                        if hasattr(usuario, "obter_cadeiras"):
+                                            cadeiras = usuario.obter_cadeiras()
+                                        elif isinstance(usuario, dict):
+                                            cadeiras = usuario.get("cadeiras", [])
+                                        else:
+                                            cadeiras = []
+                                        self.interface_academica.listar_cadeiras_duas_colunas(cadeiras)
+                                        self.console.pausar()
+                                    elif opt == 2:
+                                        # cadastrar
+                                        try:
+                                            self.interface_academica.executar_menu_cadastrar_cadeira(usuario)
+                                        except Exception as e:
+                                            try:
+                                                self.console.exibir_erro(f"Erro ao cadastrar cadeira: {e}")
+                                            except Exception:
+                                                pass
+                                        self.console.pausar()
+                                    elif opt == 0:
+                                        break
+                                    else:
+                                        self.console.exibir_mensagem("Opção inválida.")
+                                        continue
+                                except Exception:
+                                    try:
+                                        self.console.exibir_erro("Erro no submenu de cadeiras. Voltando ao menu principal.")
+                                    except Exception:
+                                        pass
+                                    break
                         else:
                             self.console.exibir_mensagem("Interface de cadeiras não configurada.")
                         self.console.pausar()
@@ -180,7 +268,7 @@ def main():
     serv_acad = servico_academico(repo)
 
     interface_auth = InterfaceAutenticacao(serv_auth, console, horobot)
-    interface_academica = InterfaceAcademica(console)
+    interface_academica = InterfaceAcademica(console, horobot, serv_acad)
     menu_principal = InterfaceMenu(console)
 
     # passa serv_acad e interface_academica para o orquestrador

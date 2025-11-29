@@ -11,12 +11,30 @@ class servico_academico:
         self.repositorio = repositorio
 
     def criar_nova_cadeira(self, nome_cadeira: str, codigo_cadeira: str, periodo: Any) -> dict:
-        '''cria um dicionário simples representando a cadeira'''
+        '''cria um dicionário simples representando a cadeira
+
+        Validações básicas:
+        - nome_cadeira: obrigatório, 1-50 caracteres
+        - periodo: dígito entre 1 e 15
+        - codigo_cadeira: opcional, até 20 caracteres
+        '''
+        nome = str(nome_cadeira or "").strip()
+        if not nome or len(nome) > 50:
+            raise ValueError("Nome da cadeira inválido (1-50 caracteres)")
+
+        periodo_str = str(periodo).strip()
+        if not periodo_str.isdigit() or not (1 <= int(periodo_str) <= 15):
+            raise ValueError("Período inválido (use número entre 1 e 15)")
+
+        codigo = None if codigo_cadeira is None else str(codigo_cadeira)
+        if codigo is not None and len(codigo) > 20:
+            raise ValueError("Código da cadeira muito longo (máx 20 caracteres)")
+
         return {
-            "nome": nome_cadeira,
-            "nome_cadeira": nome_cadeira,
-            "codigo": codigo_cadeira,
-            "periodo": periodo,
+            "nome": nome,
+            "nome_cadeira": nome,
+            "codigo": codigo,
+            "periodo": int(periodo_str),
             "notas": None,
         }
 
@@ -60,7 +78,7 @@ class servico_academico:
         if not usuario:
             return False
 
-        # pega lista de cadeiras (objetos ou dicts)
+        # pega lista de cadeiras (objetos ou dicionários)
         if isinstance(usuario, Usuario):
             cadeiras = usuario.cadeiras
         else:
@@ -76,28 +94,86 @@ class servico_academico:
                 codigo = cad.get("codigo") or cad.get("nome_cadeira") or cad.get("nome")
 
             if str(codigo) == str(codigo_cadeira):
-                # atualiza as notas
+                # atualiza as notas com validação (0-10)
+                def _validar_valor(v):
+                    if v is None:
+                        return True
+                    try:
+                        f = float(v)
+                    except Exception:
+                        return False
+                    return 0.0 <= f <= 10.0
+
                 if isinstance(cad, Cadeira):
                     if isinstance(notas, Nota):
+                        # valida atributos do objeto Nota
+                        for attr in ("va1", "va2", "va3"):
+                            val = getattr(notas, attr, None)
+                            if val is not None and not _validar_valor(val):
+                                return False
                         cad.notas = notas
                     elif isinstance(notas, dict):
+                        va1 = notas.get("va1")
+                        va2 = notas.get("va2")
+                        va3 = notas.get("va3")
+                        if not (_validar_valor(va1) and _validar_valor(va2) and _validar_valor(va3)):
+                            return False
                         cad.notas = Nota(
-                            notas.get("va1"),
-                            notas.get("va2"),
-                            notas.get("va3"),
+                            None if va1 is None else float(va1),
+                            None if va2 is None else float(va2),
+                            None if va3 is None else float(va3),
                             notas.get("recuperacao"),
                         )
                     else:
+                        # tenta iterável
                         try:
-                            cad.notas = Nota(notas[0], notas[1], notas[2], notas[3])  # type: ignore
+                            vals = list(notas)
+                            va1 = vals[0] if len(vals) > 0 else None
+                            va2 = vals[1] if len(vals) > 1 else None
+                            va3 = vals[2] if len(vals) > 2 else None
+                            if not (_validar_valor(va1) and _validar_valor(va2) and _validar_valor(va3)):
+                                return False
+                            cad.notas = Nota(
+                                None if va1 is None else float(va1),
+                                None if va2 is None else float(va2),
+                                None if va3 is None else float(va3),
+                            )
                         except Exception:
-                            pass
+                            return False
                 else:
-                    # cadeiras como dict
+                    # cadeiras como dicionarios
                     if isinstance(notas, Nota) and hasattr(notas, "to_dict"):
-                        cad["notas"] = notas.to_dict()
+                        # valida por conversão
+                        nd = notas.to_dict()
+                        if not all(_validar_valor(nd.get(k)) for k in ("va1", "va2", "va3")):
+                            return False
+                        cad["notas"] = nd
+                    elif isinstance(notas, dict):
+                        if not (_validar_valor(notas.get("va1")) and _validar_valor(notas.get("va2")) and _validar_valor(notas.get("va3"))):
+                            return False
+                        cad["notas"] = {
+                            "va1": None if notas.get("va1") is None else float(notas.get("va1")),
+                            "va2": None if notas.get("va2") is None else float(notas.get("va2")),
+                            "va3": None if notas.get("va3") is None else float(notas.get("va3")),
+                            "recuperacao": notas.get("recuperacao"),
+                        }
                     else:
-                        cad["notas"] = notas
+                        # iterável
+                        try:
+                            vals = list(notas)
+                            va1 = vals[0] if len(vals) > 0 else None
+                            va2 = vals[1] if len(vals) > 1 else None
+                            va3 = vals[2] if len(vals) > 2 else None
+                            if not (_validar_valor(va1) and _validar_valor(va2) and _validar_valor(va3)):
+                                return False
+                            cad["notas"] = {
+                                "va1": None if va1 is None else float(va1),
+                                "va2": None if va2 is None else float(va2),
+                                "va3": None if va3 is None else float(va3),
+                            }
+                        except Exception:
+                            return False
+
                 encontrado = True
                 break
 
