@@ -3,6 +3,7 @@ from datetime import datetime
 
 
 class Tarefa:
+    """dados de tarefas no JSON, incluindo adicionar esses dados pro dicionario."""
     def __init__(self, titulo: str, tipo: str, data_iso: str, xp: int = 5):
         self.titulo = titulo
         self.tipo = tipo  # e.g. 'trabalho', 'atividade', 'palestra'

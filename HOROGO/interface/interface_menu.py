@@ -1,7 +1,4 @@
-import math
-
 class InterfaceMenu:
-
     def __init__(self, console=None, xp_bar_width=30):
         self.console = console
         try:

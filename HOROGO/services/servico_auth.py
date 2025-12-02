@@ -4,7 +4,7 @@ from ..models.usuario import Usuario
 
 
 class servico_auth:
-    """Serviço de autenticação"""
+    """tudo relacionado ao login do usuario e aqui. fazer login, registrar, redefinir senha, etc."""
 
     def __init__(self, repositorio: repositorio_usuario):
         self.repositorio = repositorio

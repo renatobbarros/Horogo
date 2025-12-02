@@ -6,6 +6,7 @@ from ..models.nota import Nota
 
 
 class servico_academico:
+    """mesma coisa do de autenticação, mas para coisas academicas. adicionar cadeira, atualizar notas, etc."""
     def __init__(self, repositorio: repositorio_usuario):
         self.repositorio = repositorio
 

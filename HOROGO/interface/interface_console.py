@@ -3,7 +3,6 @@ import sys
 import time
 
 class InterfaceConsole:
-
     def __init__(self):
         self.sistema = "nt" if sys.platform == "win32" else "posix"
 

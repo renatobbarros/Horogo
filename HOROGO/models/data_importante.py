@@ -3,6 +3,7 @@ from datetime import datetime
 
 
 class DataImportante:
+    """dados de datas importantes no JSON, incluindo adicionar esses dados pro dicionario."""
     def __init__(self, nome: str, data_iso: str, xp: int = 10):
         self.nome = nome
         self.data_iso = data_iso

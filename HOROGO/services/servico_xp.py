@@ -1,10 +1,9 @@
 from typing import Dict, List, Tuple, Any
 from ..repository.repositorio_usuario import repositorio_usuario
-from ..models.usuario import Usuario
 
 
 class ServicoXP:
-
+    """onde tudo de XP e gerenciado, adicionar XP, calcular nivel, etc."""
     XP_POR_NIVEL = {
         1: 0, 2: 100, 3: 250, 4: 450, 5: 700,
         6: 1000, 7: 1350, 8: 1750, 9: 2200, 10: 2700,

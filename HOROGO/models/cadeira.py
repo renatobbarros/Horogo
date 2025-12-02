@@ -3,14 +3,14 @@ from .nota import Nota
 
 
 class Cadeira:
-
+    """classe de cadeira, onde os dados de cadeira são armazenados e manipulados."""
     def __init__(self, nome_cadeira: str, nome_professor: str, tempo_cadeira: Any, notas: Optional[Any] = None):
         self.nome_cadeira = nome_cadeira
         self.nome_professor = nome_professor
         self.tempo_cadeira = tempo_cadeira
 
         if isinstance(notas, dict):
-            # converter dicionario para Nota (assume chaves va1, va2, va3, recuperacao)
+            # converter dicionario para Nota
             self.notas = Nota(
                 notas.get("va1"),
                 notas.get("va2"),
@@ -20,19 +20,15 @@ class Cadeira:
         elif isinstance(notas, Nota):
             self.notas = notas
         else:
-            # pode ser None ou formato desconhecido
             self.notas = None
 
     def adicionar_notas(self, va1: Any, va2: Any = None, va3: Any = None, recuperacao: Any = None) -> Nota:
-        """Cria ou atualiza o objeto Nota desta cadeira."""
         self.notas = Nota(va1, va2, va3, recuperacao)
         return self.notas
 
     def get_notas_formatadas(self) -> str:
-        """Retorna uma string simples com as notas."""
         if not self.notas:
             return "Nenhuma nota cadastrada."
-        # usa atributos do objeto Nota (assume nomes va1, va2, va3)
         v1 = getattr(self.notas, "va1", "N/A")
         v2 = getattr(self.notas, "va2", "N/A")
         v3 = getattr(self.notas, "va3", "N/A")
@@ -52,7 +48,6 @@ class Cadeira:
         return "Sem dados"
 
     def to_dict(self) -> dict:
-        """Serializa a cadeira para dicionario."""
         result = {
             "nome_cadeira": self.nome_cadeira,
             "nome_professor": self.nome_professor,
@@ -73,7 +68,6 @@ class Cadeira:
 
     @classmethod
     def from_dict(cls, data: dict):
-        """Cria Cadeira a partir de um dicionario."""
         if data is None:
             raise ValueError("data não pode ser None")
         notas = data.get("notas")

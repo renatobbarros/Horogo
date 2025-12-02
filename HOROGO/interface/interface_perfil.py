@@ -1,9 +1,7 @@
-from typing import Any, Optional
+from typing import Any
 
 
 class InterfacePerfil:
-    """Interface de perfil do usuário com design limpo."""
-
     def __init__(self, console=None, servico_perfil=None):
         self.console = console
         self.servico_perfil = servico_perfil

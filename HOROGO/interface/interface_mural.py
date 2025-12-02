@@ -1,9 +1,7 @@
-from typing import Any, Optional
+from typing import Any
 
 
 class InterfaceMural:
-    """Interface de mural com design limpo."""
-
     def __init__(self, console=None, servico_mural=None):
         self.console = console
         self.servico_mural = servico_mural

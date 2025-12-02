@@ -1,10 +1,10 @@
-# Versão simples (estudante iniciante/intermediário)
-
 from typing import Optional, Dict, Any
 
 
 class Nota:
     def __init__(self, va1: Optional[float], va2: Optional[float], va3: Optional[float], recuperacao: Optional[float]):
+        # porque eu não tinha entendindo essa função de primeira, aqui esta um comentario:
+        # ele basicamente tenta converter os valores de entrada para float, se possível. caso contrario, atribui None e retorna None.
         def to_float(x):
             try:
                 if x is None:
@@ -19,6 +19,7 @@ class Nota:
         self.recuperacao = to_float(recuperacao)
 
     def calcular_media_parcial(self) -> float:
+        # calcula a média parcial com base nas notas disponíveis, verificando se as notas existem e fazendo um calculo basico
         a, b, c = self.va1, self.va2, self.va3
 
         if a is not None and b is not None:
@@ -40,6 +41,7 @@ class Nota:
         return 0.0
 
     def calcular_media_final(self) -> float:
+        # mesma logica da média parcial, mas considerando a recuperação
         parcial = self.calcular_media_parcial()
         if self.recuperacao is not None:
             return (parcial + self.recuperacao) / 2.0

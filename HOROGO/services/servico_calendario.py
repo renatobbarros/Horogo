@@ -1,12 +1,13 @@
 import json
 import os
-from typing import List, Dict, Any
+from typing import List
 
 from ..models.tarefa import Tarefa
 from ..models.data_importante import DataImportante
 
 
 class servico_calendario:
+    """serviço para gerenciar o calendário, incluindo tarefas e datas importantes."""
     def __init__(self, caminho_json: str = None):
         # por padrão usa pasta HOROGO/Dados/eventos.json
         if caminho_json:
@@ -37,7 +38,7 @@ class servico_calendario:
         except Exception:
             data = {"tarefas": [], "datas": []}
 
-        # Suporta arquivos legados que eram apenas uma lista de tarefas
+        # backup caso o arquivo seja uma lista simples, não um dicionário. em teoria não e pra ser usado, mas deu erro uma vez e decidi deixar como uma solução bandaid.
         if isinstance(data, list):
             tarefas_list = [d for d in data if isinstance(d, dict)]
             datas_list = []
@@ -59,7 +60,6 @@ class servico_calendario:
         except Exception:
             pass
 
-    # Tarefas
     def adicionar_tarefa(self, titulo: str, tipo: str, data_iso: str, xp: int = None) -> Tarefa:
         if xp is None:
             xp = 10 if tipo == "trabalho" else 5 if tipo == "atividade" else 3
@@ -78,7 +78,7 @@ class servico_calendario:
             return int(getattr(t, "xp", 0))
         return 0
 
-    # Datas importantes
+
     def adicionar_data_importante(self, nome: str, data_iso: str, xp: int = 10) -> DataImportante:
         d = DataImportante(nome, data_iso, xp)
         self.datas.append(d)

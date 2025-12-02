@@ -6,8 +6,7 @@ from ..models.usuario import Usuario
 
 
 class repositorio_usuario:
-    """Repositório para usuários, armazenados em JSON."""
-
+    """repositório para usuários, armazenados em JSON."""
     def __init__(self, caminho_json: str):
         self.caminho_json = caminho_json
         self.usuarios = [] 

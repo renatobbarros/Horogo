@@ -1,10 +1,10 @@
 from typing import Any
 from ..repository.repositorio_usuario import repositorio_usuario
-from ..models.usuario import Usuario
+
 
 
 class ServicoPerfil:
-    """Serviço para gerenciar perfil do usuário."""
+    """e aqui onde ficam os serviços relacionados ao perfil do usuário. atualizar  dados, etc."""
 
     def __init__(self, repositorio: repositorio_usuario):
         self.repositorio = repositorio

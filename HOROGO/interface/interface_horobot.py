@@ -1,6 +1,4 @@
-# ...existing code...
 class InterfaceHorobot:
-
     def __init__(self, console=None):
         self.console = console
 
@@ -14,7 +12,7 @@ class InterfaceHorobot:
                 pass
         print(art)
 
-    # métodos esperados pelo app
+
     def exibir_apresentacao(self):
         self._print_art(horobot_apresentacao)
 
@@ -29,6 +27,8 @@ class InterfaceHorobot:
 
     def exibir_dormindo(self):
         self._print_art(horobot_dormindo)
+
+# o que os metodos ai de cima chamam. e so uma perfumaria basicamente :]
 
 horobot_apresentacao = r"""
           +-------------------------------------------------+

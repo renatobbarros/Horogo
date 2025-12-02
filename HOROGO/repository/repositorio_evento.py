@@ -6,13 +6,13 @@ from ..models.evento import Evento
 
 
 class RepositorioEvento:
+    """mesma coisa do repositorio_usuario, mas para eventos."""
     def __init__(self, caminho_json: str):
         self.caminho_json = caminho_json
         self.eventos: List[Evento] = []
         self.carregar_eventos()
 
     def carregar_eventos(self) -> None:
-        """Carrega eventos do arquivo JSON (se existir)."""
         if not os.path.exists(self.caminho_json):
             self.eventos = []
             return

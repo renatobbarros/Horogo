@@ -3,6 +3,7 @@ from .cadeira import Cadeira
 
 
 class Usuario:
+    """representa um usuário do sistema HOROGO."""
     def __init__(
         self,
         usuario: str,

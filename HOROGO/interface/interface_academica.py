@@ -1,17 +1,13 @@
 from math import ceil
-from typing import Iterable, Any, Optional
-
+from typing import Iterable, Any
 
 class InterfaceAcademica:
-    """Interface acadêmica com design limpo."""
-
     def __init__(self, console=None, servico_academico=None, col_width: int = 40):
         self.console = console
         self.servico = servico_academico
         self.col_width = int(col_width) if col_width and int(col_width) > 0 else 40
 
     def _print(self, texto: str):
-        """Imprime via console."""
         print(f"  {texto}")
 
     def _input(self, prompt: str) -> str:
@@ -81,7 +77,6 @@ class InterfaceAcademica:
         print()
 
     def executar_menu_cadastrar_cadeira(self, usuario: Any) -> bool:
-        """Menu para cadastrar nova cadeira."""
         if not self.servico:
             self._print("Serviço acadêmico não configurado.")
             return False
@@ -271,7 +266,6 @@ class InterfaceAcademica:
 
         cadeira_selecionada = cadeiras[escolha - 1]
         
-        # obter código da cadeira
         if isinstance(cadeira_selecionada, dict):
             codigo = cadeira_selecionada.get("codigo") or cadeira_selecionada.get("nome_cadeira")
         else:
@@ -286,7 +280,7 @@ class InterfaceAcademica:
         va3_str = self._input("VA3 (0-10)")
         rec_str = self._input("Recuperação (0-10, opcional)")
 
-        # converter para float ou None
+        # converter para float ou None, basicamente que nem no outro arquivo que eu tambem fiz um comentario sobre.
         def to_float_or_none(s):
             try:
                 if not s or s.strip() == "":

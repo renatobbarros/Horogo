@@ -1,6 +1,5 @@
 from typing import Any
 
-
 class InterfaceCalendario:
     def __init__(self, servico_calendario: Any, console: Any, repositorio=None):
         self.servico = servico_calendario
@@ -8,7 +7,6 @@ class InterfaceCalendario:
         self.repo = repositorio  # usado para salvar xp no usuario
 
     def executar(self, usuario):
-        # menu simples do calendário
         while True:
             try:
                 if hasattr(self.console, "limpar_tela"):

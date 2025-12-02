@@ -2,7 +2,6 @@ from typing import Optional, Any
 from .interface_console import InterfaceConsole
 from .interface_horobot import InterfaceHorobot
 
-
 class InterfaceAutenticacao:
     def __init__(self, servico_auth: Any, console: InterfaceConsole, horobot: Optional[InterfaceHorobot] = None):
         self.servico = servico_auth

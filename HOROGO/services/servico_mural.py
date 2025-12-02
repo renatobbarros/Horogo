@@ -7,8 +7,7 @@ from ..models.evento import Evento
 
 
 class ServicoMural:
-    """Serviço de mural para gerenciar eventos e check-ins."""
-
+    """Servico para gerenciar eventos no mural, incluindo tambem as tarefas."""
     def __init__(self, repositorio_evento: RepositorioEvento, repositorio_usuario: repositorio_usuario):
         self.repo_evento = repositorio_evento
         self.repo_usuario = repositorio_usuario
