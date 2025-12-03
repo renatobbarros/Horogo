@@ -1,0 +1,27 @@
+[
+    {
+        "usuario": "rere",
+        "nome": "rere",
+        "senha": "12",
+        "instituicao": "12",
+        "periodo": 13,
+        "xp": 30,
+        "nivel": 1,
+        "cadeiras": [
+            {
+                "nome_cadeira": "psi1",
+                "nome_professor": "cleyton",
+                "tempo_cadeira": 60.0,
+                "notas": {
+                    "va1": null,
+                    "va2": 3.0,
+                    "va3": 10.0,
+                    "recuperacao": null,
+                    "media_parcial": 6.5,
+                    "media_final": 6.5,
+                    "situacao": "Reprovado"
+                }
+            }
+        ]
+    }
+]
