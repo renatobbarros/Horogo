@@ -26,7 +26,6 @@ class InterfacePerfil:
             print("  MEU PERFIL")
             print("━" * 60 + "\n")
 
-        # normalizar dados
         if isinstance(usuario, dict):
             nome = usuario.get("usuario") or usuario.get("nome", "N/A")
             instituicao = usuario.get("instituicao", "N/A")
@@ -71,7 +70,6 @@ class InterfacePerfil:
 
         opt = input("  » ").strip()
 
-        # obter nome do usuario
         if isinstance(usuario, dict):
             nome_usuario = usuario.get("usuario") or usuario.get("nome")
         else:
@@ -88,7 +86,6 @@ class InterfacePerfil:
             return False
 
         elif opt == "1":
-            # alterar senha
             nova_senha = self._input("Digite a nova senha (4-12 caracteres)")
             confirmacao = self._input("Confirme a nova senha")
 
@@ -126,7 +123,6 @@ class InterfacePerfil:
                 return False
 
         elif opt == "2":
-            # alterar instituição
             nova_instituicao = self._input("Digite a nova instituição")
 
             try:
@@ -156,7 +152,6 @@ class InterfacePerfil:
                 return False
 
         elif opt == "3":
-            # alterar período
             novo_periodo = self._input("Digite o novo período (1-15)")
 
             try:

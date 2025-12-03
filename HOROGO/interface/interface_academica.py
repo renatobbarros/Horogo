@@ -1,13 +1,17 @@
 from math import ceil
-from typing import Iterable, Any
+from typing import Iterable, Any, Optional
+
 
 class InterfaceAcademica:
+    """Interface acadêmica com design limpo."""
+
     def __init__(self, console=None, servico_academico=None, col_width: int = 40):
         self.console = console
         self.servico = servico_academico
         self.col_width = int(col_width) if col_width and int(col_width) > 0 else 40
 
     def _print(self, texto: str):
+        """Imprime via console."""
         print(f"  {texto}")
 
     def _input(self, prompt: str) -> str:
@@ -77,6 +81,7 @@ class InterfaceAcademica:
         print()
 
     def executar_menu_cadastrar_cadeira(self, usuario: Any) -> bool:
+        """Menu para cadastrar nova cadeira."""
         if not self.servico:
             self._print("Serviço acadêmico não configurado.")
             return False
@@ -95,7 +100,6 @@ class InterfaceAcademica:
         codigo = self._input("Código da cadeira")
         periodo = self._input("Período")
 
-        # obter nome do usuario
         if isinstance(usuario, dict):
             nome_usuario = usuario.get("usuario") or usuario.get("nome")
         else:
@@ -140,7 +144,6 @@ class InterfaceAcademica:
             print("  SITUAÇÃO DAS CADEIRAS")
             print("━" * 60 + "\n")
 
-        # obter cadeiras
         if hasattr(usuario, "obter_cadeiras"):
             cadeiras = usuario.obter_cadeiras()
         elif isinstance(usuario, dict):
@@ -226,7 +229,6 @@ class InterfaceAcademica:
             print("  CADASTRAR/ATUALIZAR NOTAS")
             print("━" * 60 + "\n")
 
-        # listar cadeiras
         if hasattr(usuario, "obter_cadeiras"):
             cadeiras = usuario.obter_cadeiras()
         elif isinstance(usuario, dict):
@@ -280,7 +282,6 @@ class InterfaceAcademica:
         va3_str = self._input("VA3 (0-10)")
         rec_str = self._input("Recuperação (0-10, opcional)")
 
-        # converter para float ou None, basicamente que nem no outro arquivo que eu tambem fiz um comentario sobre.
         def to_float_or_none(s):
             try:
                 if not s or s.strip() == "":
@@ -301,7 +302,6 @@ class InterfaceAcademica:
             "recuperacao": rec
         }
 
-        # obter nome do usuario
         if isinstance(usuario, dict):
             nome_usuario = usuario.get("usuario") or usuario.get("nome")
         else:

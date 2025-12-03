@@ -21,8 +21,13 @@ class InterfaceAutenticacao:
                 except Exception:
                     pass
 
-            nome = self.console.obter_entrada("Digite seu nome de usuário")
-            senha = self.console.obter_entrada("Digite sua senha")
+            nome = self.console.obter_entrada("Digite seu nome de usuário [0 para voltar]")
+            if nome == "0":
+                return None
+            
+            senha = self.console.obter_entrada("Digite sua senha [0 para voltar]")
+            if senha == "0":
+                return None
 
             try:
                 usuario_obj = self.servico.login(nome, senha)
@@ -76,8 +81,13 @@ class InterfaceAutenticacao:
                 except Exception:
                     pass
 
-            nome = self.console.obter_entrada("Escolha um nome de usuário (até 20 caracteres)")
-            senha = self.console.obter_entrada("Escolha uma senha (até 12 caracteres)")
+            nome = self.console.obter_entrada("Escolha um nome de usuário (até 20 caracteres) [0 para voltar]")
+            if nome == "0":
+                return None
+            
+            senha = self.console.obter_entrada("Escolha uma senha (até 12 caracteres) [0 para voltar]")
+            if senha == "0":
+                return None
             senha_conf = self.console.obter_entrada("Confirme a senha")
             if senha != senha_conf:
                 self.console.exibir_erro("As senhas não conferem. Tente novamente.")

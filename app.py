@@ -89,10 +89,32 @@ class AplicacaoHorogo:
         print("Seu assistente pessoal para gerenciar sua vida acadêmica.\n")
         self.console.pausar()
 
-        self.usuario = self.ui_auth.executar_login()
+        while True:
+            self.console.limpar_tela()
+            self.console.exibir_titulo("BEM-VINDO")
+            print("  [1] Fazer Login")
+            print("  [2] Criar Conta")
+            print("  [0] Sair\n")
+            escolha = input("  » ").strip()
+            
+            if escolha == "1":
+                self.usuario = self.ui_auth.executar_login()
+                if self.usuario:
+                    self._dar_xp("login_diario")
+                    break
+            elif escolha == "2":
+                self.usuario = self.ui_auth.executar_cadastro()
+                if self.usuario:
+                    self._dar_xp("login_diario")
+                    break
+            elif escolha == "0":
+                return
+            else:
+                self.console.exibir_erro("Opção inválida. Digite 1, 2 ou 0.")
+                self.console.pausar()
+        
         if not self.usuario:
             return
-        self._dar_xp("login_diario")
 
         while True:
             opcoes = ["Área Acadêmica", "Calendário", "Mural de Eventos", "Perfil", "Sair"]
