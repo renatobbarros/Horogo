@@ -1,5 +1,3 @@
-# Versão simples (estudante iniciante/intermediário)
-
 from typing import Optional, Dict, Any
 
 
@@ -72,7 +70,5 @@ class Nota:
             data.get("va3"),
             data.get("recuperacao"),
         )
-
-
 
 

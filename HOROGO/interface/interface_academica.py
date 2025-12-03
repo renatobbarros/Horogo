@@ -100,7 +100,6 @@ class InterfaceAcademica:
         codigo = self._input("Código da cadeira")
         periodo = self._input("Período")
 
-        # obter nome do usuario
         if isinstance(usuario, dict):
             nome_usuario = usuario.get("usuario") or usuario.get("nome")
         else:
@@ -145,7 +144,6 @@ class InterfaceAcademica:
             print("  SITUAÇÃO DAS CADEIRAS")
             print("━" * 60 + "\n")
 
-        # obter cadeiras
         if hasattr(usuario, "obter_cadeiras"):
             cadeiras = usuario.obter_cadeiras()
         elif isinstance(usuario, dict):
@@ -231,7 +229,6 @@ class InterfaceAcademica:
             print("  CADASTRAR/ATUALIZAR NOTAS")
             print("━" * 60 + "\n")
 
-        # listar cadeiras
         if hasattr(usuario, "obter_cadeiras"):
             cadeiras = usuario.obter_cadeiras()
         elif isinstance(usuario, dict):
@@ -271,7 +268,6 @@ class InterfaceAcademica:
 
         cadeira_selecionada = cadeiras[escolha - 1]
         
-        # obter código da cadeira
         if isinstance(cadeira_selecionada, dict):
             codigo = cadeira_selecionada.get("codigo") or cadeira_selecionada.get("nome_cadeira")
         else:
@@ -286,7 +282,6 @@ class InterfaceAcademica:
         va3_str = self._input("VA3 (0-10)")
         rec_str = self._input("Recuperação (0-10, opcional)")
 
-        # converter para float ou None
         def to_float_or_none(s):
             try:
                 if not s or s.strip() == "":
@@ -307,7 +302,6 @@ class InterfaceAcademica:
             "recuperacao": rec
         }
 
-        # obter nome do usuario
         if isinstance(usuario, dict):
             nome_usuario = usuario.get("usuario") or usuario.get("nome")
         else:

@@ -32,7 +32,6 @@ class InterfaceMural:
             print("  CADASTRAR NOVO EVENTO")
             print("━" * 60 + "\n")
         
-        # exibir instruções
         print("  📝 Preencha os dados do evento:")
         print("  (Mínimo: título 3 chars, descrição 5 chars)")
         print("  (Data no formato: YYYY-MM-DD, ex: 2025-12-31)")
@@ -47,13 +46,11 @@ class InterfaceMural:
             resultado = self.servico_mural.criar_evento(titulo, data, local, descricao)
             
             if isinstance(resultado, str):
-                # retornou erro
                 if self.console and hasattr(self.console, "exibir_erro"):
                     self.console.exibir_erro(resultado)
                 else:
                     print(f"\n  ✗ {resultado}")
             else:
-                # sucesso
                 if self.console and hasattr(self.console, "exibir_sucesso"):
                     self.console.exibir_sucesso("Evento cadastrado com sucesso!")
                 else:

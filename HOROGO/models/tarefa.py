@@ -5,8 +5,8 @@ from datetime import datetime
 class Tarefa:
     def __init__(self, titulo: str, tipo: str, data_iso: str, xp: int = 5):
         self.titulo = titulo
-        self.tipo = tipo  # e.g. 'trabalho', 'atividade', 'palestra'
-        self.data_iso = data_iso  # string no formato ISO YYYY-MM-DD or full datetime
+        self.tipo = tipo
+        self.data_iso = data_iso
         self.xp = xp
 
     def to_dict(self) -> Dict[str, Any]:
