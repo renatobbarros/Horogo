@@ -1,67 +1,174 @@
-# Horogo - Seu Assistente de Estudos Gamificado 🤖✨
-## Um gerenciador de estudos simples, feito em linha de comando, que transforma sua rotina de aprendizado em um jogo de RPG para combater a procrastinação.
+# 🤖 HOROGO - Assistente de Estudos Gamificado
 
-![Ilustração do Mascote Horobot](./HOROGO/Source/Horobot.png)
+![Horobot](./HOROGO/Source/Horobot.png)
 
-## 📜 Sobre o Projeto
-Horogo nasceu como um projeto para a disciplina de Projetos Interdisciplinares de Sistemas de Informação. A ideia era criar uma ferramenta que não apenas ajudasse na organização dos estudos, mas que também tornasse o processo mais divertido e motivador.
+**Transforme sua rotina acadêmica em uma aventura de RPG!**
 
-Inspirado em aplicativos como Duolingo e Habitica, o Horogo utiliza conceitos de gamificação para incentivar a consistência e recompensar o esforço. Cada tarefa concluída gera Pontos de Experiência (XP), permitindo que o usuário avance de nível e sinta um progresso tangível em sua jornada acadêmica. O projeto é guiado pelo Horobot, um mascote e assistente pessoal que torna a interação mais amigável e encorajadora.
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-success.svg)
 
-## Como instalar e executar o projeto:
+---
 
-**1. Clone o repositório utilizando este comando do git:**
+## 📖 Sobre o Projeto
+
+**HOROGO** é um gerenciador acadêmico desenvolvido em Python que combina organização de estudos com mecânicas de gamificação. Criado para a disciplina de **Projetos Interdisciplinares de Sistemas de Informação**, o projeto visa combater a procrastinação transformando tarefas acadêmicas em conquistas que geram recompensas.
+
+**Inspirações:** Duolingo, Habitica  
+**Diferencial:** Sistema completo de gestão acadêmica com XP, níveis e assistente interativo
+
+---
+
+## ⚡ Instalação Rápida
+
+### Pré-requisitos
+- Python 3.10 ou superior ([Download](https://www.python.org/downloads/))
+- Git
+
+### Passos
+
+**1. Clone o repositório:**
 ```bash
 git clone https://github.com/renatobbarros/Horogo.git
 cd Horogo
 ```
-**Apos isso, execute o arquivo horogo.bat**.
 
-**Caso não funcione, verifique que você tem o python corretamente instalado, e que o mesmo esteja na versão mais recente.**
+**2. Execute o programa:**
 
-## ✨ Funcionalidades
+**Windows:**
+```bash
+python app.py
+```
 
-### Interface Simples:
-Tudo funciona diretamente no seu terminal, sem a necessidade de instalações complexas, como bibliotecas de terceiros ou coisas do tipo.
+**Linux/Mac:**
+```bash
+python3 app.py
+```
 
-![Introdução do Programa](./HOROGO/Source/introducao.png)
+✨ **Sem dependências externas!** Usa apenas bibliotecas padrão do Python.
 
-### Gerenciamento de Tarefas:
-Adicione, liste e conclua tarefas relacionadas às suas disciplinas e materias de sua carreira academica e gerencie do jeito que você quiser.
+---
 
-![Menu](./HOROGO/Source/menu.png)
+## ✨ Funcionalidades Principais
 
-### Acompanhamento de status academico: 
-Acompanhando suas notas, periodo de conclusão do curso, sistema de atenção e cadeiras do periodo você ira poder ter uma gestão muito mais eficiente na sua vida academica.
+### 🎓 Gestão Acadêmica Completa
+- **Cadastro de Cadeiras:** Organize suas disciplinas por período
+- **Gerenciamento de Notas:** VA1, VA2, VA3 e Recuperação
+- **Cálculo Automático:** Média e situação (Aprovado/Reprovado)
+- **Dashboard Intuitivo:** Visão geral do desempenho acadêmico
 
-### Gerenciamento de datas:
-Acompanhe todas as datas e eventos importantes utilizando a Agenda do Horobot, que ira te avisar quando eventos irão acontecer e quem ira participar.
+![Introdução](./HOROGO/Source/introducao.png)
 
-### Mural de eventos:
-No mural de eventos sera possivel você ver outros usuarios e o que eles postam e informações sobre o proprio evento.
+### 📅 Sistema de Calendário Inteligente
+- **Tarefas:** Trabalhos, atividades e palestras
+- **Datas Importantes:** Provas, entregas e eventos
+- **Lembretes:** Próximas atividades no dashboard
+- **Gestão Completa:** Adicionar, listar e marcar como concluído
 
-### Sistema de Gamificação:
-Ganhe Pontos de Experiência (XP) ao completar tarefas, provas e participando de eventos.
-Avance de Nível e acompanhe seu progresso para ser o numero #1 no mundo academico!
+### 🎮 Sistema de Gamificação
 
-### Mascote Interativo:
-O Horobot guia o usuário com mensagens motivacionais e feedback constante, ajudando o usuario a lidar com as tarefas academicas e metodos de estudo e muito mais!
+**Ganhe XP por:**
+- 🔐 Login diário: **5 XP**
+- 📚 Cadastrar cadeira: **10 XP**
+- ✅ Concluir tarefa: **5-15 XP**
+- 🎉 Participar de evento: **20 XP**
 
-![Menu](./HOROGO/Source/horobot%20exemplo.png)
+**Sistema de Níveis:**
+- 15 níveis progressivos
+- Barra de progresso visual
+- Feedback do Horobot ao subir de nível
 
-### Persistência de Dados:
-Suas tarefas e seu progresso são salvos localmente em um arquivo JSON, para que você nunca perca suas informações, sendo tambem possivel fazer um backup dos dados.
+![Menu Principal](./HOROGO/Source/menu.png)
+
+### 🗓️ Mural de Eventos Sociais
+- **Criar Eventos:** Compartilhe atividades com outros usuários
+- **Check-in:** Confirme participação em eventos
+- **Informações Completas:** Título, descrição, data, local e participantes
+
+### 🤖 Horobot - Seu Assistente Pessoal
+- Mascote interativo com ASCII art
+- Mensagens motivacionais
+- Feedback constante sobre progresso
+- Guia amigável em todas as funcionalidades
+
+![Horobot Exemplo](./HOROGO/Source/horobot%20exemplo.png)
+
+### 💾 Persistência de Dados
+- Salvamento automático em JSON
+- Backup local de dados
+- Criação automática de diretórios
+- Zero perda de informações
+
+---
+
+## 🏗️ Arquitetura do Sistema
+
+```
+HOROGO/
+├── models/          # Entidades do domínio (Usuario, Cadeira, Nota, Evento, Tarefa)
+├── repository/      # Camada de persistência (JSON)
+├── services/        # Regras de negócio (auth, academico, xp, calendario, mural)
+├── interface/       # Camada de apresentação (CLI interfaces)
+└── Source/          # Recursos visuais (imagens ASCII)
+```
+
+**Padrão:** Arquitetura em Camadas (Layered Architecture)  
+**Linguagem:** Python 3.13  
+**Persistência:** JSON (sem banco de dados)  
+
+---
+
+## 🔧 Tecnologias Utilizadas
+
+**Linguagem:**
+- Python 3.10+
+
+**Bibliotecas (Padrão Python):**
+- `json` - Persistência de dados
+- `typing` - Type hints para robustez
+- `datetime` - Manipulação de datas
+- `pathlib` - Gestão de caminhos
+- `os`, `sys`, `time`, `math` - Utilitários
+
+**Sem dependências externas** = Instalação simplificada!
+
+---
+
+## 📊 Fluxo de Uso
+
+1. **Cadastro/Login** → Crie sua conta ou faça login
+2. **Dashboard** → Visualize XP, nível e próximas tarefas
+3. **Área Acadêmica** → Gerencie cadeiras e notas
+4. **Calendário** → Organize tarefas e datas importantes
+5. **Mural** → Participe de eventos com outros usuários
+6. **Perfil** → Atualize suas informações
+
+**Dica:** Digite `0` para voltar ao menu anterior a qualquer momento!
+
+---
 
 ## 👥 Autores
 
-Este projeto foi desenvolvido por:
+**Renato Barros** - [@renatobbarros](https://github.com/renatobbarros)
 
-* **[Renato Barros]** - [@renatobbarros](https://github.com/renatobbarros)
-* **[Isaque Lucas]** - [@BlairFruit](https://github.com/BlairFruit)
+**Isaque Lucas** - [@BlairFruit](https://github.com/BlairFruit)
 
+---
 
-### Pré-requisitos:
-- Python 3.10 ou superior.
-[Você pode fazer o download aqui.](https://www.python.org/downloads/)
+## 📄 Licença
 
+Este projeto foi desenvolvido para fins acadêmicos na disciplina de **Projetos Interdisciplinares de Sistemas de Informação**.
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+- Reportar bugs
+- Sugerir novas funcionalidades
+- Enviar pull requests
+
+---
+
+⭐ Se este projeto te ajudou, considere dar uma estrela no repositório!
 

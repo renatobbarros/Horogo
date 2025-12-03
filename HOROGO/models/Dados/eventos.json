@@ -1,0 +1,23 @@
+{
+    "tarefas": [
+        {
+            "titulo": "DevFest",
+            "tipo": "palestra",
+            "data_iso": "2025-12-12",
+            "xp": 10
+        },
+        {
+            "titulo": "Teste",
+            "tipo": "Palestra",
+            "data_iso": "2025-12-25",
+            "xp": 20
+        }
+    ],
+    "datas": [
+        {
+            "nome": "teste",
+            "data_iso": "2025-12-25",
+            "xp": 50
+        }
+    ]
+}

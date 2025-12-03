@@ -1,1 +1,0 @@
-#isaque, esse arquivo diz pro python que tudo que esta nesta pasta dever ser lido
